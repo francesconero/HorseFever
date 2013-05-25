@@ -2,6 +2,11 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
+/**
+ * 
+ * @author Jacopo
+ *
+ */
 
 public class ControlloreGioco {
 	private StatoDelGioco statoDelGioco;
@@ -18,5 +23,7 @@ public class ControlloreGioco {
 		
 		
 	}
+	
+	
 
 }
