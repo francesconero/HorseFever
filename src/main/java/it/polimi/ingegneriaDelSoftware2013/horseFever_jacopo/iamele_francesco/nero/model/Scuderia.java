@@ -8,5 +8,11 @@ public class Scuderia {
 	private int scommesseDisponibili;
 	private boolean arrivato;
 	private List<CartaAzione> carteAzione;
+	
+	public Scuderia(Colore colore,int scommesseDisponibili){
+		this.colore=colore;
+		this.scommesseDisponibili=scommesseDisponibili;
+		
+	}
 
 }
