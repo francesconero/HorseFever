@@ -30,8 +30,9 @@ public class DadoSprint {
 		case 4: return (Colore.NERO);
 		case 5: return (Colore.ROSSO);
 		case 6: return (Colore.VERDE);
+		default: return null;
 		}
 		
-		return null;
+		
 		}
 }
