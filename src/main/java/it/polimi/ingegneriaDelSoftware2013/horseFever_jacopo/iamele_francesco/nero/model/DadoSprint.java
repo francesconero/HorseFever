@@ -9,19 +9,19 @@ import java.util.Random;
 public class DadoSprint {
 	private int numfacce=6; //Dadisprint visti come d6
 	private int risultato;
-	
+
 	public void lanciaDado()
-							{
-							Random generator=new Random();       //creo oggetto 'generator' di tipo random
-							risultato=generator.nextInt(numfacce)+1;
-							
-							}
-	
+	{
+		Random generator=new Random();       //creo oggetto 'generator' di tipo random
+		risultato=generator.nextInt(numfacce)+1;
+
+	}
+
 	public int getrisultato() 									
-							{
-								return risultato;
-							}
-	
+	{
+		return risultato;
+	}
+
 	public Colore getColore(){
 		switch (risultato){
 		case 1: return (Colore.BIANCO); 
@@ -32,7 +32,7 @@ public class DadoSprint {
 		case 6: return (Colore.VERDE);
 		default: return null;
 		}
-		
-		
-		}
+
+
+	}
 }

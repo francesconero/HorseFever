@@ -8,5 +8,4 @@ public class Giocatore {
 	private List<Scuderia> scuderie;
 	private Personaggio personaggio;
 	private List<CartaAzione> carteAzione;
-
 }
