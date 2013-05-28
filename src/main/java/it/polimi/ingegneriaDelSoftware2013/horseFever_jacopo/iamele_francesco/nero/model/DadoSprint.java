@@ -17,7 +17,7 @@ public class DadoSprint {
 
 	}
 
-	public int getrisultato() 									
+	public int getRisultato() 									
 	{
 		return risultato;
 	}
