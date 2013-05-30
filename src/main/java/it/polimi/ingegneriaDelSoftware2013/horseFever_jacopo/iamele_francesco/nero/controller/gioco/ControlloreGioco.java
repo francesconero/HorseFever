@@ -1,8 +1,10 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
 import java.util.*;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreRete;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaClientsFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
@@ -12,6 +14,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 /**
  * Questa classe possiede la logica applicativa di HorseFever
@@ -26,15 +29,10 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 public class ControlloreGioco {
 	private StatoDelGioco statoDelGioco;
 	private Mazziere mazziere;
-	private ControlloreReteServer controlloreRete;
-	private List<Scuderia> scuderie;
-	private List<Quotazione> quotazioni;
-	private List<Giocatore> giocatori;
-	private List<Scommessa> scommessePrimaFase;
-	private List<Scommessa> scommesseSecondaFase=null; 
+	private ControlloreReteServer controlloreRete; 
 	private final int numTurniTotali;
 
-	public ControlloreGioco(int numGiocatori) throws NumErratoGiocatoriException{
+	public ControlloreGioco(int numGiocatori) throws NumErratoGiocatoriException, CarteFiniteException{
 		mazziere= new Mazziere();
 		controlloreRete= new ControlloreReteServer();
 		int segnaliniScommesse;
@@ -46,80 +44,88 @@ public class ControlloreGioco {
 		case 6: {numTurniTotali=6; segnaliniScommesse=4;break;}
 		default : {throw new NumErratoGiocatoriException();}
 		}
-		scuderie.add(new Scuderia(Colore.NERO, segnaliniScommesse));
-		scuderie.add(new Scuderia(Colore.BLU, segnaliniScommesse));
-		scuderie.add(new Scuderia(Colore.VERDE, segnaliniScommesse));
-		scuderie.add(new Scuderia(Colore.ROSSO, segnaliniScommesse));
-		scuderie.add(new Scuderia(Colore.GIALLO, segnaliniScommesse));
-		scuderie.add(new Scuderia(Colore.BIANCO, segnaliniScommesse));
+		statoDelGioco=new StatoDelGioco(numTurniTotali);
+		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.NERO, segnaliniScommesse));
+		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.BLU, segnaliniScommesse));
+		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.VERDE, segnaliniScommesse));
+		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.ROSSO, segnaliniScommesse));
+		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.GIALLO, segnaliniScommesse));
+		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.BIANCO, segnaliniScommesse));
 		for (int i=0; i<numGiocatori;i++){
-			giocatori.add(new Giocatore());
+			statoDelGioco.aggiungiGiocatore(new Giocatore());
+			
+		}
+	}
+	
+	private void aggiornaIClient(){
+		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
+			StatoDelGiocoView statoDelGiocoView = new StatoDelGiocoView(statoDelGioco, statoDelGioco.getGiocatori().get(i));
+			//aggiornaClient(statoDelGiocoView,statoDelGioco.getGiocatori().get(i));
 		}
 		
-		
-		
-		
-		
-		
-	
 	}
+	
 
-	private void preparazione(){
-		List<Scuderia> scuderieTemp=scuderie;
+	private void preparazione() throws CarteFiniteException{
+		List<Scuderia> scuderieTemp=statoDelGioco.getCorsie();
 		Collections.shuffle(scuderieTemp);
-		for(int i=scuderie.size(); i>0;i--){
-			quotazioni.add(new Quotazione(scuderieTemp.remove(0), i+1));
+		for(int i=statoDelGioco.getCorsie().size(); i>0;i--){
+			statoDelGioco.aggiungiQuotazioni(new Quotazione(scuderieTemp.remove(0), i+1));
 		}
 		mazziere.mischiaPersonaggi();
 		mazziere.mischiaCarteMovimento();
 		mazziere.mischiaCarteAzione();
-		giocatori=assegnaPrimoGiocatore(giocatori);
+		statoDelGioco.assegnaCasualmentePrimoGiocatore();
+		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
+		statoDelGioco.getGiocatori().get(i).setPersonaggio(mazziere.popPersonaggio());
+		}
 	}
 	
-	private List<Giocatore> assegnaPrimoGiocatore(List<Giocatore> giocatori){
-		Random r= new Random();
-		int s=r.nextInt(giocatori.size());
-		giocatori.get(s).setPrimoGiocatore(true);
-		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(s));
-		return giocatori;
-	}
 	
-	private List<Giocatore> aggiornaPrimoGiocatore(List<Giocatore> giocatori){
-		giocatori.get(0).setPrimoGiocatore(false);
-		giocatori.get(1).setPrimoGiocatore(true);
-		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(1));
-		return giocatori;
-	}
+	
+	
+	
+	
+	
 	
 	private void faseDistribuzioneCarte() throws CarteFiniteException{
-		for (Giocatore g: giocatori){
+		for (Giocatore g: statoDelGioco.getGiocatori()){
 			g.setCarteAzione(mazziere.popCartaAzione());
 		}
-		for (Giocatore g: giocatori){
+		for (Giocatore g: statoDelGioco.getGiocatori()){
 			g.setCarteAzione(mazziere.popCartaAzione());
 		}
 	}
 	
 	private void primaFaseScommesse(){
-		for (Giocatore g: giocatori){
-			//chiedi scommessa al controlloreserver object deve essere istanceof Scommessa 
+		for (Giocatore g: statoDelGioco.getGiocatori()){
+			  //chiedi scommessa al controlloreserver object deve essere istanceof Scommessa 
 			Scommessa scommessa=null;
 			while (g.getPuntiVittoria()<scommessa.getDanariScommessi()*100);//chiedi di nuovo e riprova;
-			scommessePrimaFase.add(scommessa);
+			statoDelGioco.aggiungiScommesseFattePrimaFase(scommessa);
+			int i=0;
+			while(statoDelGioco.getScommesseFattePrimaFase().get(i).getScuderia()!=scommessa.getScuderia()){
+				i++;
+			}
+			
 		}
-		//aggiorna stato del gioco
+		//aggiorna StatoDelGiocoView
 	}
 	
-	private void FaseTruccaCorsa(){
-		for (Giocatore g: giocatori){
-			
-			
+	private void truccaCorsa(){
+		for (int i=0; i<statoDelGioco.getGiocatori().size();i++){
+			//chiedi carta azione e la scuderiaAssociata al server
 		}
+	}
+	
+	
 		
-	}
 	
-	public void inizia() throws CarteFiniteException {
+	
+	public void inizia() throws CarteFiniteException, AttesaClientsFallitaException {
+		controlloreRete.accettaClients(statoDelGioco.getGiocatori());
 		preparazione();
+		aggiornaIClient();
 		faseDistribuzioneCarte();
 		primaFaseScommesse();
 		

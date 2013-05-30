@@ -12,7 +12,7 @@ public class Scuderia {
 	private int scommesseDisponibili;
 	private boolean arrivato;
 	private List<CartaAzione> carteAzione;
-	private List<Scommessa> scommesse;
+	
 	
 	public Scuderia(Colore colore,int scommesseDisponibili){
 		this.colore=colore;
@@ -51,21 +51,20 @@ public class Scuderia {
 		this.arrivato = arrivato;
 	}
 
+	
 	public List<CartaAzione> getCarteAzione() {
 		return carteAzione;
 	}
-
 	public void setCarteAzione(List<CartaAzione> carteAzione) {
 		this.carteAzione = carteAzione;
 	}
-
-	public List<Scommessa> getScommesse() {
-		return scommesse;
+	public void addCartaAzione(CartaAzione cartaDaAggiungere){
+		this.carteAzione.add(cartaDaAggiungere);
 	}
+	
 
-	public void setScommesse(List<Scommessa> scommesse) {
-		this.scommesse = scommesse;
-	}
+	
+	
 
 
 }
