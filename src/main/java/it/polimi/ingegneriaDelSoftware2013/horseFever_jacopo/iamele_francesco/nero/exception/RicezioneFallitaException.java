@@ -5,7 +5,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
  * @author Francesco
  *
  */
-public class RicezioneFallitaException extends Exception {
+public class RicezioneFallitaException extends RuntimeException {
 
 	/**
 	 * 
@@ -18,6 +18,9 @@ public class RicezioneFallitaException extends Exception {
 
 	public RicezioneFallitaException(String string, Throwable e) {
 		super(string, e);
+	}
+
+	public RicezioneFallitaException() {
 	}
 
 }

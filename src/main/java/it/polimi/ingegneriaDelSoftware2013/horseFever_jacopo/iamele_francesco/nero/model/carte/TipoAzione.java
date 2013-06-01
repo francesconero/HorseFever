@@ -1,7 +1,5 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte;
 
-
-
 /**
  * Definisce il tipo di effetto che un {@link EffettoAzione} può essere.
  * @author Francesco

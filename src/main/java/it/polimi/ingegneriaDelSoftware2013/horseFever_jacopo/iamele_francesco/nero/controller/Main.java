@@ -31,7 +31,7 @@ public class Main
 			e.printStackTrace();
 			System.err.println("carte esaurite");
 		} 
-    	catch (AttesaClientsFallitaException e) {
+    	catch (AttesaUtentiFallitaException e) {
 			e.printStackTrace();
 			System.err.println("attesa client fallita");
 		}

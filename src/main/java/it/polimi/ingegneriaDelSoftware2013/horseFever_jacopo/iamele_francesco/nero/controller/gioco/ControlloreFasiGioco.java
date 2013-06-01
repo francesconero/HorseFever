@@ -1,7 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaClientsFallitaException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.UnGiocatoreRimastoException;
@@ -165,8 +165,8 @@ public class ControlloreFasiGioco {
 		
 	
 	
-	public void inizia() throws CarteFiniteException, AttesaClientsFallitaException, UnGiocatoreRimastoException {
-		controlloreRete.accettaClients(statoDelGioco.getGiocatori());
+	public void inizia() throws CarteFiniteException, AttesaUtentiFallitaException, UnGiocatoreRimastoException {
+		controlloreRete.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
 		statoDelGioco.addNumTurno();
 		aggiornaIClient();
