@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT ROOT (Movimento*)>
+<!ELEMENT Movimento EMPTY>
+<!ATTLIST Movimento
+	valori CDATA #REQUIRED>

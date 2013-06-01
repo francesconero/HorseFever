@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ROOT SYSTEM "Movimento.dtd" >
+<ROOT>
+	<Movimento valori="3 3 2 2 2 2" />
+	<Movimento valori="3 2 3 2 2 2" />
+	<Movimento valori="3 2 2 3 2 2" />
+	<Movimento valori="3 2 2 2 3 2" />
+	<Movimento valori="2 2 2 2 3 3" />
+	<Movimento valori="2 2 2 3 2 3" />
+	<Movimento valori="2 2 3 2 2 3" />
+	<Movimento valori="2 3 2 2 2 3" />
+	<Movimento valori="2 3 2 2 3 2" />
+	<Movimento valori="2 3 2 2 3 2" />
+	<Movimento valori="2 3 3 2 2 2" />
+	<Movimento valori="3 2 2 2 2 3" />
+	<Movimento valori="2 2 3 3 2 2" />
+	<Movimento valori="2 2 3 2 3 2" />
+	<Movimento valori="2 2 2 3 3 2" />
+	<Movimento valori="3 3 2 2 2 2" />
+	<Movimento valori="4 3 2 2 2 2" />
+	<Movimento valori="4 2 2 2 2 0" />
+	<Movimento valori="2 2 2 2 1 0" />
+	<Movimento valori="2 2 2 2 1 1" />
+	<Movimento valori="3 2 2 2 2 1" />
+	<Movimento valori="2 2 3 1 2 2" />
+	<Movimento valori="2 4 2 2 0 2" />
+</ROOT>

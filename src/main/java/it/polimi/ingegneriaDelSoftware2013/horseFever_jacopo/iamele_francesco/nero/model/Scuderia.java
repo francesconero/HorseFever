@@ -1,6 +1,8 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
+
 /***
- * Questa è la classe Scuderia
+ * Questa ï¿½ la classe Scuderia
  * Oltre agli attributi "banali" salva anche  
  * le scommesse effettuate e le carteAzione giocate
  */

@@ -21,6 +21,7 @@ import java.net.UnknownHostException;
  *
  */
 public class ControlloreReteClient extends ControlloreRete{
+	
 	private final int portaServer;
 	private final int tentativiConnessioneMax;
 	private final int tentativiInvioNomeMax;
@@ -97,7 +98,6 @@ public class ControlloreReteClient extends ControlloreRete{
 				try {
 					client = new ControlloreReteClient("Client1", "127.0.0.1");
 				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				try {

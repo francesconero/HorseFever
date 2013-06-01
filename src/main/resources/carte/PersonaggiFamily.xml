@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ROOT SYSTEM "Personaggio.dtd" >
+<ROOT>
+	<Personaggio
+		nome="Cranio Mercanti"
+		danari="3400"
+		quotazione="2" />
+	<Personaggio
+		nome="Steve Mc Skull"
+		danari="3600"
+		quotazione="3" />
+	<Personaggio
+		nome="Viktor Von Schadel"
+		danari="3800"
+		quotazione="4" />
+	<Personaggio
+		nome="César Cràne"
+		danari="4000"
+		quotazione="5" />
+	<Personaggio
+		nome="Sigvard Skalle"
+		danari="4200"
+		quotazione="5"></Personaggio>
+	<Personaggio
+		nome="Cranéo Cervantes"
+		danari="4400"
+		quotazione="6" /></ROOT>

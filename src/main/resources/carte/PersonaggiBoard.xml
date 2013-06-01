@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ROOT SYSTEM "Personaggio.dtd" >
+<ROOT>
+	<Personaggio
+		nome="Antonio Vesuvio"
+		danari="3000" /><Personaggio
+		nome="Eric Change"
+		danari="5000" /><Personaggio
+		nome="Miss Double"
+		danari="5000" /><Personaggio
+		nome="Miss Paris"
+		danari="3000" /><Personaggio
+		nome="Oliver Oil"
+		danari="6000" /><Personaggio
+		nome="Otto Von Alt"
+		danari="4000" ></Personaggio></ROOT>

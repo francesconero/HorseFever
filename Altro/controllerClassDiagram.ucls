@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" 
+    name="it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer" 
+    project="horseFever_jacopo.iamele-francesco.nero" 
+    file="/horseFever_jacopo.iamele-francesco.nero/src/main/java/it/polimi/ingegneriaDelSoftware2013/horseFever_jacopo/iamele_francesco/nero/controller/rete/ControlloreReteServer.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="279" width="399" x="41" y="404"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" 
+    name="it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient" 
+    project="horseFever_jacopo.iamele-francesco.nero" 
+    file="/horseFever_jacopo.iamele-francesco.nero/src/main/java/it/polimi/ingegneriaDelSoftware2013/horseFever_jacopo/iamele_francesco/nero/controller/rete/ControlloreReteClient.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="399" x="480" y="404"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="3" language="java" 
+    name="it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreRete.Risposta" 
+    project="horseFever_jacopo.iamele-francesco.nero" 
+    file="/horseFever_jacopo.iamele-francesco.nero/src/main/java/it/polimi/ingegneriaDelSoftware2013/horseFever_jacopo/iamele_francesco/nero/controller/rete/ControlloreRete.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="399" x="919" y="404"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="4" language="java" 
+    name="it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreRete" 
+    project="horseFever_jacopo.iamele-francesco.nero" 
+    file="/horseFever_jacopo.iamele-francesco.nero/src/main/java/it/polimi/ingegneriaDelSoftware2013/horseFever_jacopo/iamele_francesco/nero/controller/rete/ControlloreRete.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="399" x="480" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" 
+    name="it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreGioco" 
+    project="horseFever_jacopo.iamele-francesco.nero" 
+    file="/horseFever_jacopo.iamele-francesco.nero/src/main/java/it/polimi/ingegneriaDelSoftware2013/horseFever_jacopo/iamele_francesco/nero/controller/ControlloreGioco.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="327" width="380" x="41" y="37"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <generalization id="6">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <nesting id="7">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <association id="8">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="9" name="controlloreRete"/>      
+      <multiplicity id="10" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

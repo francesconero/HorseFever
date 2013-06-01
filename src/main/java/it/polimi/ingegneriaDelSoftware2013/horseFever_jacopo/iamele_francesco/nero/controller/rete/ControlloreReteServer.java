@@ -119,7 +119,7 @@ public class ControlloreReteServer extends ControlloreRete {
 			accettore = new ServerSocket(numPorta);
 			accettore.setSoTimeout(serverTimeout);
 		} catch (IOException e) {
-			e.printStackTrace();			
+			throw new AttesaClientsFallitaException("Fallita la creazione del socket server", e);			
 		}
 
 		List<Socket> listaTemporanea = new LinkedList<Socket>();

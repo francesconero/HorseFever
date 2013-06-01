@@ -3,12 +3,12 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import java.util.ArrayList;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.CartaAzione;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 /***
  * Questa classe controlla la faseCorsa (fase troppo complessa per essere gestita dal ControlloreFasi)
  * i suoi metodi sono chiamati unicamente dal controlloreFasi e sono metodi statici
@@ -64,7 +64,7 @@ public class ControlloreOperativo {
 		while (mazziere.getDadoSprint1().getColore()!=statoDelGioco.getCorsie().get(count).getColore()){
 			count++;
 		}
-		if(statoDelGioco.getCorsie().get(count).isArrivato()); //se il cavallo è arrivato non applica lo sprint
+		if(statoDelGioco.getCorsie().get(count).isArrivato()); //se il cavallo ï¿½ arrivato non applica lo sprint
 		else{
 			//controlla eventuali carteAzione e applica sprint 
 			controllaArrivo(statoDelGioco);

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ROOT SYSTEM "file:///C:\Users\Francesco\workspace\horseFever_jacopo.iamele-francesco.nero\src\main\resources\carte\CartaAzione.dtd">
+<ROOT>
+	<CartaAzione	
+		immagine=""
+		nome="Magna Velocitas"
+		lettera="A">
+		<Effetto tipo="PARTENZA">
+			<Valore valore="4"></Valore>
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Fortuna Benevola"
+		lettera="B">
+		<Effetto tipo="MODIFICATORE_PARTENZA">
+			<Valore valore="1" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Flagellum Folgoris"
+		lettera="C">
+		<Effetto tipo="MODIFICATORE_SPRINT">
+			<Valore valore="1" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Herba Magica"
+		lettera="D">
+		<Effetto tipo="SPRINT">
+			<Valore valore="2" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="In Igni Veritas"
+		lettera="F">
+		<Effetto tipo="PHOTOFINISH">
+			<Valore valore="1" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Fustis et Radix"
+		lettera="E">
+		<Effetto tipo="TRAGUARDO">
+			<Valore valore="2" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Vigor Ferreum"
+		lettera="G">
+		<Effetto tipo="PRIMO_ULTIMO">
+			<Valore valore="4" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Globus Obscuros"
+		lettera="A">
+		<Effetto tipo="PARTENZA">
+			<Valore valore="0" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Aqua Putrida"
+		lettera="B">
+		<Effetto tipo="MODIFICATORE_PARTENZA">
+			<Valore valore="-1" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Serum Maleficum"
+		lettera="C">
+		<Effetto tipo="SPRINT">
+			<Valore valore="0" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Venenum Veneficum"
+		lettera="D">
+		<Effetto tipo="MODIFICATORE_SPRINT">
+			<Valore valore="-1" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Mala Tempora"
+		lettera="F">
+		<Effetto tipo="PHOTOFINISH">
+			<Valore valore="0" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="XIII"
+		lettera="E">
+		<Effetto tipo="TRAGUARDO">
+			<Valore valore="0" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Felix Infernalis"
+		lettera="G">
+		<Effetto tipo="PRIMO_ULTIMO">
+			<Valore valore="0" />
+		</Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Alfio Allibratore">
+		<Effetto tipo="QUOTAZIONE">
+			<Valore valore="2" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Steven Sting">
+		<Effetto tipo="QUOTAZIONE">
+			<Valore valore="-2" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Friz Finden">
+		<Effetto tipo="CARTE_AZIONE">
+			<Valore valore="-1" /></Effetto>
+	</CartaAzione>
+	<CartaAzione
+		immagine=""
+		nome="Rochelle Recherche">
+		<Effetto tipo="CARTE_AZIONE">
+			<Valore valore="1" /></Effetto>
+	</CartaAzione>
+</ROOT>

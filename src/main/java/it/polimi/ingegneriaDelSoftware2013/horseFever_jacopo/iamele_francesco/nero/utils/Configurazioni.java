@@ -18,11 +18,13 @@ public final class Configurazioni {
 	private Properties netProperties = new Properties();
 	private Properties serverProperties = new Properties();
 	private Properties clientProperties = new Properties();
+	private Properties giocoProperties = new Properties();
 
 	private Configurazioni() {
-		loadProperties("src/main/resources/net-config.xml", netProperties);
-		loadProperties("src/main/resources/server-config.xml", serverProperties);
-		loadProperties("src/main/resources/client-config.xml", clientProperties);
+		loadProperties("src/main/resources/config/net-config.xml", netProperties);
+		loadProperties("src/main/resources/config/server-config.xml", serverProperties);
+		loadProperties("src/main/resources/config/client-config.xml", clientProperties);
+		loadProperties("src/main/resources/config/gioco-config.xml", giocoProperties);
 	}
 
 	private void loadProperties(String file, Properties properties) {
@@ -85,6 +87,13 @@ public final class Configurazioni {
 	 */
 	public Properties getNetProperties() {
 		return this.netProperties;
+	}
+	
+	/**
+	 * @return le proprietà dello svolgimento del gioco Horse Fever
+	 */
+	public Properties getGiocoProperties() {
+		return this.giocoProperties ;
 	}
 
 }
