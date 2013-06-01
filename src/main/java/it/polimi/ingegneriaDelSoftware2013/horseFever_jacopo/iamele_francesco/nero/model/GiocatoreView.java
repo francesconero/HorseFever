@@ -19,7 +19,7 @@ public class GiocatoreView {
 		this.scuderie=giocatoreDaOscurare.getScuderie();
 		carteAzioniCoperte= new ArrayList<CartaAzione>();
 		for (int i=0; i<giocatoreDaOscurare.getCarteAzione().size();i++){
-			carteAzioniCoperte.add(new CartaAzione());	
+			carteAzioniCoperte.add(new CartaAzione());//CartaAzione coperta la prendiamo da file	
 		}
 	}
 	public int getDanari() {

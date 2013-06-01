@@ -15,9 +15,8 @@ public class StatoDelGiocoView {
 	private TipoFaseGiocoFamily tipoFaseGiocoFamily;
 	private List<GiocatoreView> altriGiocatoriView;
 	private List<Scuderia> corsie;
-	private List<Quotazione> quotazioni;
+	private List<Scuderia> classifica;
 	private int numTurno;
-	private GiocatoreView primoGiocatore;
 	private List<Scommessa> scommesseFatte;
 	private GiocatoreView giocatoreDiTurno;
 	private final int numTurniTotali;
@@ -27,7 +26,7 @@ public class StatoDelGiocoView {
 		this.inizio=statoDaFiltrare.isInizio();
 		this.tipoFaseGiocoFamily=statoDaFiltrare.getTipoFaseGiocoFamily();
 		this.corsie=statoDaFiltrare.getCorsie();
-		this.quotazioni=statoDaFiltrare.getQuotazioni();
+		this.classifica=statoDaFiltrare.getClassifica();
 		this.numTurno=statoDaFiltrare.getNumTurno();
 		this.numTurniTotali=statoDaFiltrare.getNumTurniTotali();
 		altriGiocatoriView= new ArrayList<GiocatoreView>();
@@ -59,16 +58,12 @@ public class StatoDelGiocoView {
 		return corsie;
 	}
 	
-	public List<Quotazione> getQuotazioni() {
-		return quotazioni;
+	public List<Scuderia> getClassifica(){
+		return classifica;
 	}
 	
 	public int getNumTurno() {
 		return numTurno;
-	}
-	
-	public GiocatoreView getPrimoGiocatore() {
-		return primoGiocatore;
 	}
 	
 	public List<Scommessa> getScommesseFatte() {

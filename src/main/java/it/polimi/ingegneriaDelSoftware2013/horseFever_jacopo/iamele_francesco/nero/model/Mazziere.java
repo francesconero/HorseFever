@@ -8,21 +8,41 @@ import java.util.*;
 
 /***
  * Questa classe rappresenta un mazziere virtuale
- * che ha il compito di creare tutte le carte e mischiare
+ * che ha il compito di creare tutte le carte, creare 2 dadisprint e mischiare
  * separatamente i rispettivi mazzi
  * @author Jacopo
  *
  */
 public class Mazziere {
+	private DadoSprint dadoSprint2;
+	private DadoSprint dadoSprint1;
 	private List<CartaAzione> carteAzione;
 	private List<Personaggio> personaggi;
 	private List<CartaMovimento> carteMovimento;
 	
 	public Mazziere(){
-		
+		dadoSprint1=new DadoSprint();
+		dadoSprint2=new DadoSprint();
+		dadoSprint2.lanciaDado();
+		dadoSprint1.lanciaDado();
 		
 	}
 	
+	public DadoSprint getDadoSprint2() {
+		return dadoSprint2;
+	}
+	
+	public void setDadoSprint2(DadoSprint dadoSprint2) {
+		this.dadoSprint2 = dadoSprint2;
+	}
+	
+	public DadoSprint getDadoSprint1() {
+		return dadoSprint1;
+	}
+	
+	public void setDadoSprint1(DadoSprint dadoSprint1) {
+		this.dadoSprint1 = dadoSprint1;
+	}
 	public void mischiaCarteAzione(){
 		Collections.shuffle(carteAzione);
 	}

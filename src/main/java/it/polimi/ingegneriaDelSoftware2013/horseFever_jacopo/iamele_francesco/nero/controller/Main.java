@@ -1,6 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreGioco;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.*;
 
 /**
@@ -15,7 +15,7 @@ public class Main
     {
     	try{
     	int numGiocatori=Integer.parseInt(args[0]);
-    	ControlloreGioco controlloreGioco=new ControlloreGioco(numGiocatori);
+    	ControlloreFasiGioco controlloreGioco=new ControlloreFasiGioco(numGiocatori);
     	controlloreGioco.inizia();
     	}
     	catch (NumErratoGiocatoriException e){
@@ -35,6 +35,10 @@ public class Main
 			e.printStackTrace();
 			System.err.println("attesa client fallita");
 		}
+    	catch (UnGiocatoreRimastoException e){
+    		System.out.println("Partita Finita");
+    		System.exit(0);
+    	}
     	
     }
 }

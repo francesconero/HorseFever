@@ -10,13 +10,16 @@ public class Scuderia {
 	private int posizione;
 	private Colore colore;
 	private int scommesseDisponibili;
+	private final int scommesseTotaliDisponibili;
 	private boolean arrivato;
 	private List<CartaAzione> carteAzione;
+	private int quotazione;
 	
 	
 	public Scuderia(Colore colore,int scommesseDisponibili){
 		this.colore=colore;
 		this.scommesseDisponibili=scommesseDisponibili;
+		this.scommesseTotaliDisponibili=scommesseDisponibili;
 		
 	}
 	public int getPosizione() {
@@ -43,6 +46,10 @@ public class Scuderia {
 		this.scommesseDisponibili = scommesseDisponibili;
 	}
 
+	public int getScommesseTotaliDisponibili(){
+		return scommesseTotaliDisponibili;
+	}
+	
 	public boolean isArrivato() {
 		return arrivato;
 	}
@@ -62,6 +69,13 @@ public class Scuderia {
 		this.carteAzione.add(cartaDaAggiungere);
 	}
 	
+	public void assegnaQuotazione(int quotazione){
+		this.quotazione=quotazione;
+	}
+	
+	public int getQuotazione(){
+		return quotazione;
+	}
 
 	
 	

@@ -9,9 +9,8 @@ public class StatoDelGioco  {
 	private TipoFaseGiocoFamily tipoFaseGiocoFamily;
 	private List<Giocatore> giocatori=null;
 	private List<Scuderia> corsie=null;
-	private List<Quotazione> quotazioni=null;
-	private int numTurno;
-	private Giocatore primoGiocatore=null;
+	private List<Scuderia> classifica=null;
+	private int numTurno=0;
 	private List<Scommessa> scommesseFattePrimaFase=null;
 	private List<Scommessa> scommesseFatteSecondaFase=null;
     private Giocatore giocatoreDiTurno=null;
@@ -21,7 +20,6 @@ public class StatoDelGioco  {
 	this.numTurniTotali=numTurniTotali;
 	giocatori=new ArrayList<Giocatore>();
 	corsie=new ArrayList<Scuderia>();
-	quotazioni=new ArrayList<Quotazione>();
 	scommesseFattePrimaFase=new ArrayList<Scommessa>();
 	scommesseFatteSecondaFase=new ArrayList<Scommessa>();
 	}
@@ -62,16 +60,18 @@ public class StatoDelGioco  {
 	public void rimuoviCorsia(int indirizzo){
 		corsie.remove(indirizzo);
 	}
+	public void setCorsie(List<Scuderia> corsieDaSettare){
+		this.corsie=corsieDaSettare;
+		
+	}
 	
 	
-	public List<Quotazione> getQuotazioni() {
-		return quotazioni;
+	public List<Scuderia> getClassifica() {
+		return classifica;
 	}
-	public void aggiungiQuotazioni(Quotazione quotazioneDaAggiungere){
-		quotazioni.add(quotazioneDaAggiungere);
-	}
-	public void rimuoviQuotazioni(int indirizzo){
-		quotazioni.remove(indirizzo);
+	
+	public void addClassifica(Scuderia classifica) {
+		this.classifica.add(classifica);
 	}
 	
 	
@@ -81,13 +81,8 @@ public class StatoDelGioco  {
 	public void setNumTurno(int numTurno) {
 		this.numTurno = numTurno;
 	}
-	
-	
-	public Giocatore getPrimoGiocatore() {
-		return primoGiocatore;
-	}
-	public void setPrimoGiocatore(Giocatore primoGiocatore) {
-		this.primoGiocatore = primoGiocatore;
+	public void addNumTurno(){
+		this.numTurno++;
 	}
 	
 	

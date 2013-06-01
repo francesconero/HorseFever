@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 public class MetodiDiSupporto
 {
+	
 	public static <E> List<E> creaListaOrdinata(List<E> listaOriginale, E nuovoPrimoElemento) throws NoSuchElementException { // mi serve per gestire il primo giocatore
 		ArrayList<E> listaOrdinata = new ArrayList<E>();
 		int indice = listaOriginale.indexOf(nuovoPrimoElemento);
@@ -24,5 +25,6 @@ public class MetodiDiSupporto
 		}
 		return listaOrdinata;
 	}
+	
 	
 }
