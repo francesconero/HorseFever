@@ -12,11 +12,9 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
-
-import java.util.Collections;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 /**
  * Questa classe possiede la logica applicativa di HorseFever
  * Possiede metodi privati che rappresentano le fasi del gioco
@@ -38,7 +36,7 @@ public class ControlloreFasiGioco {
 
 	private final int numTurniTotali;
 
-	public ControlloreFasiGioco(int numGiocatori) throws NumErratoGiocatoriException, CarteFiniteException{
+	public ControlloreFasiGioco(int numGiocatori) throws NumErratoGiocatoriException, CarteFiniteException, IOException{
 		mazziere= new Mazziere();
 		controlloreRete= new ControlloreReteServer();
 		int segnaliniScommesse;
@@ -67,8 +65,8 @@ public class ControlloreFasiGioco {
 	
 	private void aggiornaIClient(){
 		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
-			StatoDelGiocoView statoDelGiocoView = new StatoDelGiocoView(statoDelGioco, statoDelGioco.getGiocatori().get(i));
-			//aggiornaClient(statoDelGiocoView,statoDelGioco.getGiocatori().get(i));
+			
+			//ControlloreUtenti.aggiornaUtenti(StatoDelGioco);
 		}
 		
 	}
@@ -115,6 +113,9 @@ public class ControlloreFasiGioco {
 			aggiornaIClient();
 		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			Scommessa scommessa=null;  
+			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
+			
+			
 			//chiedi scommessa al controlloreserver object deve essere istanceof Scommessa 
 			while (statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<scommessa.getDanariScommessi()*100);//chiedi di nuovo e riprova;
 			statoDelGioco.aggiungiScommesseFattePrimaFase(scommessa);
@@ -132,7 +133,7 @@ public class ControlloreFasiGioco {
 		for (int i=0; i<statoDelGioco.getGiocatori().size();i++){
 			PosizionaCarta posizionaCarta=null;
 			//chiedi carta azione e la scuderiaAssociata al server
-			statoDelGioco=ControlloreOperativo.posizionaCarta(statoDelGioco, posizionaCarta);
+			statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
 			aggiornaIClient();
 		}
 	}
@@ -152,7 +153,14 @@ public class ControlloreFasiGioco {
 	}
 	
 	public void faseCorsa() throws CarteFiniteException{
+		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE);
+		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
+		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
+		aggiornaIClient();
+		statoDelGioco=ControlloreOperativo.applicaEffettiQUOTAZIONEPreCorsa(statoDelGioco);
+		aggiornaIClient();
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_CORSA);
+		aggiornaIClient();
 		statoDelGioco=ControlloreOperativo.partenza(statoDelGioco, mazziere);
 		aggiornaIClient();
 		statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere);

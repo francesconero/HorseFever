@@ -12,26 +12,31 @@ import java.util.List;
  * @author Francesco
  * 
  */
-public class CartaAzione {
+public class CartaAzione implements Carta {
+
 	private final String nome;
 	private final char lettera;
 	private final List<EffettoAzione> effetti;
 	private final boolean coperta;
+	private final boolean positiva;
+	private final boolean negativa;
 
 	/**
 	 * @param nome	il nome della carta azione
 	 * @param lettera	l'eventuale lettera 
 	 * @param effetti		lista di effetti (lista unitaria nel caso del gioco originale)
 	 */
-	public CartaAzione(String nome, char lettera, List<EffettoAzione> effetti) {
+	public CartaAzione(String nome, char lettera, List<EffettoAzione> effetti, boolean positiva, boolean negativa) {
 		this.coperta = false;
 		this.nome = nome;
 		this.lettera = lettera;
 		this.effetti = new LinkedList<EffettoAzione>(effetti);
+		this.positiva=positiva;
+		this.negativa=negativa;
 	}
 
-	public CartaAzione(String nome, List<EffettoAzione> effetti) {
-		this(nome, (char) 0, effetti);
+	public CartaAzione(String nome, List<EffettoAzione> effetti, boolean positiva, boolean negativa) {
+		this(nome, (char) 0, effetti, positiva, negativa);
 	}
 
 	/**
@@ -42,6 +47,8 @@ public class CartaAzione {
 		this.nome = "";
 		this.lettera = 0;
 		this.effetti = new LinkedList<EffettoAzione>();
+		this.positiva=false;
+		this.negativa=false;
 	}
 
 	public String getNome() {
@@ -54,6 +61,17 @@ public class CartaAzione {
 
 	public List<EffettoAzione> getEffetti() {
 		return new LinkedList<EffettoAzione>(effetti);
+	}
+
+	public boolean isCoperta() {
+		return coperta;
+	}
+	public boolean isPositiva() {
+		return positiva;
+	}
+
+	public boolean isNegativa() {
+		return negativa;
 	}
 
 	@Override

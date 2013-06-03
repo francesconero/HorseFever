@@ -3,7 +3,8 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
 
 import java.util.*;
-public class CartaMovimento {
+
+public class CartaMovimento implements Carta {
 	private Map<Integer, Integer> movimenti = new HashMap<Integer, Integer>();	
 	
 	public CartaMovimento(List<Integer> movimenti) {
@@ -18,8 +19,8 @@ public class CartaMovimento {
 	}
 
 
-	public Map<Integer, Integer> getCartaMovimento(){
-		return movimenti;
+	public int getCartaMovimento(int key){
+		return movimenti.get(key); 
 	}
 	
 	@Override

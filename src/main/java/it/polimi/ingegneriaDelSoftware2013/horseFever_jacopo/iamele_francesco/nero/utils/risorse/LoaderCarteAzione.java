@@ -96,9 +96,11 @@ final class LoaderCarteAzione extends DefaultHandler {
 			throws SAXException {
 		if (qName.equals("CartaAzione")) {
 			if (letteraPresente) {
-				out.put(new CartaAzione(nome, lettera, effettiTemp),immagine);
+				out.put(new CartaAzione(nome, lettera, effettiTemp, false, false),immagine);
 			} else {
-				out.put(new CartaAzione(nome, effettiTemp),immagine);
+
+				out.put(new CartaAzione(nome, lettera, effettiTemp, false, false),immagine);
+
 			}
 		} else if (qName.equals("Effetto")) {
 			effettiTemp.add(new EffettoAzione(tipoAzione, valori));

@@ -4,58 +4,66 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 /***
  * Questa ï¿½ la classe Scuderia
  * Oltre agli attributi "banali" salva anche  
- * le scommesse effettuate e le carteAzione giocate
+ * le scommesse effettuate, le carteAzione giocate e le stesse carteAzione coperte
  */
 import java.util.*;
 
 public class Scuderia {
-	private int posizione;
+	private int posizione=0;
 	private Colore colore;
 	private int scommesseDisponibili;
 	private final int scommesseTotaliDisponibili;
 	private boolean arrivato;
 	private List<CartaAzione> carteAzione;
 	private int quotazione;
+	private int numCicliArrivato=0; //rappresenta da quanto tempo la scuderia è arrivata 
 	
 	
 	public Scuderia(Colore colore,int scommesseDisponibili){
 		this.colore=colore;
 		this.scommesseDisponibili=scommesseDisponibili;
 		this.scommesseTotaliDisponibili=scommesseDisponibili;
-		
 	}
+	
+	
 	public int getPosizione() {
 		return posizione;
 	}
-
-	public void setPosizione(int posizione) {
-		this.posizione = posizione;
+	public void setPosizione(int posizioneModificata) {
+		this.posizione=posizioneModificata;
+		
+	}
+	public void addPosizione(int valoreDaAggiungere){
+		this.posizione= posizione+valoreDaAggiungere;
+	}
+	
+	public void resetPosizione(){
+		this.posizione=0;
 	}
 
+	
 	public Colore getColore() {
 		return colore;
 	}
-
 	public void setColore(Colore colore) {
 		this.colore = colore;
 	}
 
+	
 	public int getScommesseDisponibili() {
 		return scommesseDisponibili;
 	}
-
 	public void setScommesseDisponibili(int scommesseDisponibili) {
 		this.scommesseDisponibili = scommesseDisponibili;
 	}
-
 	public int getScommesseTotaliDisponibili(){
 		return scommesseTotaliDisponibili;
 	}
 	
+	
 	public boolean isArrivato() {
 		return arrivato;
 	}
-
 	public void setArrivato(boolean arrivato) {
 		this.arrivato = arrivato;
 	}
@@ -66,6 +74,7 @@ public class Scuderia {
 	}
 	public void setCarteAzione(List<CartaAzione> carteAzione) {
 		this.carteAzione = carteAzione;
+		
 	}
 	public void addCartaAzione(CartaAzione cartaDaAggiungere){
 		this.carteAzione.add(cartaDaAggiungere);
@@ -74,10 +83,26 @@ public class Scuderia {
 	public void assegnaQuotazione(int quotazione){
 		this.quotazione=quotazione;
 	}
-	
 	public int getQuotazione(){
 		return quotazione;
 	}
+	
+	
+	public void addNumCicliArrivato(int valoreDaAggiungere){
+		this.numCicliArrivato=this.numCicliArrivato+valoreDaAggiungere;
+	}
+	public int getNumCicliArrivato(){
+		return numCicliArrivato;
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
 
 	
 	

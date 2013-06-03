@@ -3,7 +3,9 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -16,17 +18,22 @@ import java.util.*;
  *
  */
 public class Mazziere {
-	private DadoSprint dadoSprint2;
-	private DadoSprint dadoSprint1;
-	private List<CartaAzione> carteAzione;
-	private List<Personaggio> personaggi;
-	private List<CartaMovimento> carteMovimento;
+	private DadoSprint dadoSprint2=new DadoSprint();
+	private DadoSprint dadoSprint1=new DadoSprint();
+	private final List<CartaAzione> carteAzione;
+	private final List<Personaggio> personaggi;
+	private final List<CartaMovimento> carteMovimento;
 	
-	public Mazziere(){
-		dadoSprint1=new DadoSprint();
-		dadoSprint2=new DadoSprint();
+	
+	public Mazziere() throws  IOException{
+		
 		dadoSprint2.lanciaDado();
-		dadoSprint1.lanciaDado();		
+		dadoSprint1.lanciaDado();
+		this.personaggi=Risorse.getIInstance().getPersonaggi(); 
+		this.carteAzione=Risorse.getIInstance().getCarteAzione();
+		this.carteMovimento=Risorse.getIInstance().getCarteMovimento();
+		
+		
 	}
 	
 	public DadoSprint getDadoSprint2() {
@@ -74,11 +81,14 @@ public class Mazziere {
 		return cartaDaPassare;
 	}
 	
-	public void resetCarteMovimento(){
+	public void resetCarteMovimento() throws  IOException{
+		this.carteMovimento.clear();
+		//this.carteMovimento.addAll(Risorse.getCarteMovimento());
 		
 	}
 	
-	public void resetCarteAzione(){
-		
+	public void resetCarteAzione() throws  IOException{
+		this.carteAzione.clear();
+		//this.carteAzione.addAll(Risorse.getCarteAzione());
 	}
 }

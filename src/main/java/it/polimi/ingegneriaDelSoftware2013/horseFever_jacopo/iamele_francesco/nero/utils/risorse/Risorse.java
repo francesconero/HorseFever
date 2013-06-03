@@ -126,4 +126,8 @@ public class Risorse {
 		return carteAzione;
 	}
 
+	public List<CartaMovimento> getCarteMovimento() {
+		return carteMovimento;
+	}
+
 }

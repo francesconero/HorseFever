@@ -1,5 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller;
 
+import java.io.IOException;
+
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
@@ -14,7 +16,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
  */
 public class ServerMain 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) 
     {
     	ControlloreFasiGioco controlloreGioco = null;
     	try{
@@ -42,7 +44,12 @@ public class ServerMain
     	catch (UnGiocatoreRimastoException e){
     		System.out.println("Partita Finita");
     		System.exit(0);
-    	} finally {
+    	}
+    	catch (IOException e){
+    		e.printStackTrace();
+    		System.exit(-1);
+    	}
+    	finally {
     		controlloreGioco.getControlloreRete().cleanUp();
     	}
     	
