@@ -30,7 +30,12 @@ import java.util.List;
 public class ControlloreFasiGioco {
 	private StatoDelGioco statoDelGioco;
 	private Mazziere mazziere;
-	private ControlloreReteServer controlloreRete; 
+	private ControlloreReteServer controlloreRete;
+	
+	public ControlloreReteServer getControlloreRete() {
+		return controlloreRete;
+	}
+
 	private final int numTurniTotali;
 
 	public ControlloreFasiGioco(int numGiocatori) throws NumErratoGiocatoriException, CarteFiniteException{
@@ -52,10 +57,12 @@ public class ControlloreFasiGioco {
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.ROSSO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.GIALLO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.BIANCO, segnaliniScommesse));
+		/*
 		for (int i=0; i<numGiocatori;i++){
 			statoDelGioco.aggiungiGiocatore(new Giocatore());
 			
 		}
+		*/
 	}
 	
 	private void aggiornaIClient(){
@@ -71,7 +78,7 @@ public class ControlloreFasiGioco {
 		statoDelGioco.setInizio(true);
 		List<Scuderia> scuderieTemp=statoDelGioco.getCorsie();
 		Collections.shuffle(scuderieTemp);
-		for(int i=scuderieTemp.size(); i>0;i--){
+		for(int i=scuderieTemp.size()-1; i>=0;i--){
 			scuderieTemp.get(i).assegnaQuotazione(i);
 		}
 		statoDelGioco.setCorsie(scuderieTemp);

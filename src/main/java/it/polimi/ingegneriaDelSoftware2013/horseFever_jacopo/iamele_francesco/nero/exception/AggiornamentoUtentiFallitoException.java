@@ -2,7 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 public class AggiornamentoUtentiFallitoException extends RuntimeException {
 
-	public AggiornamentoUtentiFallitoException(InvioFallitoException e) {
+	public AggiornamentoUtentiFallitoException(Throwable e) {
 		super(e);
 	}
 

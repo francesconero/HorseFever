@@ -6,8 +6,10 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -22,13 +24,15 @@ final class LoaderCarteAzione extends DefaultHandler {
 
 	private SAXParser saxParser;
 
-	private List<CartaAzione> out = new LinkedList<CartaAzione>();
+	private Map<CartaAzione, String> out = new HashMap<CartaAzione, String>();
 	private List<EffettoAzione> effettiTemp = new LinkedList<EffettoAzione>();
 	private String nome;
 	private char lettera;
 	private TipoAzione tipoAzione;
 	private List<Integer> valori = new LinkedList<Integer>();
 	private boolean letteraPresente = false;
+	private String immagine;
+	
 	private static final LoaderCarteAzione LOADER = new LoaderCarteAzione();
 
 	public static LoaderCarteAzione getInstance() {
@@ -48,7 +52,7 @@ final class LoaderCarteAzione extends DefaultHandler {
 		}
 	}
 
-	public List<CartaAzione> caricaCarte() throws IOException, SAXException {
+	public Map<CartaAzione, String> caricaCarte() throws IOException, SAXException {
 		if(out.isEmpty()){
 			saxParser.parse(new File("src/main/resources/carte/CarteAzione.xml"),
 					this);
@@ -64,7 +68,10 @@ final class LoaderCarteAzione extends DefaultHandler {
 			effettiTemp.clear();
 			letteraPresente = false;
 			nome = null;
+			immagine = null;
+			
 			nome = attributes.getValue("nome");
+			immagine = attributes.getValue("immagine");
 			String temp = attributes.getValue("lettera");
 			if (temp != null) {
 				letteraPresente = true;
@@ -89,9 +96,9 @@ final class LoaderCarteAzione extends DefaultHandler {
 			throws SAXException {
 		if (qName.equals("CartaAzione")) {
 			if (letteraPresente) {
-				out.add(new CartaAzione(nome, lettera, effettiTemp));
+				out.put(new CartaAzione(nome, lettera, effettiTemp),immagine);
 			} else {
-				out.add(new CartaAzione(nome, effettiTemp));
+				out.put(new CartaAzione(nome, effettiTemp),immagine);
 			}
 		} else if (qName.equals("Effetto")) {
 			effettiTemp.add(new EffettoAzione(tipoAzione, valori));
@@ -106,7 +113,7 @@ final class LoaderCarteAzione extends DefaultHandler {
 	
 	public static void main(String[] args) throws IOException, SAXException {
 		LoaderCarteAzione test = new LoaderCarteAzione();
-		List<CartaAzione> testList = test.caricaCarte();
+		List<CartaAzione> testList = new LinkedList<CartaAzione>(test.caricaCarte().keySet());
 		System.out.println("Trovate " + testList.size() + " carte azione:");
 		for (CartaAzione carta : testList) {
 			System.out.println(carta);

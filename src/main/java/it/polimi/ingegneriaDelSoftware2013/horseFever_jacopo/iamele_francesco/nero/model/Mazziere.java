@@ -26,8 +26,7 @@ public class Mazziere {
 		dadoSprint1=new DadoSprint();
 		dadoSprint2=new DadoSprint();
 		dadoSprint2.lanciaDado();
-		dadoSprint1.lanciaDado();
-		
+		dadoSprint1.lanciaDado();		
 	}
 	
 	public DadoSprint getDadoSprint2() {

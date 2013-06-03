@@ -2,4 +2,6 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<entry key="tentativiOggetto">5</entry>
+	<entry key="portaHeartbeat">5001</entry>
+	<entry key="heartbeatTimeout">2000</entry>
 </properties>

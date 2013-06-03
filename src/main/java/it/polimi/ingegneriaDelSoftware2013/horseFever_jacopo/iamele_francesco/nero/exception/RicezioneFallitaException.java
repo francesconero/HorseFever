@@ -23,4 +23,8 @@ public class RicezioneFallitaException extends RuntimeException {
 	public RicezioneFallitaException() {
 	}
 
+	public RicezioneFallitaException(Throwable e) {
+		super(e);
+	}
+
 }

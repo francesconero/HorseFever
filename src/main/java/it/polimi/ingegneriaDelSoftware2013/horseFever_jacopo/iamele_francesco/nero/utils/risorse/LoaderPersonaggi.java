@@ -7,8 +7,10 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -23,11 +25,12 @@ final class LoaderPersonaggi extends DefaultHandler{
 	
 	private SAXParser saxParser;
 
-	private List<Personaggio> out = new LinkedList<Personaggio>();
+	private Map<Personaggio, String> out = new HashMap<Personaggio, String>();
 
 	private String nome;
 	private int danari;
 	private int quotazione;
+	private String immagine;
 	
 	private static final LoaderPersonaggi LOADER = new LoaderPersonaggi();
 
@@ -48,7 +51,7 @@ final class LoaderPersonaggi extends DefaultHandler{
 		}
 	}
 	
-	public List<Personaggio> caricaCarte() throws IOException, SAXException {
+	public Map<Personaggio, String> caricaCarte() throws IOException, SAXException {
 		if(out.isEmpty()){
 			saxParser.parse(new File("src/main/resources/carte/PersonaggiFamily.xml"),
 					this);
@@ -62,10 +65,12 @@ final class LoaderPersonaggi extends DefaultHandler{
 		if (qName.equals("Personaggio")) {
 			nome = null;
 			danari = 0;
-			quotazione = 0;			
+			quotazione = 0;
+			immagine = null;
 			nome = attributes.getValue("nome");
 			danari = Integer.parseInt(attributes.getValue("danari"));
 			quotazione = Integer.parseInt(attributes.getValue("quotazione"));
+			immagine = attributes.getValue("immagine");
 		}
 	}
 	
@@ -73,7 +78,7 @@ final class LoaderPersonaggi extends DefaultHandler{
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if (qName.equals("Personaggio")) {
-			out.add(new Personaggio(nome, danari,quotazione));
+			out.put(new Personaggio(nome, danari,quotazione), immagine);
 		}
 	}
 
@@ -85,10 +90,10 @@ final class LoaderPersonaggi extends DefaultHandler{
 	
 	public static void main(String[] args) throws IOException, SAXException {
 		LoaderPersonaggi test = new LoaderPersonaggi();
-		List<Personaggio> testList = test.caricaCarte();
+		List<Personaggio> testList = new LinkedList<Personaggio>(test.caricaCarte().keySet());
 		System.out.println("Trovati " + testList.size() + " personaggi:");
-		for (Personaggio carta : testList) {
-			System.out.println(carta);
+		for (Personaggio personaggio : testList) {
+			System.out.println(personaggio);
 		}
 	}
 	

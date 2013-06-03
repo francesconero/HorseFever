@@ -9,7 +9,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.util.List;
 
-public interface ControlloreUtentiServer {
+public interface ControlloreUtenti {
 
 	/**
 	 * Accetta tanti utenti, tanti quanti giocatori sono passati nella lista
@@ -59,5 +59,17 @@ public interface ControlloreUtentiServer {
 	 *            il nuovo stato del gioco
 	 */
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco);
+	
+	/**
+	 * Conferma un'azione eseguita da un giocatore (ad esempio una scommessa esatta)
+	 * @param giocatore il giocatore associato all'utente che ha eseguito una mossa corretta
+	 */
+	public void conferma(Giocatore giocatore);
+	
+	/**
+	 * Avverti l'utente che egli ha eseguito una mossa non valida (una scommessa di un valore non valido ad esempio)
+	 * @param giocatore il giocatore associato all'utente che ha eseguito una mossa non valida
+	 */
+	public void nega(Giocatore giocatore);
 
 }

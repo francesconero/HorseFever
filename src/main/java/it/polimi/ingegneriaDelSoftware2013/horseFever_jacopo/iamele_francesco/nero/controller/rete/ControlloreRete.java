@@ -8,126 +8,110 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Collection;
 import java.util.List;
 
 /**
- * Classe astratta che implementa le funzionalità più a basso livello richieste per la comunicazione in rete.
- * Estesa da {@link ControlloreReteClient} e {@link ControlloreReteServer}
+ * Metodici statici che implementano le funzionalità più a basso livello richieste per la comunicazione in rete.
+ * Usata da {@link ControlloreReteClient} e {@link ControlloreReteServer}
  * @author Francesco
  *
  */
-public abstract class ControlloreRete {
+final class ControlloreRete {
 	
-	private final int tentativiMax;
-
-	protected ControlloreRete(){
-		tentativiMax = Integer.parseInt(Configurazioni.getInstance().getNetProperties().getProperty("tentativiOggetto"));
-	}
+	private final static int tentativiMax =  Integer.parseInt(Configurazioni.getInstance().getNetProperties().getProperty("tentativiOggetto"));
 
 	private enum Risposta {
 		POSITIVA,
 		NEGATIVA
 	}
 
-	private void inviaOggetto(Object obj, Socket socket) throws IOException{
+	private static void inviaOggetto(Object obj, Socket socket) throws IOException{
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		out.writeObject(obj);
 		out.flush();
 	}
 	
-	private void inviaOggetto(Object obj, Socket socket, int tentativiMax) throws InvioFallitoException{
+	static Object riceviOggetto(Socket socket) {
+		ObjectInputStream in;
+		try {
+			in = new ObjectInputStream(socket.getInputStream());
+			return in.readObject();
+		} catch (IOException e) {
+			throw new RicezioneFallitaException(e);
+		} catch (ClassNotFoundException e) {
+			throw new RicezioneFallitaException(e);
+		}		
+	}
+	
+	/**
+	 * Invia un oggetto tramite un socket, assicurandosi che l'oggetto inviato fosse del tipo richiesto
+	 * @param obj l'oggetto da inviare
+	 * @param socket il socket tramite cui inviarlo
+	 * @return true se l'oggetto era del tipo richiesto, false se l'altro capo ha ritenuto l'oggetto del tipo non appropriato
+	 * @throws InvioFallitoException se ci sono stati problemi gravi nell'invio dell'oggetto (ad esempio socket chiusi etc)
+	 */
+	static boolean inviaOggettoConRisposta(Object obj, Socket socket) {
 		int tentativi = 0;
 		boolean invioOK = false;
-		do{
-			tentativi++;
-			try {
-				inviaOggetto(obj, socket);
-				invioOK = true;
-			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			}
-		} while(tentativi<tentativiMax && !invioOK);
-		
-		if(!invioOK){
-			throw new InvioFallitoException("Fallito invio oggetto" + obj);
-		}
-	}
-	
-	private Object riceviOggetto(Socket socket) throws ClassNotFoundException, IOException{
-		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-		return in.readObject();
-	}
-	
-	protected Object riceviOggetto(Socket s, int tentativiMax) throws RicezioneFallitaException{
-		int tentativi = 0;
-		Object out = null;
-		do{			
-			try {
-				out = riceviOggetto(s);
-			} catch (ClassNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			tentativi++;
-		}while(tentativi<tentativiMax && out==null);
-		if(out == null){
-			throw new RicezioneFallitaException("Fallita la ricezione dell'oggetto per " + tentativiMax + " volte");
-		}
-		return out;
-	}
-	
-	protected void inviaOggettoConRisposta(Object obj, Socket socket, int tentativiMax) throws InvioFallitoException{
-		int tentativi = 0;
-		boolean invioOK = false;
+		boolean arrivato = false;
 		do{
 			tentativi++;
 			try {
 				inviaOggetto(obj, socket);
 			} catch (IOException e) {				
-				e.printStackTrace();
-				continue;
+				throw new InvioFallitoException(e);
 			}
 			
 			Object risultato = null;
 			
-			try {
-				risultato = riceviOggetto(socket);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				continue;
-			} catch (IOException e) {
+			try{
+			risultato = riceviOggetto(socket);
+			} catch (RicezioneFallitaException e){
 				e.printStackTrace();
 				continue;
 			}
 			
 			if(risultato instanceof Risposta){
+				arrivato = true;
 				Risposta risposta = (Risposta) risultato;
 				if(risposta==Risposta.POSITIVA){
 					invioOK = true;
+				} else {
+					invioOK = false;
 				}
+			}else{
+				throw new InvioFallitoException("Ricevuta classe diversa da Risposta: "+risultato.getClass().getName());
 			}
-		} while(tentativi<tentativiMax && !invioOK);
+		} while(tentativi<tentativiMax && !arrivato);
 		
-		if(!invioOK){
+		if(!arrivato){
 			throw new InvioFallitoException("Fallito invio oggetto " + obj);
 		}
+		return invioOK;
 	}
 
 
-	protected static void chiudiSockets(List<Socket> sockets) throws IOException {
-		for(Socket socket : sockets){
+	static void chiudiSockets(Collection<Socket> collection) throws IOException {
+		for(Socket socket : collection){
 			socket.close();
 		}
 	}
 	
-	protected void rispondiPositivamente(Socket s) throws InvioFallitoException {
-		inviaOggetto(Risposta.POSITIVA, s, tentativiMax);
+	static void rispondiPositivamente(Socket s) {
+		try {
+			inviaOggetto(Risposta.POSITIVA, s);
+		} catch (IOException e) {
+			throw new InvioFallitoException("Errore nell'invio della conferma",e);
+		}
 	}
 	
-	protected void rispondiNegativamente(Socket s) throws InvioFallitoException {
-		inviaOggetto(Risposta.NEGATIVA, s, tentativiMax);
+	static void rispondiNegativamente(Socket s) {
+		try {
+			inviaOggetto(Risposta.NEGATIVA, s);
+		} catch (IOException e) {
+			throw new InvioFallitoException("Errore nell'invio della risposta negativa",e);
+		}
 	}
 	
 }

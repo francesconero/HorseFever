@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ROOT SYSTEM "RisorseGUI.dtd" >
+<ROOT>
+	<Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/Tabellone.jpg"
+		nome="Tabellone" /></ROOT>

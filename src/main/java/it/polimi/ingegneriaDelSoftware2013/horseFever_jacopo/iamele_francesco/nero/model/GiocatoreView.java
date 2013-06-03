@@ -11,9 +11,10 @@ public class GiocatoreView {
 	private Personaggio personaggio;
 	private boolean primoGiocatore=false;
 	private List<CartaAzione> carteAzioniCoperte;
+	private String nomeUtente;
 	
 	
-	public GiocatoreView(Giocatore giocatoreDaOscurare){
+	public GiocatoreView(Giocatore giocatoreDaOscurare, String nomeUtente){
 		this.danari=giocatoreDaOscurare.getDanari();
 		this.puntiVittoria=giocatoreDaOscurare.getPuntiVittoria();
 		this.personaggio=giocatoreDaOscurare.getPersonaggio();
@@ -23,6 +24,7 @@ public class GiocatoreView {
 		for (int i=0; i<giocatoreDaOscurare.getCarteAzione().size();i++){
 			carteAzioniCoperte.add(new CartaAzione());//CartaAzione coperta la prendiamo da file	
 		}
+		this.nomeUtente = nomeUtente;
 	}
 	public int getDanari() {
 		return danari;
@@ -70,6 +72,10 @@ public class GiocatoreView {
 
 	public void setCarteAzioniCoperte(List<CartaAzione> carteAzioniCoperte) {
 		this.carteAzioniCoperte = carteAzioniCoperte;
+	}
+	
+	public String getNomeUtente() {
+		return nomeUtente;
 	}
 
 		

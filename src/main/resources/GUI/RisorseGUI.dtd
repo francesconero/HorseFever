@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT ROOT (Risorsa*)>
+<!ELEMENT Risorsa EMPTY>
+<!ATTLIST Risorsa
+	nome CDATA #REQUIRED
+	percorso CDATA #REQUIRED>

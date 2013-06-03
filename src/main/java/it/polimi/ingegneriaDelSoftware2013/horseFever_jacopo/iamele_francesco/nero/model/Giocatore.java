@@ -12,6 +12,18 @@ public class Giocatore {
 	private List<CartaAzione> carteAzione;
 	private boolean primoGiocatore=false;
 
+	public Giocatore(int danari, int puntiVittoria, List<Scuderia> scuderie,
+			Personaggio personaggio, List<CartaAzione> carteAzione,
+			boolean primoGiocatore) {
+		super();
+		this.danari = danari;
+		this.puntiVittoria = puntiVittoria;
+		this.scuderie = scuderie;
+		this.personaggio = personaggio;
+		this.carteAzione = carteAzione;
+		this.primoGiocatore = primoGiocatore;
+	}
+
 	public void setPrimoGiocatore(boolean primoGiocatore){
 		this.primoGiocatore=primoGiocatore;
 	}

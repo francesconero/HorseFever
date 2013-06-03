@@ -1,4 +1,4 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,14 +23,13 @@ public class ImagePanel extends JPanel {
 	public ImagePanel(Image img) {
 		this.img = img;
 		Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-		System.out.println("Image: "+img);
-		System.out.println("Image size: "+size);
+		setMinimumSize(size);
+		setMaximumSize(size);
 		setPreferredSize(size);
-		setLayout(null);
 	}
 
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		super.paintComponent(g);			
 		g.drawImage(img, 0, 0, null);
 	}
 

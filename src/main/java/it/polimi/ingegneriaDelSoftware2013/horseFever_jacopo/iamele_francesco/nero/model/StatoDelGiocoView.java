@@ -37,7 +37,7 @@ public class StatoDelGiocoView {
 		
 		for(int i=0; i<giocatoriDaOscurare.size();i++){
 			if(giocatoriDaOscurare.get(i)==clientReclamante) continue; //da controllare
-			altriGiocatoriView.add(new GiocatoreView(giocatoriDaOscurare.get(i)));
+			altriGiocatoriView.add(new GiocatoreView(giocatoriDaOscurare.get(i), null));
 		}
 	}
 	

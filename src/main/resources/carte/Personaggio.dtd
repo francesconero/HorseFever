@@ -4,4 +4,5 @@
 <!ATTLIST Personaggio
 	nome CDATA #REQUIRED
 	danari CDATA #REQUIRED
-	quotazione CDATA #REQUIRED>
+	quotazione CDATA #REQUIRED
+	immagine CDATA #REQUIRED>

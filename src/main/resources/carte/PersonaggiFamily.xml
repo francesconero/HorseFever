@@ -4,24 +4,30 @@
 	<Personaggio
 		nome="Cranio Mercanti"
 		danari="3400"
-		quotazione="2" />
+		quotazione="2"
+		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-71.jpg" />
 	<Personaggio
 		nome="Steve Mc Skull"
 		danari="3600"
-		quotazione="3" />
+		quotazione="3"
+		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-72.jpg" />
 	<Personaggio
 		nome="Viktor Von Schadel"
 		danari="3800"
-		quotazione="4" />
+		quotazione="4"
+		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-73.jpg" />
 	<Personaggio
 		nome="César Cràne"
 		danari="4000"
-		quotazione="5" />
+		quotazione="5"
+		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-74.jpg" />
 	<Personaggio
 		nome="Sigvard Skalle"
 		danari="4200"
-		quotazione="5"></Personaggio>
+		quotazione="5"
+		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-75.jpg"></Personaggio>
 	<Personaggio
 		nome="Cranéo Cervantes"
 		danari="4400"
-		quotazione="6" /></ROOT>
+		quotazione="6"
+		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-76.jpg" /></ROOT>

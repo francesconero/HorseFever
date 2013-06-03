@@ -1,7 +1,10 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.*;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.UnGiocatoreRimastoException;
 
 /**
  * Questa classe istanzia il controllore del
@@ -9,13 +12,14 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
  * giocatori.
  *
  */
-public class Main 
+public class ServerMain 
 {
     public static void main( String[] args )
     {
+    	ControlloreFasiGioco controlloreGioco = null;
     	try{
     	int numGiocatori=Integer.parseInt(args[0]);
-    	ControlloreFasiGioco controlloreGioco=new ControlloreFasiGioco(numGiocatori);
+    	controlloreGioco=new ControlloreFasiGioco(numGiocatori);
     	controlloreGioco.inizia();
     	}
     	catch (NumErratoGiocatoriException e){
@@ -38,6 +42,8 @@ public class Main
     	catch (UnGiocatoreRimastoException e){
     		System.out.println("Partita Finita");
     		System.exit(0);
+    	} finally {
+    		controlloreGioco.getControlloreRete().cleanUp();
     	}
     	
     }
