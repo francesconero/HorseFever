@@ -142,17 +142,17 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		scuderie.add(new Scuderia(Colore.BLU, 5));
 		List<CartaAzione> carte = new LinkedList<CartaAzione>();
 		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
-		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p, carte, false), "Francesco");
+		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco");
 		List<GiocatoreView> listGiocatori = new LinkedList<GiocatoreView>();
 		listGiocatori.add(giocatore);
 		GiocatoriPanelCreator gPC = new GiocatoriPanelCreator(listGiocatori);
 		SwingUtilities.invokeAndWait(gPC);
 		while(true){
 			long sleepTime = 5000;
-			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p, carte, false), "Francesco"));
+			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco"));
 			gPC.getGiocatorePanel().aggiorna(listGiocatori);
 			Thread.sleep(sleepTime);
-			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p, carte, false), "Francesco"));
+			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco"));
 			gPC.getGiocatorePanel().aggiorna(listGiocatori);
 			Thread.sleep(sleepTime);
 			listGiocatori.remove(listGiocatori.size()-1);

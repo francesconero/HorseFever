@@ -131,7 +131,7 @@ public class CartaAzionePanel extends JPanel {
 		scuderie.add(new Scuderia(Colore.BLU, 5));
 		List<CartaAzione> carte = new LinkedList<CartaAzione>();
 		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
-		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p, carte, false), "Francesco");
+		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco");
 		CartaAzionePanelCreator gPC = new CartaAzionePanelCreator(Risorse.getIInstance().getCarteAzione().get((int) (Math.random()*18)));
 		try {
 			SwingUtilities.invokeAndWait(gPC);

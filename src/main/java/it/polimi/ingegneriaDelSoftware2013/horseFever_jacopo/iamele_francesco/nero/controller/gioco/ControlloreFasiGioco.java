@@ -8,6 +8,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Personaggio;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
@@ -55,12 +56,24 @@ public class ControlloreFasiGioco {
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.ROSSO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.GIALLO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.BIANCO, segnaliniScommesse));
-		/*
+		List<Scuderia> scuderieTemp=statoDelGioco.getCorsie();
+		Collections.shuffle(scuderieTemp);
+		for(int i=scuderieTemp.size()-1; i>=0;i--){
+			scuderieTemp.get(i).assegnaQuotazione(i);
+		}
+		statoDelGioco.setCorsie(scuderieTemp);
+
+		mazziere.mischiaPersonaggi();
 		for (int i=0; i<numGiocatori;i++){
-			statoDelGioco.aggiungiGiocatore(new Giocatore());
+			Personaggio cartaPersonaggio=mazziere.popPersonaggio();
+			int count=0;
+			while (statoDelGioco.getCorsie().get(count).getQuotazione()!=cartaPersonaggio.getScuderiaAssociata())count++;
+			List<Scuderia> scuderiaDaAssociare=new ArrayList<Scuderia>();
+			scuderiaDaAssociare.add(statoDelGioco.getCorsie().get(count));
+			statoDelGioco.aggiungiGiocatore(new Giocatore(cartaPersonaggio.getDanari(),1,scuderiaDaAssociare,cartaPersonaggio));
 			
 		}
-		*/
+		
 	}
 	
 	private void aggiornaIClient(){
@@ -74,19 +87,11 @@ public class ControlloreFasiGioco {
 
 	private void preparazione() throws CarteFiniteException{
 		statoDelGioco.setInizio(true);
-		List<Scuderia> scuderieTemp=statoDelGioco.getCorsie();
-		Collections.shuffle(scuderieTemp);
-		for(int i=scuderieTemp.size()-1; i>=0;i--){
-			scuderieTemp.get(i).assegnaQuotazione(i);
-		}
-		statoDelGioco.setCorsie(scuderieTemp);
-		mazziere.mischiaPersonaggi();
+		
 		mazziere.mischiaCarteMovimento();
 		mazziere.mischiaCarteAzione();
 		statoDelGioco.assegnaCasualmentePrimoGiocatore();
-		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
-		statoDelGioco.getGiocatori().get(i).setPersonaggio(mazziere.popPersonaggio());
-		}
+		
 	}
 	
 	

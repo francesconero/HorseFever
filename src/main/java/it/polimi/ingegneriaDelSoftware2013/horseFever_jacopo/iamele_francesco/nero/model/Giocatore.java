@@ -6,22 +6,20 @@ import java.util.*;
 
 public class Giocatore {
 	private int danari;
-	private int puntiVittoria=1;
+	private int puntiVittoria;
 	private List<Scuderia> scuderie;
 	private Personaggio personaggio;
 	private List<CartaAzione> carteAzione;
 	private boolean primoGiocatore=false;
 
-	public Giocatore(int danari, int puntiVittoria, List<Scuderia> scuderie,
-			Personaggio personaggio, List<CartaAzione> carteAzione,
-			boolean primoGiocatore) {
-		super();
+	public Giocatore(int danari, int puntiVittoria, List<Scuderia> scuderia,Personaggio personaggio) {
+		
 		this.danari = danari;
 		this.puntiVittoria = puntiVittoria;
-		this.scuderie = scuderie;
+		this.scuderie=scuderia;
 		this.personaggio = personaggio;
-		this.carteAzione = carteAzione;
-		this.primoGiocatore = primoGiocatore;
+		
+		
 	}
 
 	public void setPrimoGiocatore(boolean primoGiocatore){
