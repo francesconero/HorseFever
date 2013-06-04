@@ -3,8 +3,13 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 public class Scommessa {
 	private TipoScommessa tipoScommessa;
 	private int danariScommessi;
-	private Giocatore giocatore;
-	private Scuderia scuderia;
+	private Colore scuderia;
+	
+	public Scommessa(TipoScommessa tipoScommessa, int danariScommessi, Colore scuderia){
+		this.tipoScommessa=tipoScommessa;
+		this.danariScommessi=danariScommessi;
+		this.scuderia=scuderia;
+	}
 	
 	
 	public TipoScommessa getTipoScommessa() {
@@ -19,16 +24,11 @@ public class Scommessa {
 	public void setDanariScommessi(int danariScommessi) {
 		this.danariScommessi = danariScommessi;
 	}
-	public Giocatore getGiocatore() {
-		return giocatore;
-	}
-	public void setGiocatore(Giocatore giocatore) {
-		this.giocatore = giocatore;
-	}
-	public Scuderia getScuderia() {
+	
+	public Colore getScuderia() {
 		return scuderia;
 	}
-	public void setScuderia(Scuderia scuderia) {
+	public void setScuderia(Colore scuderia) {
 		this.scuderia = scuderia;
 	}
 	

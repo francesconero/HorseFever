@@ -7,10 +7,11 @@ import java.util.*;
 public class Giocatore {
 	private int danari;
 	private int puntiVittoria;
-	private List<Scuderia> scuderie;
+	private List<Scuderia> scuderie=new ArrayList<Scuderia>();
 	private Personaggio personaggio;
-	private List<CartaAzione> carteAzione;
+	private List<CartaAzione> carteAzione=new ArrayList<CartaAzione>();
 	private boolean primoGiocatore=false;
+	private List<Scommessa> scommesseEffettuate=new ArrayList<Scommessa>();
 
 	public Giocatore(int danari, int puntiVittoria, List<Scuderia> scuderia,Personaggio personaggio) {
 		
@@ -72,6 +73,18 @@ public class Giocatore {
 	
 	public int getDanari(){
 		return danari;
+	}
+
+	public List<Scommessa> getScommesseEffettuate() {
+		return scommesseEffettuate;
+	}
+
+	public void setScommesseEffettuate(List<Scommessa> scommesseEffettuate) {
+		this.scommesseEffettuate = scommesseEffettuate;
+	}
+	
+	public void addScommessa(Scommessa scommessaDaAggiungere){
+		scommesseEffettuate.add(scommessaDaAggiungere);
 	}
 }
 

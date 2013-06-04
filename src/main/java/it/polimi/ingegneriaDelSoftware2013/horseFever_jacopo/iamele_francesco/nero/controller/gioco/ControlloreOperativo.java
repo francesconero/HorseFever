@@ -21,6 +21,8 @@ public class ControlloreOperativo {
 	private final static int posizioneDelTraguardo=12;
 	
 	
+	
+	
 	private static int posizioneMassima(List<Scuderia> scuderie){
 		int posizioneMassima=0;
 		for(int i=0;i<scuderie.size();i++){
@@ -45,7 +47,7 @@ public class ControlloreOperativo {
 		return posizioneMinima;
 	}
 	
-	private static Scuderia ScuderiaConCartaphotoFinishPositiva(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
+	private static Scuderia scuderiaConCartaPhotoFinishPositiva(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
 		
 		for (int i=0;i<scuderie.size();i++){
 			for (int j=0;j<scuderie.get(i).getCarteAzione().size();j++){
@@ -110,8 +112,10 @@ public class ControlloreOperativo {
 		}
 		if(scuderieStessaPosizione.size()==1) statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
 		else{
-			Scuderia scuderia=ScuderiaConCartaphotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);
+			Scuderia scuderia=scuderiaConCartaPhotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);
 			if(scuderia!=null) statoDelGioco.addClassifica(scuderia);
+			
+			
 			
 		}
 		
@@ -317,7 +321,7 @@ public class ControlloreOperativo {
 				}
 			}
 			carteDaControllare.removeAll(carteDaEliminare);
-			statoDelGioco.getCorsie().get(i).setCarteAzione(carteDaControllare);
+			statoDelGioco.getCorsie().get(i).setCarteAzione(carteDaControllare);// non necessario
 		}
 		return statoDelGioco;
 	}
@@ -352,13 +356,30 @@ public class ControlloreOperativo {
 				CartaAzione cartaTemp = carteDaControllare.get(j);
 				for (int k=0;k<cartaTemp.getEffetti().size();k++){
 					if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.QUOTAZIONE){
-					statoDelGioco.getCorsie().get(i).assegnaQuotazione(cartaTemp.getEffetti().get(k).getValori().get(0));//DA CONTROLLARE
+					statoDelGioco.getCorsie().get(i).addQuotazione(cartaTemp.getEffetti().get(k).getValori().get(0));
 					}
 				}
 			}
 		}
 		return statoDelGioco;
 	}
+	
+	public static StatoDelGioco pagamenti(StatoDelGioco statoDelGioco){
+		
+		return statoDelGioco;
+	}
+	
+	public static StatoDelGioco nuoveQuotazioni(StatoDelGioco statoDelGioco){
+		int j=2;
+		for(int i=0;i<statoDelGioco.getClassifica().size();i++){
+			if(statoDelGioco.getClassifica().get(i).getQuotazione()>(i+j))statoDelGioco.getCorsie().get(i).addQuotazione(-1);
+			else if(statoDelGioco.getClassifica().get(i).getQuotazione()<(i+j))statoDelGioco.getCorsie().get(i).addQuotazione(1);
+			else;
+		}
+		return statoDelGioco;
+	}
+	
+	
 
 
 	

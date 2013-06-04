@@ -56,6 +56,9 @@ public class Scuderia {
 	public void setScommesseDisponibili(int scommesseDisponibili) {
 		this.scommesseDisponibili = scommesseDisponibili;
 	}
+	public void removeScommesseDisponibili(int quantitàDaRimuovere){
+		this.scommesseDisponibili=this.scommesseDisponibili-quantitàDaRimuovere;
+	}
 	public int getScommesseTotaliDisponibili(){
 		return scommesseTotaliDisponibili;
 	}
@@ -93,6 +96,19 @@ public class Scuderia {
 	}
 	public int getNumCicliArrivato(){
 		return numCicliArrivato;
+	}
+
+	/***
+	 * Questo metodo, oltre ad aggiungere un valore alla quotazione,
+	 * controlla che la quotazione sia sempre compresa tra 2 e 7
+	 * @param valoreDaAggiungere
+	 */
+	public void addQuotazione(int valoreDaAggiungere) {
+		while((this.quotazione+valoreDaAggiungere>7)||(this.quotazione+valoreDaAggiungere<2)){
+		if(valoreDaAggiungere<0)valoreDaAggiungere++;	
+		else valoreDaAggiungere--;
+		}
+		this.quotazione=this.quotazione+valoreDaAggiungere;
 	}
 
 
