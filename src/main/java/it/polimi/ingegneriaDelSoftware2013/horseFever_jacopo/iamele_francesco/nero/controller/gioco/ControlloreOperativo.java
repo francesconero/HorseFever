@@ -1,8 +1,5 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
@@ -11,6 +8,9 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
+
+import java.util.ArrayList;
+import java.util.List;
 /***
  * Questa classe controlla la faseCorsa (fase troppo complessa per essere gestita dal ControlloreFasi)
  * i suoi metodi sono chiamati unicamente dal controlloreFasi e sono metodi statici
@@ -172,7 +172,7 @@ public class ControlloreOperativo {
 			for (int j=0;j<cartaTemp.getEffetti().size();j++){
 				if((cartaTemp.getEffetti().get(j).getTipo()==TipoAzione.MODIFICATORE_PARTENZA)){
 					movimentoTemp=movimentoTemp+cartaTemp.getEffetti().get(j).getValori().get(0);
-					if(movimentoTemp<0)movimentoTemp=0;//un cavallo non può mai retrocedere
+					if(movimentoTemp<0)movimentoTemp=0;//un cavallo non puï¿½ mai retrocedere
 				}
 				
 			}
@@ -207,7 +207,7 @@ public class ControlloreOperativo {
 			for (int j=0;j<cartaTemp.getEffetti().size();j++){
 				if(cartaTemp.getEffetti().get(j).getTipo()==TipoAzione.MODIFICATORE_SPRINT){
 					sprintTemp=sprintTemp+cartaTemp.getEffetti().get(j).getValori().get(0);
-					if (sprintTemp<0)sprintTemp=0;// un cavallo non può mai retrocedere
+					if (sprintTemp<0)sprintTemp=0;// un cavallo non puï¿½ mai retrocedere
 				}
 				
 			}
@@ -245,7 +245,7 @@ public class ControlloreOperativo {
 	
 	public static StatoDelGioco posizionaCartaAzione(StatoDelGioco statoDelGioco, PosizionaCarta posizionaCarta)throws IllegalArgumentException{//FATTO
 		int count=0;
-		if(!(posizionaCarta.getCartaDaPosizionare() instanceof CartaAzione))throw new IllegalArgumentException("non è una carta azione"); 
+		if(!(posizionaCarta.getCartaDaPosizionare() instanceof CartaAzione))throw new IllegalArgumentException("non ï¿½ una carta azione"); 
 		while (posizionaCarta.getScuderiaAssociata().getColore()!=statoDelGioco.getCorsie().get(count).getColore())count++;
 		statoDelGioco.getCorsie().get(count).addCartaAzione((CartaAzione)posizionaCarta.getCartaDaPosizionare());
 		return statoDelGioco;

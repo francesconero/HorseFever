@@ -1,19 +1,27 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
-import java.util.*;
 
-public class GiocatoreView {
-	private int danari;
-	private int puntiVittoria;
-	private List<Scuderia> scuderie;
-	private Personaggio personaggio;
-	private boolean primoGiocatore=false;
-	private List<CartaAzione> carteAzioniCoperte;
-	private String nomeUtente;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class GiocatoreView implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6804680571901175264L;
+	private final int danari;
+	private final int puntiVittoria;
+	private final List<Scuderia> scuderie;
+	private final Personaggio personaggio;
+	private final boolean primoGiocatore;
+	private final List<CartaAzione> carteAzioniCoperte;
+	private final String nomeUtente;
+	private final long ID;
 	
-	public GiocatoreView(Giocatore giocatoreDaOscurare, String nomeUtente){
+	public GiocatoreView(Giocatore giocatoreDaOscurare, String nomeUtente, long ID){
 		this.danari=giocatoreDaOscurare.getDanari();
 		this.puntiVittoria=giocatoreDaOscurare.getPuntiVittoria();
 		this.personaggio=giocatoreDaOscurare.getPersonaggio();
@@ -25,60 +33,51 @@ public class GiocatoreView {
 			carteAzioniCoperte.add(cartaDaAggiungere);//CartaAzione coperta la prendiamo da file	
 		}
 		this.nomeUtente = nomeUtente;
+		this.ID = ID;
 	}
+	
 	public int getDanari() {
 		return danari;
-	}
-
-	public void setDanari(int danari) {
-		this.danari = danari;
 	}
 
 	public int getPuntiVittoria() {
 		return puntiVittoria;
 	}
 
-	public void setPuntiVittoria(int puntiVittoria) {
-		this.puntiVittoria = puntiVittoria;
-	}
-
 	public List<Scuderia> getScuderie() {
 		return scuderie;
-	}
-
-	public void setScuderie(List<Scuderia> scuderie) {
-		this.scuderie = scuderie;
 	}
 
 	public Personaggio getPersonaggio() {
 		return personaggio;
 	}
 
-	public void setPersonaggio(Personaggio personaggio) {
-		this.personaggio = personaggio;
-	}
-
 	public boolean isPrimoGiocatore() {
 		return primoGiocatore;
 	}
 
-	public void setPrimoGiocatore(boolean primoGiocatore) {
-		this.primoGiocatore = primoGiocatore;
-	}
-
 	public List<CartaAzione> getCarteAzioniCoperte() {
 		return carteAzioniCoperte;
-	}
-
-	public void setCarteAzioniCoperte(List<CartaAzione> carteAzioniCoperte) {
-		this.carteAzioniCoperte = carteAzioniCoperte;
 	}
 	
 	public String getNomeUtente() {
 		return nomeUtente;
 	}
 
-		
+	public long getID() {
+		return ID;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof GiocatoreView){
+			GiocatoreView daConfrontare = (GiocatoreView) obj;
+			if(daConfrontare.ID==ID){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 }

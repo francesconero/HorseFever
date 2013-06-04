@@ -1,69 +1,103 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.console;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ServerMain;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.ConsoleView;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
-public class ControlloreConsole {
+public abstract class ControlloreConsole {
+
+	protected List<ControlloreReteClient> utenti = new LinkedList<ControlloreReteClient>();
+	protected Map<ControlloreReteClient, StatoDelGiocoView> visteGiocatori = new HashMap<ControlloreReteClient, StatoDelGiocoView>();
+	protected ConsoleView view = new ConsoleView();
+	protected int numeroGiocatori;
+	protected ExecutorService executor;
 	
-	private List<ControlloreReteClient> utenti = new ArrayList<ControlloreReteClient>();
-	private ConsoleView view = new ConsoleView();
-	private final int numeroGiocatori;
-	
-	public ControlloreConsole() throws IOException{
-		this.numeroGiocatori = view.chiediNumeroGiocatori();
+	public ControlloreConsole(){
+		
 	}
 	
-	public void inizia() throws IOException{
-		List<String> nomi = chiediNomi();
-		
-		new Thread("Server"){
-			public void run() {
-				ServerMain.main(new String[]{Integer.toString(numeroGiocatori)});
-			};
-		}.start();
-		
-		for(String nome: nomi){
-			utenti.add(new ControlloreReteClient(nome, "127.0.0.1"));
-		}
+	public ControlloreConsole(ControlloreConsole controllore) {
+		this.numeroGiocatori = controllore.numeroGiocatori;
+		view = controllore.view;
+		utenti = controllore.utenti;
+		executor = controllore.executor;
+	}
+	
+	protected abstract void controlla();
+	
+	protected final void aggiornaViste(){
+		List<Future<ClientViewPair>> tempList = new LinkedList<Future<ClientViewPair>>();
 		
 		for(ControlloreReteClient utente: utenti){
-			utente.collegaGioco();
+			ControlloreConsole.RicevitoreGioco worker = new RicevitoreGioco(utente);			
+			tempList.add(executor.submit(worker));
 		}
 		
-		for(ControlloreReteClient utente: utenti){
-			utente.riceviStatoDelGioco();
+		for(Future<ClientViewPair> future : tempList){
+			try {
+				ClientViewPair temp = future.get();
+				visteGiocatori.put(temp.utente, temp.view);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			} catch (ExecutionException e) {
+				throw new RuntimeException(e);
+			}
 		}
-	}
-
-	private List<String> chiediNomi() throws IOException {
-		List<String> nomi = view.chiediNomi(numeroGiocatori);
-		if(nomi.size()!=numeroGiocatori){
-			throw new RuntimeException("Numero giocatori errato");
-		}
-		return nomi;
+		
 	}
 	
-	public static void main(String[] args){
+	protected final ControlloreReteClient getClientDiTurno(){
+		StatoDelGiocoView viewTemp = new LinkedList<StatoDelGiocoView>(visteGiocatori.values()).getFirst();
+		ControlloreReteClient out = null;
+		Long toCheck = viewTemp.getGiocatoreDiTurno().getID();
+		for(ControlloreReteClient temp : utenti){
+			if(temp.getID().equals(toCheck)){
+				out = temp;
+			}
+		}
+		if(out==null){
+			throw new NullPointerException("Non esiste un giocatore di turno?");
+		}
+		return out;
+	}
+	
+	private class ClientViewPair {
+		final ControlloreReteClient utente;
+		final StatoDelGiocoView view;
 		
-		try {
-			ControlloreConsole cc;
-			cc = new ControlloreConsole();
-			cc.inizia();
-		} catch (IOException e) {
-			e.printStackTrace();
+		public ClientViewPair(ControlloreReteClient utente, StatoDelGiocoView view){
+			this.utente = utente;
+			this.view = view;
 		}
 		
 	}
+
+	protected final class RicevitoreGioco implements Callable<ClientViewPair> {
+
+		private ControlloreReteClient utente;
+
+		public RicevitoreGioco(ControlloreReteClient utente) {
+			System.out.println("Creo runnable");
+			this.utente = utente;
+		}
+		
+		public ClientViewPair call() throws Exception {
+			System.out.println("attendo stato del gioco");
+			StatoDelGiocoView sGV = utente.riceviStatoDelGioco();			
+			ClientViewPair out = new ClientViewPair(utente, sGV);
+			System.out.println("ricevuto stato del gioco");
+			return out;
+		}
+
+	}
+
 }
-
-

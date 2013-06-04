@@ -9,27 +9,23 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingUtilities;
-import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
-import java.awt.Dimension;
-import java.awt.Component;
-import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.BorderLayout;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
 
 public class GiocatorePanel extends JPanel {
 	private static class GiocatorePanelCreator implements Runnable {
@@ -188,7 +184,7 @@ public class GiocatorePanel extends JPanel {
 		scuderie.add(new Scuderia(Colore.BLU, 5));
 		List<CartaAzione> carte = new LinkedList<CartaAzione>();
 		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
-		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco");
+		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25);
 		GiocatorePanelCreator gPC = new GiocatorePanelCreator(giocatore);
 		try {
 			SwingUtilities.invokeAndWait(gPC);

@@ -1,21 +1,19 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
+
+import java.awt.Color;
+import java.awt.Point;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
-import java.awt.Color;
-import java.awt.Point;
-
-import javax.swing.JLabel;
 
 public class TabellonePanel extends JPanel {
 

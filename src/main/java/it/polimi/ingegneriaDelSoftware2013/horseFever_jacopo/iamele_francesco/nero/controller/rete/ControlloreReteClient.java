@@ -3,7 +3,6 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenteSingolo;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.ConnessioneServerFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.DisconnessioneAnomalaException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.InvioFallitoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.RicezioneFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
@@ -33,7 +32,9 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 	private final int tentativiConnessioneMax;
 	private final int timeoutSocket;
 	private final String proprioNome;
-
+	private Long ID;
+	private boolean IDSet = false;
+	
 	private Socket serverSocket;	
 	private Socket heartbeatSocket;
 	private InetAddress indirizzoServer;
@@ -102,12 +103,25 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 		
 	}
 
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		if(!IDSet){
+			ID = iD;
+			IDSet = true;
+		} else {
+			throw new IllegalStateException("L'ID è già stato settato");
+		}
+	}
+
 	private void stabilisciConnessione() throws ConnessioneServerFallitaException {
 		int tentativi = 0;
 	
 		do{
 			tentativi++;
-			System.out.println("Tentativo connessione "+tentativi+"...");
+			System.out.println(proprioNome+": tentativo connessione "+tentativi);
 			try {
 				serverSocket = new Socket(indirizzoServer, portaServer);
 				heartbeatSocket = new Socket(indirizzoServer, portaHeartbeat);

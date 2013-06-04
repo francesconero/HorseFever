@@ -1,14 +1,15 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
+import java.io.Serializable;
+import java.util.List;
 /***
  * Questa ÔøΩ la classe Scuderia
  * Oltre agli attributi "banali" salva anche  
  * le scommesse effettuate, le carteAzione giocate e le stesse carteAzione coperte
  */
-import java.util.*;
 
-public class Scuderia {
+public class Scuderia implements Serializable{
 	private int posizione=0;
 	private Colore colore;
 	private int scommesseDisponibili;
@@ -16,7 +17,7 @@ public class Scuderia {
 	private boolean arrivato;
 	private List<CartaAzione> carteAzione;
 	private int quotazione;
-	private int numCicliArrivato=0; //rappresenta da quanto tempo la scuderia Ë arrivata 
+	private int numCicliArrivato=0; //rappresenta da quanto tempo la scuderia ÔøΩ arrivata 
 	
 	
 	public Scuderia(Colore colore,int scommesseDisponibili){
@@ -56,8 +57,8 @@ public class Scuderia {
 	public void setScommesseDisponibili(int scommesseDisponibili) {
 		this.scommesseDisponibili = scommesseDisponibili;
 	}
-	public void removeScommesseDisponibili(int quantit‡DaRimuovere){
-		this.scommesseDisponibili=this.scommesseDisponibili-quantit‡DaRimuovere;
+	public void removeScommesseDisponibili(int quantit√†DaRimuovere){
+		this.scommesseDisponibili=this.scommesseDisponibili-quantit√†DaRimuovere;
 	}
 	public int getScommesseTotaliDisponibili(){
 		return scommesseTotaliDisponibili;

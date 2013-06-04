@@ -14,8 +14,11 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
+
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 /**
  * Questa classe possiede la logica applicativa di HorseFever
  * Possiede metodi privati che rappresentano le fasi del gioco
@@ -79,9 +82,7 @@ public class ControlloreFasiGioco {
 		
 	}
 	
-	
 	private void aggiornaTuttiIClient(){
-		
 		controlloreRete.aggiornaUtenti(statoDelGioco);
 	}
 	
@@ -261,7 +262,7 @@ public class ControlloreFasiGioco {
 		controlloreRete.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
 		statoDelGioco.addNumTurno();
-		aggiornaTuttiIClient();
+		
 		while(statoDelGioco.getNumTurno()!=statoDelGioco.getNumTurniTotali()){
 			faseDistribuzioneCarte();
 			faseEliminazioneGiocatore();

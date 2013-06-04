@@ -1,6 +1,5 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception;
 
-import java.io.IOException;
 
 /**
  * Lanciata sul mittente nel caso l'invio di un oggetto tra client e server o viceversa, fallisca.

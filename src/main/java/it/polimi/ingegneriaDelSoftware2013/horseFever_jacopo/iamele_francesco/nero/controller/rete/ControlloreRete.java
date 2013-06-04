@@ -9,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Metodici statici che implementano le funzionalità più a basso livello richieste per la comunicazione in rete.

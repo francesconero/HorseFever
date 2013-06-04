@@ -1,14 +1,14 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.BoxLayout;
-import javax.swing.border.MatteBorder;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.MatteBorder;
 
 public class ManoPanel extends JPanel {
 

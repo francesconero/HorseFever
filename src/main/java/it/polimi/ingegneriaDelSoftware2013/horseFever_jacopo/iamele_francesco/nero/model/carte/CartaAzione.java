@@ -1,6 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte;
 
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @author Francesco
  * 
  */
-public class CartaAzione implements Carta {
+public class CartaAzione implements Carta, Serializable{
 
 	private final String nome;
 	private final char lettera;

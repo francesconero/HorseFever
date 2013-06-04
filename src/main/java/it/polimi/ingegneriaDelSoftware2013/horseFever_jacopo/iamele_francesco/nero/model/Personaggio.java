@@ -1,6 +1,8 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 
-public class Personaggio {
+import java.io.Serializable;
+
+public class Personaggio implements Serializable{
 	private final String nome;
 	private final int danari;
 	private final int quotazioneAssociata;

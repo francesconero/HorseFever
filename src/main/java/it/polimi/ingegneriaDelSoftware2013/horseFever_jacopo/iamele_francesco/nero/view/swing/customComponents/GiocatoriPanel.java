@@ -1,17 +1,5 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JPanel;
-import javax.swing.BoxLayout;
-import javax.swing.SwingUtilities;
-
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.FormatoFileErratoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
@@ -20,24 +8,27 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
-import javax.swing.border.LineBorder;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.MatteBorder;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
+import javax.swing.SwingUtilities;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class GiocatoriPanel extends JPanel implements MouseListener {
 	private JPanel panel_1;
@@ -142,17 +133,17 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		scuderie.add(new Scuderia(Colore.BLU, 5));
 		List<CartaAzione> carte = new LinkedList<CartaAzione>();
 		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
-		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco");
+		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25);
 		List<GiocatoreView> listGiocatori = new LinkedList<GiocatoreView>();
 		listGiocatori.add(giocatore);
 		GiocatoriPanelCreator gPC = new GiocatoriPanelCreator(listGiocatori);
 		SwingUtilities.invokeAndWait(gPC);
 		while(true){
 			long sleepTime = 5000;
-			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco"));
+			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25));
 			gPC.getGiocatorePanel().aggiorna(listGiocatori);
 			Thread.sleep(sleepTime);
-			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco"));
+			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25));
 			gPC.getGiocatorePanel().aggiorna(listGiocatori);
 			Thread.sleep(sleepTime);
 			listGiocatori.remove(listGiocatori.size()-1);

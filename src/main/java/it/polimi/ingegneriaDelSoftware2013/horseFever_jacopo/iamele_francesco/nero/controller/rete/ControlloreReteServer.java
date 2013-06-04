@@ -13,20 +13,15 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.swing.SwingUtilities;
 
 /**
  * Implementazione network del {@link ControlloreUtenti} Parte del controllore
@@ -44,12 +39,15 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	private final Map<Giocatore, Socket> clients = new LinkedHashMap<Giocatore, Socket>();
 	private final Map<Giocatore, Socket> clientsHeartbeat = new LinkedHashMap<Giocatore, Socket>();
 	private final Map<Giocatore, String> nomiClients = new LinkedHashMap<Giocatore, String>();
+	private final Map<Giocatore, Long> IDClients = new LinkedHashMap<Giocatore, Long>();
 
 	private final int portaServer;
 	private final int portaHeartbeat;
 	private final int serverTimeout;
 	private final int clientTimeout;
 	private final int heartbeatTimeout;
+	
+	private long currentID = 0;
 
 	private final HeartbeatThread heartbeatThread = new HeartbeatThread();
 
@@ -100,11 +98,13 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		Socket heartbeatSocket = sockets.heartbeatSocket;
 
 		String nome = ricavaNome(s);
-
+		long ID = getNewID();
+		
 		ServerConsole.getInstance().write("Aggiungo giocatore " + nome);
 		clients.put(g, s);
 		clientsHeartbeat.put(g, heartbeatSocket);
 		nomiClients.put(g, nome);
+		IDClients.put(g, ID);
 	}
 
 	private SocketHolder apriSocket() {
@@ -199,7 +199,8 @@ public class ControlloreReteServer implements ControlloreUtenti {
 
 		for (Giocatore g : clients.keySet()) {
 			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,
-					g);
+					g, nomiClients,
+					IDClients);
 			Socket temp = clients.get(g);
 			ControlloreRete.inviaOggettoConRisposta(daInviare, temp);
 		}
@@ -256,6 +257,10 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 	}
 
+	private long getNewID(){
+		return currentID++;
+	}
+	
 	private class SocketHolder {
 		private Socket mainSocket;
 		private Socket heartbeatSocket;
