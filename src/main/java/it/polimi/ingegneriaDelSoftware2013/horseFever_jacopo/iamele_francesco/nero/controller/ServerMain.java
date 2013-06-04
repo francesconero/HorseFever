@@ -26,8 +26,7 @@ public class ServerMain
     	}
     	catch (NumErratoGiocatoriException e){
     		e.printStackTrace();
-    		System.err.println("numero giocatori non valido");
-    		
+    		System.err.println("numero giocatori non valido");    		
     	}
     	catch (NumberFormatException e){
     		e.printStackTrace();
@@ -49,7 +48,11 @@ public class ServerMain
     		e.printStackTrace();
     		System.exit(-1);
     	}
+    	catch (RuntimeException e){
+    		e.printStackTrace();
+    	}
     	finally {
+    		System.out.println(controlloreGioco);
     		controlloreGioco.getControlloreRete().cleanUp();
     	}
     	

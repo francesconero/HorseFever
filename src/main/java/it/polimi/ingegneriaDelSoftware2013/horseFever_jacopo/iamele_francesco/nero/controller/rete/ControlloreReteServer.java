@@ -228,7 +228,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		} else {
 			Object posizionaCartaPossibile = ControlloreRete
 					.riceviOggetto(temp);
-			if (posizionaCartaPossibile instanceof Scommessa) {
+			if (posizionaCartaPossibile instanceof PosizionaCarta) {
 				return (PosizionaCarta) posizionaCartaPossibile;
 			} else {
 				throw new RicezioneFallitaException();
