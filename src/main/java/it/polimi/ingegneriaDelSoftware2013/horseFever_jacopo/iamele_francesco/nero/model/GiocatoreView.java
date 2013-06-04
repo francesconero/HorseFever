@@ -1,7 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
-
 import java.util.*;
 
 public class GiocatoreView {
@@ -22,7 +21,8 @@ public class GiocatoreView {
 		this.scuderie=giocatoreDaOscurare.getScuderie();
 		carteAzioniCoperte= new ArrayList<CartaAzione>();
 		for (int i=0; i<giocatoreDaOscurare.getCarteAzione().size();i++){
-			carteAzioniCoperte.add(new CartaAzione());//CartaAzione coperta la prendiamo da file	
+			CartaAzione cartaDaAggiungere=new CartaAzione();
+			carteAzioniCoperte.add(cartaDaAggiungere);//CartaAzione coperta la prendiamo da file	
 		}
 		this.nomeUtente = nomeUtente;
 	}

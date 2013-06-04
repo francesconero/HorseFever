@@ -24,10 +24,10 @@
 	<Personaggio
 		nome="Sigvard Skalle"
 		danari="4200"
-		quotazione="5"
+		quotazione="6"
 		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-75.jpg"></Personaggio>
 	<Personaggio
 		nome="Cranéo Cervantes"
 		danari="4400"
-		quotazione="6"
+		quotazione="7"
 		immagine="src/main/resources/immagini/FamilyGame/Personaggi/horseFever-76.jpg" /></ROOT>

@@ -31,6 +31,7 @@ public class ControlloreFasiGioco {
 	private Mazziere mazziere;
 	private ControlloreReteServer controlloreRete;
 	
+	
 	public ControlloreReteServer getControlloreRete() {
 		return controlloreRete;
 	}
@@ -56,18 +57,20 @@ public class ControlloreFasiGioco {
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.ROSSO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.GIALLO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.BIANCO, segnaliniScommesse));
-		List<Scuderia> scuderieTemp=statoDelGioco.getCorsie();
+		List<Scuderia> scuderieTemp;
+		scuderieTemp = statoDelGioco.getCorsie();
 		Collections.shuffle(scuderieTemp);
 		for(int i=scuderieTemp.size()-1; i>=0;i--){
-			scuderieTemp.get(i).assegnaQuotazione(i);
+			scuderieTemp.get(i).assegnaQuotazione(i+2);
 		}
 		statoDelGioco.setCorsie(scuderieTemp);
-
 		mazziere.mischiaPersonaggi();
 		for (int i=0; i<numGiocatori;i++){
 			Personaggio cartaPersonaggio=mazziere.popPersonaggio();
 			int count=0;
-			while (statoDelGioco.getCorsie().get(count).getQuotazione()!=cartaPersonaggio.getScuderiaAssociata())count++;
+			while (statoDelGioco.getCorsie().get(count).getQuotazione()!=cartaPersonaggio.getScuderiaAssociata()){
+				count++;
+				}
 			List<Scuderia> scuderiaDaAssociare=new ArrayList<Scuderia>();
 			scuderiaDaAssociare.add(statoDelGioco.getCorsie().get(count));
 			statoDelGioco.aggiungiGiocatore(new Giocatore(cartaPersonaggio.getDanari(),1,scuderiaDaAssociare,cartaPersonaggio));
@@ -76,13 +79,12 @@ public class ControlloreFasiGioco {
 		
 	}
 	
-	private void aggiornaIClient(){
-		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
-			
-			//ControlloreUtenti.aggiornaUtenti(StatoDelGioco);
-		}
+	private void aggiornaTuttiIClient(){
 		
+		controlloreRete.aggiornaUtenti(statoDelGioco);
 	}
+	
+	
 	
 
 	private void preparazione() throws CarteFiniteException{
@@ -105,26 +107,27 @@ public class ControlloreFasiGioco {
 			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.DISTRIBUZIONE_CARTE);
 		for (Giocatore g: statoDelGioco.getGiocatori()){
 			g.setCarteAzione(mazziere.popCartaAzione());
-			aggiornaIClient();
 		}
 		for (Giocatore g: statoDelGioco.getGiocatori()){
 			g.setCarteAzione(mazziere.popCartaAzione());
-			aggiornaIClient();
 		}
+		aggiornaTuttiIClient();
 	}
 	
 	private void primaFaseScommesse() throws UnGiocatoreRimastoException {  //I GIOCATORI POSSONO PERDERE DURANTE QUESTA FASE
 			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ORARIA);
-			aggiornaIClient();
+			aggiornaTuttiIClient();
 		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			Scommessa scommessa=null;  
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
-			
-			
-			//chiedi scommessa al controlloreserver object deve essere istanceof Scommessa 
-			while (statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<scommessa.getDanariScommessi()*100);//chiedi di nuovo e riprova;
+			scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
+			while (statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<scommessa.getDanariScommessi()*100);{
+				controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
+				scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
+			}
+			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 			statoDelGioco.aggiungiScommesseFattePrimaFase(scommessa);
-			aggiornaIClient();
+			aggiornaTuttiIClient();
 			
 			
 			
@@ -134,25 +137,35 @@ public class ControlloreFasiGioco {
 	
 	private void truccaCorsa(){
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		for (int i=0; i<statoDelGioco.getGiocatori().size();i++){
+			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
 			PosizionaCarta posizionaCarta=null;
-			//chiedi carta azione e la scuderiaAssociata al server
-			statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
-			aggiornaIClient();
+			posizionaCarta=controlloreRete.riceviPosizionaCarta(statoDelGioco.getGiocatoreDiTurno());
+			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
+				statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
+			aggiornaTuttiIClient();
 		}
 	}
 	
 	private void secondaFaseScommesse(){ 
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ANTIORARIA);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		for (int i=statoDelGioco.getGiocatori().size()-1;i>=0;i--){
+			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
 			Scommessa scommessa=null;
-			//chiedi scommessa al controlloreserver object deve essere istanceof Scommessa 
+			scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());//chiedi scommessa al controlloreserver object deve essere istanceof Scommessa 
 			if (scommessa==null) continue;
-			while (statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<scommessa.getDanariScommessi()*100);//chiedi di nuovo e riprova;
+			else{
+				scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
+				while (statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<scommessa.getDanariScommessi()*100);{
+					controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
+					scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
+				}
+				controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
+			}
 			statoDelGioco.aggiungiScommesseFatteSecondaFase(scommessa);
-			aggiornaIClient();
+			aggiornaTuttiIClient();
 		}
 		
 	}
@@ -161,20 +174,20 @@ public class ControlloreFasiGioco {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE);
 		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
 		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.applicaEffettiQUOTAZIONEPreCorsa(statoDelGioco);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_CORSA);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.partenza(statoDelGioco, mazziere);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere);
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		while (statoDelGioco.getClassifica().size()!=statoDelGioco.getCorsie().size()){
 			statoDelGioco=ControlloreOperativo.movimento(statoDelGioco, mazziere);
-			aggiornaIClient();
+			aggiornaTuttiIClient();
 			statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere);
-			aggiornaIClient();
+			aggiornaTuttiIClient();
 		}
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_PAGAMENTI_NUOVE_QUOTAZIONI);//I GIOCATORI POSSONO PERDERE DURANTE QUESTA FASE
 		
@@ -189,7 +202,7 @@ public class ControlloreFasiGioco {
 		controlloreRete.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
 		statoDelGioco.addNumTurno();
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		while(statoDelGioco.getNumTurno()!=statoDelGioco.getNumTurniTotali()){
 			faseDistribuzioneCarte();
 			primaFaseScommesse();
@@ -199,7 +212,7 @@ public class ControlloreFasiGioco {
 		
 		
 		statoDelGioco.addNumTurno();
-		aggiornaIClient();
+		aggiornaTuttiIClient();
 		}
 		
 	}

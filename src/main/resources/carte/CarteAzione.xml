@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ROOT SYSTEM "file:///C:\Users\Francesco\workspace\horseFever_jacopo.iamele-francesco.nero\src\main\resources\carte\CartaAzione.dtd">
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ROOT SYSTEM "CartaAzione.dtd">
 <ROOT>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-0.jpg"

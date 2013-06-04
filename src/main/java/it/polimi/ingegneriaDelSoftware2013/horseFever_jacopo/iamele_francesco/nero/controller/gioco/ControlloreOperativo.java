@@ -33,6 +33,7 @@ public class ControlloreOperativo {
 		return posizioneMassima;
 	}
 	
+	
 	private static int posizioneMinima(List<Scuderia> scuderie){
 		int posizioneMinima=posizioneDelTraguardo;
 		for(int i=0;i<scuderie.size();i++){
@@ -44,8 +45,25 @@ public class ControlloreOperativo {
 		return posizioneMinima;
 	}
 	
+	private static Scuderia ScuderiaConCartaphotoFinishPositiva(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
+		
+		for (int i=0;i<scuderie.size();i++){
+			for (int j=0;j<scuderie.get(i).getCarteAzione().size();j++){
+				for (int k=0;k<scuderie.get(i).getCarteAzione().get(j).getEffetti().size();k++){
+					if(scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getTipo()==TipoAzione.PHOTOFINISH){
+						if (scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getValori().get(0)>0){
+							return scuderie.get(i);
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
 	private static void controllaArrivo(StatoDelGioco statoDelGioco){
-		ArrayList<Scuderia> scuderieArrivate=new ArrayList<Scuderia>();
+		List<Scuderia> scuderieArrivate=new ArrayList<Scuderia>();
 		for (int i=0; i<statoDelGioco.getCorsie().size(); i++){
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
@@ -60,7 +78,7 @@ public class ControlloreOperativo {
 		}
 		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate);
 		else statoDelGioco.addClassifica(scuderieArrivate.get(0));
-		}
+	}
 	
 	private static int applicaEffettiTRAGUARDO(Scuderia scuderia, int posizioneEccessoTraguardo){
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
@@ -84,13 +102,19 @@ public class ControlloreOperativo {
 	
 	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate){
 		int posizioneMassima=posizioneMassima(scuderieArrivate);
-		List<Scuderia> scuderieStessaPosizione=null;
+		List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
 		for(int i=0; i<scuderieArrivate.size();i++){
 			if (scuderieArrivate.get(i).getPosizione()==posizioneMassima){
 				scuderieStessaPosizione.add(scuderieArrivate.get(i));
 			}
 		}
-		if(scuderieStessaPosizione==null)return statoDelGioco;
+		if(scuderieStessaPosizione.size()==1) statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
+		else{
+			Scuderia scuderia=ScuderiaConCartaphotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);
+			if(scuderia!=null) statoDelGioco.addClassifica(scuderia);
+			
+		}
+		
 		
 		
 		
