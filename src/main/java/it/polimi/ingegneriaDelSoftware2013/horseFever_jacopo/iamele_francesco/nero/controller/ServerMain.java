@@ -4,8 +4,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.UnGiocatoreRimastoException;
-
 import java.io.IOException;
 
 /**
@@ -41,10 +39,6 @@ public class ServerMain
 			e.printStackTrace();
 			System.err.println("attesa client fallita");
 		}
-    	catch (UnGiocatoreRimastoException e){
-    		System.out.println("Partita Finita");
-    		System.exit(0);
-    	}
     	catch (IOException e){
     		e.printStackTrace();
     		System.exit(-1);

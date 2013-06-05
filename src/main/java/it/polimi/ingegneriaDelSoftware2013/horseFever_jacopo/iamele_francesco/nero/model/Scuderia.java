@@ -63,6 +63,9 @@ public class Scuderia implements Serializable{
 	public int getScommesseTotaliDisponibili(){
 		return scommesseTotaliDisponibili;
 	}
+	public void resetScommesseDisponibili(){
+		this.scommesseDisponibili=scommesseTotaliDisponibili;
+	}
 	
 	
 	public boolean isArrivato() {
