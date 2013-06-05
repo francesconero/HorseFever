@@ -17,6 +17,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 /**
@@ -136,8 +137,9 @@ public class ControlloreFasiGioco {
 		aggiornaTuttiIClient();
 	}
 	
-	private void primaFaseScommesse() throws UnGiocatoreRimastoException {  //I GIOCATORI POSSONO PERDERE DURANTE QUESTA FASE
-			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ORARIA);			
+	private void primaFaseScommesse() throws UnGiocatoreRimastoException { 
+			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ORARIA);
+			
 		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			Scommessa scommessa;
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
@@ -145,13 +147,21 @@ public class ControlloreFasiGioco {
 			scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 			int count=0;
 			boolean segnaliniScommessaFiniti=false;
-			while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-			if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0)
+			while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore()){
+				System.out.println("cerco scuderia"+count);count++;
+			}
+			if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0){
+				System.out.println("nell' if");
 				segnaliniScommessaFiniti=true;
-			else 
+				}
+			else{
+				System.out.println("nell else");
 				statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
-			while ((scommessa.getDanariScommessi()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)||(segnaliniScommessaFiniti));{
+			}
+			while ((scommessa.getDanariScommessi()>(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100))||(segnaliniScommessaFiniti));{
+				System.out.println("nel while scommessa rifiutata"+segnaliniScommessaFiniti+" "+scommessa.getDanariScommessi()+" "+statoDelGioco.getGiocatori().get(i).getPuntiVittoria());
 				controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
+				System.out.println("ho negato la scommessa");
 				scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 				count=0;
 				segnaliniScommessaFiniti=false;
@@ -200,9 +210,16 @@ public class ControlloreFasiGioco {
 				while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore())count++;
 				if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0)
 					segnaliniScommessaFiniti=true;
+				else if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(0).getScuderia()==scommessa.getScuderia()){
+					if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(0).getTipoScommessa()==scommessa.getTipoScommessa()){
+						PiazzatoEVincente=true;
+					}
+					else 
+						statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
+				}
 				else 
 					statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
-				while ((scommessa.getDanariScommessi()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)||(segnaliniScommessaFiniti)||(PiazzatoEVincente));{
+				while ((scommessa.getDanariScommessi()>statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)||(segnaliniScommessaFiniti)||(PiazzatoEVincente));{
 					controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
 					scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 					count=0;
@@ -229,7 +246,7 @@ public class ControlloreFasiGioco {
 		
 	}
 	
-	public void faseCorsa() throws CarteFiniteException{
+	private void faseCorsa() throws CarteFiniteException{
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE);
 		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
 		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
@@ -249,20 +266,68 @@ public class ControlloreFasiGioco {
 			aggiornaTuttiIClient();
 		}
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_PAGAMENTI_NUOVE_QUOTAZIONI);
-		
+		aggiornaTuttiIClient();
+		statoDelGioco=ControlloreOperativo.pagamenti(statoDelGioco);
+		aggiornaTuttiIClient();
+		statoDelGioco=ControlloreOperativo.nuoveQuotazioni(statoDelGioco);
+		aggiornaTuttiIClient();
 		
 		
 	}
 	
+	private void faseFineTurno() throws IOException {
+		mazziere.resetCarteAzione();
+		mazziere.resetCarteMovimento();
+		mazziere.mischiaCarteAzione();
+		mazziere.mischiaCarteMovimento();
+		statoDelGioco.aggiornaPrimoGiocatore();
+	}
+	
+	private void faseFineDelGioco() {
+		int danariMassimi=ControlloreOperativo.danariMassimi(statoDelGioco);
+		int puntiVittoriaMassimi=ControlloreOperativo.puntiVittoriaMassimi(statoDelGioco);
+		int count=0;
+		List<Giocatore> giocatoriCandidati =new ArrayList<Giocatore>();
+		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
+			if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()==puntiVittoriaMassimi){
+				giocatoriCandidati.add(statoDelGioco.getGiocatori().get(i));
+			}
+		}
+		if(giocatoriCandidati.size()==1){
+			vittoria(giocatoriCandidati);
+		}else{
+			giocatoriCandidati=new ArrayList<Giocatore>();
+			
+			for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
+				if(statoDelGioco.getGiocatori().get(i).getDanari()==danariMassimi){
+					giocatoriCandidati.add(statoDelGioco.getGiocatori().get(i));
+				}
+			}
+			if(giocatoriCandidati.size()==1){
+				vittoria(giocatoriCandidati);
+			}
+			else{
+				Collections.shuffle(giocatoriCandidati);
+				vittoria(giocatoriCandidati);
+			}
+		}
+		
+	}
 	
 		
 	
 	
-	public void inizia() throws CarteFiniteException, AttesaUtentiFallitaException, UnGiocatoreRimastoException {
+	private void vittoria(List<Giocatore> giocatoriCandidati){
+		statoDelGioco.setInizio(false);
+		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0));
+		
+		
+	}
+
+	public void inizia() throws CarteFiniteException, AttesaUtentiFallitaException, UnGiocatoreRimastoException, IOException {
 		controlloreRete.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
 		statoDelGioco.addNumTurno();
-		
 		while(statoDelGioco.getNumTurno()!=statoDelGioco.getNumTurniTotali()){
 			faseDistribuzioneCarte();
 			faseEliminazioneGiocatore();
@@ -270,14 +335,15 @@ public class ControlloreFasiGioco {
 			truccaCorsa();
 			secondaFaseScommesse();
 			faseCorsa();
-		
-		
-		statoDelGioco.addNumTurno();
-		aggiornaTuttiIClient();
+			faseFineTurno();
+			statoDelGioco.addNumTurno();
+			aggiornaTuttiIClient();
 		}
-		
+		faseFineDelGioco();
 	}
 	
+
+
 	public int getTurniTotali(){
 		return numTurniTotali;
 	}

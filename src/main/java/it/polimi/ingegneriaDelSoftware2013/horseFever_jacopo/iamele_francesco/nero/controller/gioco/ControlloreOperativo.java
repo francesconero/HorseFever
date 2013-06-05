@@ -5,6 +5,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoScommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
@@ -28,7 +29,9 @@ public class ControlloreOperativo {
 		for(int i=0;i<scuderie.size();i++){
 			if(scuderie.get(i).isArrivato());
 			else{
-				if(posizioneMassima<scuderie.get(i).getPosizione())posizioneMassima=scuderie.get(i).getPosizione();
+				if(posizioneMassima<scuderie.get(i).getPosizione()){
+					posizioneMassima=scuderie.get(i).getPosizione();
+				}
 			}
 		}
 		
@@ -41,7 +44,9 @@ public class ControlloreOperativo {
 		for(int i=0;i<scuderie.size();i++){
 			if(scuderie.get(i).isArrivato());
 			else{
-				if(posizioneMinima>scuderie.get(i).getPosizione())posizioneMinima=scuderie.get(i).getPosizione();
+				if(posizioneMinima>scuderie.get(i).getPosizione()){
+					posizioneMinima=scuderie.get(i).getPosizione();
+				}
 			}
 		}
 		return posizioneMinima;
@@ -365,7 +370,41 @@ public class ControlloreOperativo {
 	}
 	
 	public static StatoDelGioco pagamenti(StatoDelGioco statoDelGioco){
-		
+		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
+			for(int j=0; j<statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().size();j++){
+				if (statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getScuderia()==statoDelGioco.getClassifica().get(0).getColore()){//se primo posto
+					if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getTipoScommessa()==TipoScommessa.VINCENTE){
+						statoDelGioco.getGiocatori().get(i).addPuntiVittoria(3);
+						statoDelGioco.getGiocatori().get(i).addDanari(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getDanariScommessi()*statoDelGioco.getClassifica().get(0).getQuotazione());
+					}else{
+						statoDelGioco.getGiocatori().get(i).addPuntiVittoria(1);
+						statoDelGioco.getGiocatori().get(i).addDanari(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getDanariScommessi()*2);
+					}
+				}else if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getScuderia()==statoDelGioco.getClassifica().get(1).getColore()){//se secondo posto
+					if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getTipoScommessa()==TipoScommessa.PIAZZATO){
+						statoDelGioco.getGiocatori().get(i).addPuntiVittoria(1);
+						statoDelGioco.getGiocatori().get(i).addDanari(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getDanariScommessi()*2);
+					}
+				}else if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getScuderia()==statoDelGioco.getClassifica().get(2).getColore()){//se terzo posto
+					if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getTipoScommessa()==TipoScommessa.PIAZZATO){
+						statoDelGioco.getGiocatori().get(i).addPuntiVittoria(1);
+						statoDelGioco.getGiocatori().get(i).addDanari(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(j).getDanariScommessi()*2);
+					}
+				}
+			}
+			for(int j=0;j<statoDelGioco.getGiocatori().get(i).getScuderie().size();j++){
+				if(statoDelGioco.getGiocatori().get(i).getScuderie().get(j).getColore()==statoDelGioco.getClassifica().get(0).getColore()){
+					statoDelGioco.getGiocatori().get(i).addPuntiVittoria(1);
+					statoDelGioco.getGiocatori().get(i).addDanari(600);
+				}else if(statoDelGioco.getGiocatori().get(i).getScuderie().get(j).getColore()==statoDelGioco.getClassifica().get(1).getColore()){
+					statoDelGioco.getGiocatori().get(i).addPuntiVittoria(1);
+					statoDelGioco.getGiocatori().get(i).addDanari(400);
+				}else if(statoDelGioco.getGiocatori().get(i).getScuderie().get(j).getColore()==statoDelGioco.getClassifica().get(2).getColore()){
+					statoDelGioco.getGiocatori().get(i).addPuntiVittoria(1);
+					statoDelGioco.getGiocatori().get(i).addDanari(200);
+				}
+			}
+		}
 		return statoDelGioco;
 	}
 	
@@ -379,9 +418,25 @@ public class ControlloreOperativo {
 		return statoDelGioco;
 	}
 	
+	public static int puntiVittoriaMassimi(StatoDelGioco statoDelGioco){
+		int puntiVittoriaMassimi=0;
+		for(int i=0; i<statoDelGioco.getGiocatori().size();i++){
+			if (puntiVittoriaMassimi<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()){
+				puntiVittoriaMassimi=statoDelGioco.getGiocatori().get(i).getPuntiVittoria();
+			}
+		}
+		return puntiVittoriaMassimi;
+	}
+	
+	public static int danariMassimi(StatoDelGioco statoDelGioco){
+		int danariMassimi=0;
+		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
+			if(danariMassimi<statoDelGioco.getGiocatori().get(i).getDanari()){
+				danariMassimi=statoDelGioco.getGiocatori().get(i).getDanari();
+			}
+		}
+		return (danariMassimi);
+	}
 	
 
-
-	
-	
 }
