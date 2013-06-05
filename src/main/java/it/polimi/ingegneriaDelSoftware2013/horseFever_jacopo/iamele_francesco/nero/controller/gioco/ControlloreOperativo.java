@@ -22,8 +22,12 @@ public class ControlloreOperativo {
 	private final static int posizioneDelTraguardo=12;
 	
 	
-	
-	
+	/**
+	 * Questo metodo restituisce la posizioneMassima
+	 * che rappresenta la/le scuderia/e "arrivata/e prima" delle altre  
+	 * @param scuderie
+	 * @return La posizione massima
+	 */
 	private static int posizioneMassima(List<Scuderia> scuderie){
 		int posizioneMassima=0;
 		for(int i=0;i<scuderie.size();i++){
@@ -38,7 +42,12 @@ public class ControlloreOperativo {
 		return posizioneMassima;
 	}
 	
-	
+	/**
+	 * Questo metodo restituisce la posizioneMinima
+	 * che rappresenta la/le scuderia/e "arrivata/e dopo" le altre
+	 * @param scuderie
+	 * @return la posizione minima
+	 */
 	private static int posizioneMinima(List<Scuderia> scuderie){
 		int posizioneMinima=posizioneDelTraguardo;
 		for(int i=0;i<scuderie.size();i++){
@@ -51,7 +60,12 @@ public class ControlloreOperativo {
 		}
 		return posizioneMinima;
 	}
-	
+	/**
+	 * controlla L'eventuale presenza della carta azione PhotoFinish positiva
+	 * @param statoDelGioco
+	 * @param scuderie
+	 * @return la scuderia con la carta azione positiva oppure null
+	 */
 	private static Scuderia scuderiaConCartaPhotoFinishPositiva(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
 		
 		for (int i=0;i<scuderie.size();i++){
@@ -68,7 +82,10 @@ public class ControlloreOperativo {
 		return null;
 	}
 	
-	
+	/**
+	 * Controlla l'eventuale presenza di scuderie arrivate
+	 * @param statoDelGioco
+	 */
 	private static void controllaArrivo(StatoDelGioco statoDelGioco){
 		List<Scuderia> scuderieArrivate=new ArrayList<Scuderia>();
 		for (int i=0; i<statoDelGioco.getCorsie().size(); i++){
@@ -86,7 +103,13 @@ public class ControlloreOperativo {
 		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate);
 		else statoDelGioco.addClassifica(scuderieArrivate.get(0));
 	}
-	
+	/**
+	 * Applica gli effetti delle carte azione TRAGUARDO
+	 * @param scuderia
+	 * @param posizioneEccessoTraguardo
+	 * @return il valore modificato dalla carta azione oppure
+	 * il valore passato come parametro (nel caso non vi siano carte)
+	 */
 	private static int applicaEffettiTRAGUARDO(Scuderia scuderia, int posizioneEccessoTraguardo){
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 		int posizioneImposta=posizioneEccessoTraguardo;
@@ -106,7 +129,12 @@ public class ControlloreOperativo {
 		}
 		return posizioneImposta;
 	}
-	
+	/**
+	 * DA IMPLEMENTARE
+	 * @param statoDelGioco
+	 * @param scuderieArrivate
+	 * @return Lo stato del gioco modificato
+	 */
 	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate){
 		int posizioneMassima=posizioneMassima(scuderieArrivate);
 		List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
@@ -134,7 +162,11 @@ public class ControlloreOperativo {
 		
 		return statoDelGioco;
 	}
-	
+	/**Questo metodo controlla la presenza di carte azioni negative
+	 * 
+	 * @param carteDaControllare
+	 * @return le carte azioni negative o una lista vuota
+	 */
 	private static List<CartaAzione> carteNegative(List<CartaAzione> carteDaControllare) {
 		List<CartaAzione> carteNegative= new ArrayList<CartaAzione>();
 		for(int i=0;i<carteDaControllare.size();i++){
@@ -142,7 +174,11 @@ public class ControlloreOperativo {
 		}
 		return carteNegative;
 	}
-	
+	/**
+	 * Questo metodo controlla la presenza di carte azioni positive
+	 * @param carteDaControllare
+	 * @return le carte azioni positive o una lista vuota
+	 */
 	private static List<CartaAzione> cartePositive(List<CartaAzione> carteDaControllare) {
 		List<CartaAzione> cartePositive=new ArrayList<CartaAzione>();
 		for(int i=0;i<carteDaControllare.size();i++){
@@ -150,7 +186,14 @@ public class ControlloreOperativo {
 		}
 		return cartePositive;	
 	}
-	
+	/**
+	 * Controlla la presenza di carte azioni EffettiPARTENZA 
+	 * e ne applica gli effetti
+	 * @param scuderia
+	 * @param movimento
+	 * @return La scuderia su cui si e' chiesto il controllo
+	 * con l'attributo posizione modificato dalla carta o dal movimento
+	 */
 	private static Scuderia applicaEffettiPARTENZA(Scuderia scuderia, int movimento) { //FATTO
 		
 			List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
@@ -168,8 +211,14 @@ public class ControlloreOperativo {
 		
 		return scuderia;
 	}
-	
-	private static int applicaEffettiMODIFICATORE_PARTENZA(Scuderia scuderia, int movimento){//FATTO
+	/**
+	 * Questo metodo applica eventuali effettiMODIFICATORE_PARTENZA
+	 * @param scuderia
+	 * @param movimento
+	 * @return il movimento modificato (oppure no) 
+	 * che deve essere aggiunto alla scuderia passata come parametro
+	 */
+	private static int applicaEffettiMODIFICATORE_PARTENZA(Scuderia scuderia, int movimento){
 		int movimentoTemp=movimento;
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 		for (int i=0; i<carteDaControllare.size();i++){
@@ -177,15 +226,22 @@ public class ControlloreOperativo {
 			for (int j=0;j<cartaTemp.getEffetti().size();j++){
 				if((cartaTemp.getEffetti().get(j).getTipo()==TipoAzione.MODIFICATORE_PARTENZA)){
 					movimentoTemp=movimentoTemp+cartaTemp.getEffetti().get(j).getValori().get(0);
-					if(movimentoTemp<0)movimentoTemp=0;//un cavallo non puï¿½ mai retrocedere
+					if(movimentoTemp<0)movimentoTemp=0;//un cavallo non puo' mai retrocedere
 				}
 				
 			}
 		}
 		return movimentoTemp;
 	}
-	
-	private static Scuderia applicaEffettiSPRINT(Scuderia scuderia, int sprint) { //FATTO
+	/**
+	 * Controlla la presenza di carte azioni EffettiSPRINT 
+	 * e ne applica gli effetti
+	 * @param scuderia
+	 * @param sprint
+	 * @return La scuderia su cui si è chiesto il controllo
+	 * con l'attributo posizione modificato dalla carta o dal normale sprint
+	 */
+	private static Scuderia applicaEffettiSPRINT(Scuderia scuderia, int sprint) { 
 		
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 
@@ -203,8 +259,14 @@ public class ControlloreOperativo {
 	
 	return scuderia;
 }
-	
-	private static int applicaEffettiMODIFICATORE_SPRINT(Scuderia scuderia, int sprint){ //FATTO
+	/**
+	 * Questo metodo applica eventuali effettiMODIFICATORE_SPRINT
+	 * @param scuderia
+	 * @param sprint
+	 * @return il movimento modificato (oppure no) 
+	 * che deve essere aggiunto alla scuderia passata come parametro
+	 */
+	private static int applicaEffettiMODIFICATORE_SPRINT(Scuderia scuderia, int sprint){ 
 		int sprintTemp=sprint;
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 		for (int i=0; i<carteDaControllare.size();i++){
@@ -219,7 +281,14 @@ public class ControlloreOperativo {
 		}
 		return sprintTemp;
 	}
-	
+	/**
+	 * Questo metodo applica eventuali effettiPRIMO_ULTIMO
+	 * @param statoDelGioco
+	 * @param scuderia
+	 * @param movimento
+	 * @return il movimento modificato(oppure no) dalla carta PRIMO_ULTIMO
+	 * da aggiungere alla scuderiaAssociate
+	 */
 	private static int applicaEffettiPRIMO_ULTIMO(StatoDelGioco statoDelGioco,Scuderia scuderia, int movimento){
 		int movimentoTemp=movimento;
 		int posizioneMassima=posizioneMassima(statoDelGioco.getCorsie());
@@ -247,7 +316,13 @@ public class ControlloreOperativo {
 		return movimentoTemp;
 	}
 	
-	
+	/**
+	 * questo metodo applica la mossa di posizionamento di un giocatore
+	 * @param statoDelGioco
+	 * @param posizionaCarta
+	 * @return lo stato del gioco modificato
+	 * @throws IllegalArgumentException
+	 */
 	public static StatoDelGioco posizionaCartaAzione(StatoDelGioco statoDelGioco, PosizionaCarta posizionaCarta)throws IllegalArgumentException{//FATTO
 		int count=0;
 		if(!(posizionaCarta.getCartaDaPosizionare() instanceof CartaAzione))throw new IllegalArgumentException("non ï¿½ una carta azione"); 
@@ -255,7 +330,14 @@ public class ControlloreOperativo {
 		statoDelGioco.getCorsie().get(count).addCartaAzione((CartaAzione)posizionaCarta.getCartaDaPosizionare());
 		return statoDelGioco;
 	}
-
+    /**
+     * Questo metodo rappresenta la partenza
+     * chiede una carta movimento al mazziere e applica il movimento ad ogni scuderia
+     * @param statoDelGioco
+     * @param mazziere
+     * @return lo stato del gioco modificato
+     * @throws CarteFiniteException
+     */
 	public static StatoDelGioco partenza(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{//FATTO
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
@@ -267,11 +349,17 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-	
+	/**
+	 * Questo metodo rappresenta lo sprint
+	 * normalmente lo sprint vale 1 ma potrebbe venir modificato da carte azioni SPRINT
+	 * @param statoDelGioco
+	 * @param mazziere
+	 * @return lo stato del gioco modificato
+	 */
 	public static StatoDelGioco sprint(StatoDelGioco statoDelGioco,Mazziere mazziere){
 		mazziere.getDadoSprint1().lanciaDado();
 		int count=0;
-		final int sprintTemp=1;// in condizioni normali il cavallo sprinta di 1
+		final int sprintTemp=1;
 		while (mazziere.getDadoSprint1().getColore()!=statoDelGioco.getCorsie().get(count).getColore()){
 			count++;
 		}
@@ -294,7 +382,14 @@ public class ControlloreOperativo {
 		controllaArrivo(statoDelGioco);
 		return statoDelGioco;
 	}
-	
+	/**
+	 * Questo metodo rappresenta il movimento;
+	 * chiede una carta movimento al mazziere e ne applica gli effetti
+	 * @param statoDelGioco
+	 * @param mazziere
+	 * @return lo stato del gioco modificato
+	 * @throws CarteFiniteException
+	 */
 	public static StatoDelGioco movimento(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
@@ -311,8 +406,12 @@ public class ControlloreOperativo {
 		controllaArrivo(statoDelGioco);
 		return statoDelGioco;
 	}
-
-	public static StatoDelGioco eliminaCarte(StatoDelGioco statoDelGioco) {  //FATTO
+	/**
+	 * Questo metodo elimina eventuali carte con egual lettera
+	 * @param statoDelGioco
+	 * @return lo stato del gioco modificato
+	 */
+	public static StatoDelGioco eliminaCarte(StatoDelGioco statoDelGioco) {  
 		for (int i=0;i<statoDelGioco.getCorsie().size();i++){
 			List<CartaAzione> carteDaControllare = statoDelGioco.getCorsie().get(i).getCarteAzione();
 			List<CartaAzione> carteDaEliminare = new ArrayList<CartaAzione>(); 
@@ -330,7 +429,12 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-
+ /**
+  * questo metodo controlla l'eventuale presenza di carte azioni che rimuovono tutte le carte
+  * azioni positive o negative e ne applica gli effetti
+  * @param statoDelGioco
+  * @return lo stato del gioco modificato
+  */
 	public static StatoDelGioco applicaEffettiCARTE_AZIONEPreCorsa(StatoDelGioco statoDelGioco) { //FATTO
 		for (int i=0;i<statoDelGioco.getCorsie().size();i++){
 			List<CartaAzione> carteDaControllare = statoDelGioco.getCorsie().get(i).getCarteAzione();
@@ -353,7 +457,11 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-	
+	/**
+	 * Cerca eventuali carte azioni che modificano la quotazione delle scuderie
+	 * @param statoDelGioco
+	 * @return lo stato del gioco modificato
+	 */
 	public static StatoDelGioco applicaEffettiQUOTAZIONEPreCorsa(StatoDelGioco statoDelGioco) { 
 		for (int i=0;i<statoDelGioco.getCorsie().size();i++){
 			List<CartaAzione> carteDaControllare = statoDelGioco.getCorsie().get(i).getCarteAzione();
@@ -368,7 +476,12 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-	
+	/**
+	 * Questo metodo paga i giocatori che hanno azzeccato la/e scommessa/e
+	 * e i proprietari delle scuderie sul podio
+	 * @param statoDelGioco
+	 * @return lo stato del gioco modificato
+	 */
 	public static StatoDelGioco pagamenti(StatoDelGioco statoDelGioco){
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			for(int j=0; j<statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().size();j++){
@@ -407,7 +520,11 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-	
+	/**
+	 * Questo metodo aggiorna le quotazioni delle scuderie
+	 * @param statoDelGioco
+	 * @return lo stato del gioco modificato
+	 */
 	public static StatoDelGioco nuoveQuotazioni(StatoDelGioco statoDelGioco){
 		int j=2;
 		for(int i=0;i<statoDelGioco.getClassifica().size();i++){
@@ -417,7 +534,12 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-	
+	/**
+	 * questo metodo controlla il valore dei punti vittoria del/dei giocatore/i 
+	 * con piu' punti vittoria
+	 * @param statoDelGioco
+	 * @return i punti vittoria massimi
+	 */
 	public static int puntiVittoriaMassimi(StatoDelGioco statoDelGioco){
 		int puntiVittoriaMassimi=0;
 		for(int i=0; i<statoDelGioco.getGiocatori().size();i++){
@@ -427,7 +549,12 @@ public class ControlloreOperativo {
 		}
 		return puntiVittoriaMassimi;
 	}
-	
+	/**
+	 * questo metodo controlla il valore dei danari del/dei giocatore/i 
+	 * con piu' danari
+	 * @param statoDelGioco
+	 * @return i danari massimi
+	 */
 	public static int danariMassimi(StatoDelGioco statoDelGioco){
 		int danariMassimi=0;
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
