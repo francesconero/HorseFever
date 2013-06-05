@@ -32,9 +32,13 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 	private final int tentativiConnessioneMax;
 	private final int timeoutSocket;
 	private final String proprioNome;
+	public String getProprioNome() {
+		return proprioNome;
+	}
+
 	private Long ID;
 	private boolean IDSet = false;
-	
+
 	private Socket serverSocket;	
 	private Socket heartbeatSocket;
 	private InetAddress indirizzoServer;
@@ -64,6 +68,8 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 		if(!ControlloreRete.inviaOggettoConRisposta(proprioNome, serverSocket)){
 			System.out.println("Connessione fallita!");
 			throw new ConnessioneServerFallitaException("Fallito invio nome");
+		} else {
+			riceviID();
 		}
 		System.out.println("Connesso!");
 	}
@@ -82,12 +88,12 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 			possibileStatoDelGioco = ControlloreRete.riceviOggetto(serverSocket);
 		} catch (RicezioneFallitaException e){
 			if(isServerUp()){
-			riceviStatoDelGioco();
+				riceviStatoDelGioco();
 			} else {
 				throw new DisconnessioneAnomalaException(serverSocket);
 			}
 		}
-		
+
 		if(possibileStatoDelGioco != null){
 			if(possibileStatoDelGioco instanceof StatoDelGiocoView){
 				ControlloreRete.rispondiPositivamente(serverSocket);
@@ -100,7 +106,17 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 			ControlloreRete.rispondiNegativamente(serverSocket);
 			throw new RicezioneFallitaException("Fallita ricezione del nuovo stato del gioco");
 		}
-		
+
+	}
+
+	public void riceviID(){
+		Long ID = (Long) ControlloreRete.riceviOggetto(serverSocket);
+		if(ID==null){
+			ControlloreRete.rispondiNegativamente(serverSocket);
+		}else{
+			setID(ID);
+			ControlloreRete.rispondiPositivamente(serverSocket);
+		}
 	}
 
 	public Long getID() {
@@ -116,9 +132,14 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 		}
 	}
 
+	@Override
+	public String toString() {
+		return proprioNome;
+	}
+
 	private void stabilisciConnessione() throws ConnessioneServerFallitaException {
 		int tentativi = 0;
-	
+
 		do{
 			tentativi++;
 			System.out.println(proprioNome+": tentativo connessione "+tentativi);
@@ -129,7 +150,7 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 				e.printStackTrace();
 			}			
 		} while(tentativi<tentativiConnessioneMax && serverSocket == null);
-	
+
 		if(serverSocket==null){
 			throw new ConnessioneServerFallitaException("Fallita la connessione al server");
 		}else{

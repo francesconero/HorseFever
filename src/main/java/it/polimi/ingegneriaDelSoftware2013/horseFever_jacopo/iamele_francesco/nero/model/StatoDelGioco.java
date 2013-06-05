@@ -125,16 +125,16 @@ public class StatoDelGioco  {
 	}
 	public void rimuoviScommesseFatteSecondaFase(int indirizzo){
 		scommesseFatteSecondaFase.remove(indirizzo);
-	}
-	
+	}	
 	
 	public void assegnaCasualmentePrimoGiocatore(){
 		Random r= new Random();
 		int s=r.nextInt(giocatori.size());
 		giocatori.get(s).setPrimoGiocatore(true);
 		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(s));
-		
+		giocatoreDiTurno = giocatori.get(s);
 	}
+	
 	public void aggiornaPrimoGiocatore(){
 		giocatori.get(0).setPrimoGiocatore(false);
 		giocatori.get(1).setPrimoGiocatore(true);

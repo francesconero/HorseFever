@@ -2,9 +2,11 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ServerMain;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -16,7 +18,7 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		 executor = Executors.newFixedThreadPool(numeroGiocatori);
+		 executor = Executors.newCachedThreadPool();
 	}	
 	
 	public void controlla(){
@@ -30,6 +32,13 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 		new Thread("Server"){
 			public void run() {
 				ServerMain.main(new String[]{Integer.toString(numeroGiocatori)});
+//				try {
+//					JavaProcess.exec(ServerMain.class, new String[]{Integer.toString(numeroGiocatori)});
+//				} catch (IOException e) {
+//					throw new RuntimeException(e);
+//				} catch (InterruptedException e) {
+//					throw new RuntimeException(e);
+//				}
 			};
 		}.start();
 		
@@ -47,9 +56,42 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 		
 		aggiornaViste();
 		
+		aspetta(2);
+		
+		aggiornaViste();
+		
+		controllaEliminati();
+		
+		aspetta(2);
+		
+		aggiornaViste();
+		
 		ControlloreConsole next = new ControlloreConsoleScommessa(this);
 		next.controlla();
 		
+	}
+	
+	private void controllaEliminati() {
+		List<GiocatoreView> daControllare = getViewGenerica().getGiocatori();
+		List<ControlloreReteClient> daEliminare = new LinkedList<ControlloreReteClient>();
+		
+		for(ControlloreReteClient client : utenti){
+			boolean presente = false;
+			for(GiocatoreView g : daControllare){
+				if(client.getID()==g.getID()){
+					presente = true;
+				}
+			}
+			if(!presente){
+				System.out.println("Attenzione bisogna eliminare: "+client);
+				daEliminare.add(client);
+				view.eliminaGiocatore(client.getProprioNome(), client.getID());
+			}
+		}
+		
+		for(ControlloreReteClient client : daEliminare){
+			utenti.remove(client);
+		}
 	}
 
 	private List<String> chiediNomi() throws IOException {
@@ -63,7 +105,7 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 	public static void main(String[] args){
 		
 		try {
-			ControlloreConsoleIniziale cc;
+			ControlloreConsole cc;
 			cc = new ControlloreConsoleIniziale();
 			cc.controlla();
 		} catch (Exception e) {

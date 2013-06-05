@@ -1,7 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenti;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ServerConsole;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AggiornamentoUtentiFallitoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.DisconnessioneAnomalaException;
@@ -13,6 +12,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -79,7 +79,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	 *            vuole associare un utente network
 	 */
 	public void accettaUtenti(List<Giocatore> giocatori) {
-		ServerConsole.getInstance().write("Attendo " + giocatori.size() + " giocatori...");
+		System.out.println("Attendo " + giocatori.size() + " giocatori...");
 		for (Giocatore g : giocatori) {
 			SocketHolder sockets = apriSocket();
 			assegnaGiocatore(sockets, g);
@@ -87,9 +87,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		
 		heartbeatThread.start();
 
-		ServerConsole.getInstance().write("Si sono collegati i seguenti giocatori: ");
+		System.out.println("Si sono collegati i seguenti giocatori: ");
 		for (String nome : nomiClients.values()) {
-			ServerConsole.getInstance().write(nome);
+			System.out.println(nome);
 		}
 	}
 
@@ -100,11 +100,12 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		String nome = ricavaNome(s);
 		long ID = getNewID();
 		
-		ServerConsole.getInstance().write("Aggiungo giocatore " + nome);
+		System.out.println("Aggiungo giocatore " + nome);
 		clients.put(g, s);
 		clientsHeartbeat.put(g, heartbeatSocket);
 		nomiClients.put(g, nome);
 		IDClients.put(g, ID);
+		ControlloreRete.inviaOggettoConRisposta(ID, s); //assegna ID al client
 	}
 
 	private SocketHolder apriSocket() {
@@ -184,7 +185,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ServerConsole.getInstance().write("Server closed");
+		System.out.println("Server closed");
 	}
 
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco) {
@@ -286,7 +287,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 					try {
 						temp = ControlloreRete.riceviOggetto(heartbeatSocket);
 					} catch (RicezioneFallitaException e) {
-						if (e.getCause() instanceof IOException) {
+						if (e.getCause() instanceof EOFException) {
 							eccezione = new DisconnessioneAnomalaException(
 									"Possibile disconnessione del client ", e,
 									heartbeatSocket);

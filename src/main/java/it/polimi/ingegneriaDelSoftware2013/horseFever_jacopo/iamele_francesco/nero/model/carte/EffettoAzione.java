@@ -1,6 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte;
 
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author Francesco
  *
  */
-public class EffettoAzione {
+public class EffettoAzione implements Serializable {
 
 	private final TipoAzione tipo;
 	private final List<Integer> valori;

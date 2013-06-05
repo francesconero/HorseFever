@@ -137,11 +137,11 @@ public class ControlloreFasiGioco {
 	}
 	
 	private void primaFaseScommesse() throws UnGiocatoreRimastoException {  //I GIOCATORI POSSONO PERDERE DURANTE QUESTA FASE
-			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ORARIA);
-			aggiornaTuttiIClient();
+			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ORARIA);			
 		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			Scommessa scommessa;
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
+			aggiornaTuttiIClient();
 			scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 			int count=0;
 			boolean segnaliniScommessaFiniti=false;

@@ -1,10 +1,15 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.console;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
+
+import java.io.IOException;
+
 
 public class ControlloreConsoleScommessa extends ControlloreConsole {
 
 	public ControlloreConsoleScommessa(
-			ControlloreConsoleIniziale controlloreConsoleIniziale) {
+			ControlloreConsole controlloreConsoleIniziale) {
 		super(controlloreConsoleIniziale);
 	}
 
@@ -14,7 +19,14 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 	}
 
 	private void chiediScommesse() {
-		
+		ControlloreReteClient clientDiTurno = getClientDiTurno();
+		Scommessa daFare;
+		try {
+			daFare = view.chiediScommessa(clientDiTurno.getProprioNome());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		clientDiTurno.scommetti(daFare);
 	}
 
 }

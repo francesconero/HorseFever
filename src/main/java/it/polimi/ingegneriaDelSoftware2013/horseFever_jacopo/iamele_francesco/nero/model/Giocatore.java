@@ -2,9 +2,11 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Giocatore {
+public class Giocatore implements Serializable {
 	private int danari;
 	private int puntiVittoria;
 	private List<Scuderia> scuderie=new ArrayList<Scuderia>();

@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GiocatoreView implements Serializable{
-	
+public class GiocatoreView implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -20,22 +20,24 @@ public class GiocatoreView implements Serializable{
 	private final List<CartaAzione> carteAzioniCoperte;
 	private final String nomeUtente;
 	private final long ID;
-	
-	public GiocatoreView(Giocatore giocatoreDaOscurare, String nomeUtente, long ID){
-		this.danari=giocatoreDaOscurare.getDanari();
-		this.puntiVittoria=giocatoreDaOscurare.getPuntiVittoria();
-		this.personaggio=giocatoreDaOscurare.getPersonaggio();
-		this.primoGiocatore=giocatoreDaOscurare.isPrimoGiocatore();
-		this.scuderie=giocatoreDaOscurare.getScuderie();
-		carteAzioniCoperte= new ArrayList<CartaAzione>();
-		for (int i=0; i<giocatoreDaOscurare.getCarteAzione().size();i++){
-			CartaAzione cartaDaAggiungere=new CartaAzione();
-			carteAzioniCoperte.add(cartaDaAggiungere);//CartaAzione coperta la prendiamo da file	
+
+	public GiocatoreView(Giocatore giocatoreDaOscurare, String nomeUtente,
+			long ID) {
+		this.danari = giocatoreDaOscurare.getDanari();
+		this.puntiVittoria = giocatoreDaOscurare.getPuntiVittoria();
+		this.personaggio = giocatoreDaOscurare.getPersonaggio();
+		this.primoGiocatore = giocatoreDaOscurare.isPrimoGiocatore();
+		this.scuderie = giocatoreDaOscurare.getScuderie();
+		carteAzioniCoperte = new ArrayList<CartaAzione>();
+		for (int i = 0; i < giocatoreDaOscurare.getCarteAzione().size(); i++) {
+			CartaAzione cartaDaAggiungere = new CartaAzione();
+			carteAzioniCoperte.add(cartaDaAggiungere);// CartaAzione coperta la
+														// prendiamo da file
 		}
 		this.nomeUtente = nomeUtente;
 		this.ID = ID;
 	}
-	
+
 	public int getDanari() {
 		return danari;
 	}
@@ -59,7 +61,7 @@ public class GiocatoreView implements Serializable{
 	public List<CartaAzione> getCarteAzioniCoperte() {
 		return carteAzioniCoperte;
 	}
-	
+
 	public String getNomeUtente() {
 		return nomeUtente;
 	}
@@ -70,14 +72,34 @@ public class GiocatoreView implements Serializable{
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof GiocatoreView){
+		if (obj instanceof GiocatoreView) {
 			GiocatoreView daConfrontare = (GiocatoreView) obj;
-			if(daConfrontare.ID==ID){
+			if (daConfrontare.ID == ID) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
+	public String getInformazioniGenerali() {
+		String nomeS = "Giocatore " + ID + ": " + nomeUtente;
+		String personaggioS = "Personaggio: " + personaggio.getNome();
+		String danariS = "Danari: " + danari;
+		String scuderieS = "Scuderia posseduta: " + scuderie.get(0).getColore();
+		String numeroCarte = "Numero carte azione possedute: "
+				+ carteAzioniCoperte.size();
+
+		String out =	nomeS + "\n" +
+							personaggioS + "\n" +
+							danariS + "\n"+
+							scuderieS +"\n"+
+							numeroCarte;
+		
+		if (primoGiocatore) {
+			out += "\nE' il primo giocatore!";
+		}
+		
+		return out;
+	}
 
 }

@@ -30,6 +30,7 @@ public abstract class ControlloreConsole {
 		view = controllore.view;
 		utenti = controllore.utenti;
 		executor = controllore.executor;
+		visteGiocatori = controllore.visteGiocatori;
 	}
 	
 	protected abstract void controlla();
@@ -53,12 +54,16 @@ public abstract class ControlloreConsole {
 			}
 		}
 		
+		view.mostraSituazioneGenerale(visteGiocatori.values().iterator().next());
+		
 	}
 	
 	protected final ControlloreReteClient getClientDiTurno(){
-		StatoDelGiocoView viewTemp = new LinkedList<StatoDelGiocoView>(visteGiocatori.values()).getFirst();
+		
+		StatoDelGiocoView viewTemp = getViewGenerica();
 		ControlloreReteClient out = null;
 		Long toCheck = viewTemp.getGiocatoreDiTurno().getID();
+		
 		for(ControlloreReteClient temp : utenti){
 			if(temp.getID().equals(toCheck)){
 				out = temp;
@@ -70,6 +75,18 @@ public abstract class ControlloreConsole {
 		return out;
 	}
 	
+	protected void aspetta(int i) {
+		try {
+			Thread.sleep(i * 1000);
+		} catch (InterruptedException e) {
+			throw new RuntimeException();
+		}
+	}
+
+	protected StatoDelGiocoView getViewGenerica() {
+		return visteGiocatori.values().iterator().next();
+	}
+
 	private class ClientViewPair {
 		final ControlloreReteClient utente;
 		final StatoDelGiocoView view;
@@ -86,7 +103,6 @@ public abstract class ControlloreConsole {
 		private ControlloreReteClient utente;
 
 		public RicevitoreGioco(ControlloreReteClient utente) {
-			System.out.println("Creo runnable");
 			this.utente = utente;
 		}
 		

@@ -21,7 +21,7 @@ public class StatoDelGiocoView implements Serializable {
 	private static final long serialVersionUID = -1906104705205607270L;
 	private final boolean inizio;
 	private final TipoFaseGiocoFamily tipoFaseGiocoFamily;
-	private final List<GiocatoreView> altriGiocatoriView;
+	private final List<GiocatoreView> giocatoriView;
 	private final List<Scuderia> corsie;
 	private final List<Scuderia> classifica;
 	private final int numTurno;
@@ -47,7 +47,7 @@ public class StatoDelGiocoView implements Serializable {
 		Giocatore giocatoreDiTurnoIntero = statoDaFiltrare.getGiocatoreDiTurno();
 		this.giocatoreDiTurno = new GiocatoreView(giocatoreDiTurnoIntero,  nomi
 				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero));
-		altriGiocatoriView = new ArrayList<GiocatoreView>();
+		giocatoriView = new ArrayList<GiocatoreView>();
 		oscuraGiocatori(statoDaFiltrare.getGiocatori(), clientReclamante);
 	}
 
@@ -55,10 +55,8 @@ public class StatoDelGiocoView implements Serializable {
 			Giocatore clientReclamante) {
 
 		for (int i = 0; i < giocatoriDaOscurare.size(); i++) {
-			if (giocatoriDaOscurare.get(i) == clientReclamante)
-				continue;
 			Giocatore giocatoreDaOscurare = giocatoriDaOscurare.get(i);
-			altriGiocatoriView.add(new GiocatoreView(giocatoreDaOscurare, nomi
+			giocatoriView.add(new GiocatoreView(giocatoreDaOscurare, nomi
 					.get(giocatoreDaOscurare), ids.get(giocatoreDaOscurare)));
 		}
 	}
@@ -72,7 +70,7 @@ public class StatoDelGiocoView implements Serializable {
 	}
 
 	public List<GiocatoreView> getGiocatori() {
-		return altriGiocatoriView;
+		return giocatoriView;
 	}
 
 	public List<Scuderia> getCorsie() {

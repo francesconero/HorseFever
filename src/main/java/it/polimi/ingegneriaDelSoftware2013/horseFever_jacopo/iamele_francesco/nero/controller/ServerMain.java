@@ -18,6 +18,7 @@ public class ServerMain
 {
     public static void main( String[] args ) 
     {
+    	
     	ControlloreFasiGioco controlloreGioco = null;
     	try{
     	int numGiocatori=Integer.parseInt(args[0]);
