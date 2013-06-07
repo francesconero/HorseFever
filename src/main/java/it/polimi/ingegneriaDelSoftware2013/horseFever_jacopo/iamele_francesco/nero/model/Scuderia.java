@@ -2,6 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 /***
  * Questa � la classe Scuderia
@@ -15,7 +16,7 @@ public class Scuderia implements Serializable{
 	private int scommesseDisponibili;
 	private final int scommesseTotaliDisponibili;
 	private boolean arrivato;
-	private List<CartaAzione> carteAzione;
+	private List<CartaAzione> carteAzione=new ArrayList<CartaAzione>();
 	private int quotazione;
 	private int numCicliArrivato=0; //rappresenta da quanto tempo la scuderia � arrivata 
 	

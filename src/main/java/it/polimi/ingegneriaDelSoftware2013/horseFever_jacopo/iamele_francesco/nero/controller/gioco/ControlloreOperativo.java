@@ -487,17 +487,23 @@ public class ControlloreOperativo {
 		while (mazziere.getDadoSprint1().getColore()!=statoDelGioco.getCorsie().get(count).getColore()){
 			count++;
 		}
-		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)); //se il cavallo � arrivato da almeno un ciclo non applica lo sprint
+		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)){
+			; //se il cavallo e' arrivato da almeno un ciclo non applica lo sprint
+		}
 		else{
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
 			
 		}
 		mazziere.getDadoSprint2().lanciaDado();
-		if(mazziere.getDadoSprint1().getColore()==mazziere.getDadoSprint2().getColore())return statoDelGioco;
+		if(mazziere.getDadoSprint1().getColore()==mazziere.getDadoSprint2().getColore()){
+			return statoDelGioco;
+		}
 		count=0;
 		while(mazziere.getDadoSprint2().getColore()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1));
+		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)){
+			;
+		}
 		else{
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
@@ -519,7 +525,9 @@ public class ControlloreOperativo {
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
 		for(int i=0; i<statoDelGioco.getCorsie().size();i++){
-			if(statoDelGioco.getCorsie().get(i).isArrivato());
+			if(statoDelGioco.getCorsie().get(i).isArrivato()){
+				;
+			}
 			else{
 			movimento=cartaMovimento.getCartaMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
@@ -660,7 +668,9 @@ public class ControlloreOperativo {
 		for(int i=0;i<statoDelGioco.getClassifica().size();i++){
 			if(statoDelGioco.getClassifica().get(i).getQuotazione()>(i+j))statoDelGioco.getCorsie().get(i).addQuotazione(-1);
 			else if(statoDelGioco.getClassifica().get(i).getQuotazione()<(i+j))statoDelGioco.getCorsie().get(i).addQuotazione(1);
-			else;
+			else{
+				;
+			}
 		}
 		return statoDelGioco;
 	}

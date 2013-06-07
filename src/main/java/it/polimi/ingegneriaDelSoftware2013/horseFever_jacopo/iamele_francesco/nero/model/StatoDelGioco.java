@@ -24,6 +24,7 @@ public class StatoDelGioco  {
 	corsie=new ArrayList<Scuderia>();
 	scommesseFattePrimaFase=new ArrayList<Scommessa>();
 	scommesseFatteSecondaFase=new ArrayList<Scommessa>();
+	classifica=new ArrayList<Scuderia>();
 	}
 
 	public boolean isInizio() {
