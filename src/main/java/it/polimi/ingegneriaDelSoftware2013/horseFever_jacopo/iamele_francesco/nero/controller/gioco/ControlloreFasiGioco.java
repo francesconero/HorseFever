@@ -32,14 +32,25 @@ public class ControlloreFasiGioco {
 	private StatoDelGioco statoDelGioco;
 	private Mazziere mazziere;
 	private ControlloreReteServer controlloreRete;
-	
+	private final int numTurniTotali;
 	
 	public ControlloreReteServer getControlloreRete() {
 		return controlloreRete;
 	}
 
-	private final int numTurniTotali;
-
+	/**
+	 * Questo è il construttore di ControlloreFasiGioco;
+	 * Vengono inizializzati il mazziere e il controlloreRete,
+	 * Viene assegnato il valore numTurniTotali e segnalini scommesse
+	 * in base al numero di giocatori,
+	 * Vengono aggiunte le corsie(scuderie),
+	 * Vengono assegnate casualmente le quotazioni,
+	 * Vengono creati i giocatori con associato una carta personaggio.
+	 * @param numGiocatori
+	 * @throws NumErratoGiocatoriException viene lanciata se numGiocatori vale o 1 o piu' di 6
+	 * @throws CarteFiniteException
+	 * @throws IOException
+	 */
 	public ControlloreFasiGioco(int numGiocatori) throws NumErratoGiocatoriException, CarteFiniteException, IOException{
 		mazziere= new Mazziere();
 		controlloreRete= new ControlloreReteServer();
@@ -85,9 +96,6 @@ public class ControlloreFasiGioco {
 		controlloreRete.aggiornaUtenti(statoDelGioco);
 	}
 	
-	
-	
-
 	private void preparazione() throws CarteFiniteException{
 		statoDelGioco.setInizio(true);
 		
@@ -97,16 +105,20 @@ public class ControlloreFasiGioco {
 		
 	}
 	
-	
-	
-	
-	
+	/**
+	 * questo metodo elimina 2 punti vittoria al giocatore che non può scommettere il valore minimo
+	 * fino a quando non può farlo.
+	 * Se i suoi punti vittoria finiscono, viene eliminato.
+	 */
 	private void faseEliminazioneGiocatore(){
 		List<Giocatore>giocatoriDaEliminare=new ArrayList<Giocatore>();
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			if(statoDelGioco.getGiocatori().get(i).getDanari()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100){
 				do{
 					statoDelGioco.getGiocatori().get(i).removePuntiVittoria(2);
+					if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<=0){
+						break;
+					}
 				}while ((statoDelGioco.getGiocatori().get(i).getDanari()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)&&(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()>0));
 				if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<=0){
 					giocatoriDaEliminare.add(statoDelGioco.getGiocatori().get(i));
@@ -134,10 +146,16 @@ public class ControlloreFasiGioco {
 		aggiornaTuttiIClient();
 	}
 	
-	
+	/**
+	 * Questo metodo rappresenta la prima fase scommesse.
+	 * Dato che i giocatori che non possono fare la scommessa minima sono già stati
+	 * eliminati so che tutti i rimanenti la possano fare.
+	 * Se mi arriva una scommessa con valore più basso della scommessa minima la richiedo
+	 * finchè l'utente interessato "sbaglia" valore.
+	 * 
+	 */
 	private void primaFaseScommesse() { 
 			statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ORARIA);
-			
 		for (int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			Scommessa scommessa;
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
@@ -153,27 +171,31 @@ public class ControlloreFasiGioco {
 				}
 			else{
 				statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
-				System.out.println("dopo la remove");
 			}
 			while ((scommessa.getDanariScommessi()<(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100))||(segnaliniScommessaFiniti)){
 				controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
 				scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 				count=0;
 				segnaliniScommessaFiniti=false;
-				while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-				if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0)
+				while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore()){
+					count++;
+				}
+				if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0){
 					segnaliniScommessaFiniti=true;
-				else 
+				}
+				else{
 					statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
-			}
+			}	}
 			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
-			
 			statoDelGioco.aggiungiScommesseFattePrimaFase(scommessa);
 			statoDelGioco.getGiocatori().get(i).addScommessa(scommessa);
 		}	
 	}
 	
-	
+	/**
+	 * In questo metodo viene chiesto a tutti gli utenti di posizionare una propria carta azione sulla scuderia
+	 * che vogliono influenzare fino a quando non le hanno posizionate tutte
+	 */
 	private void truccaCorsa(){
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA);
 		aggiornaTuttiIClient();
@@ -182,65 +204,85 @@ public class ControlloreFasiGioco {
 			PosizionaCarta posizionaCarta=null;
 			posizionaCarta=controlloreRete.riceviPosizionaCarta(statoDelGioco.getGiocatoreDiTurno());
 			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
-				statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
+			statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
 			aggiornaTuttiIClient();
 		}
 	}
 	
+	/**
+	 * Molto simile alla prima fase, questo metodo chiede ai giocatori se vogliono fare la seconda scommessa;
+	 * I giocatori possono decidere di saltare questa fase ma se scommettono non possono scommettere sulla stessa scuderia
+	 * della scommessa precedente
+	 */
 	private void secondaFaseScommesse(){ 
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ANTIORARIA);
-		
 		for (int i=statoDelGioco.getGiocatori().size()-1;i>=0;i--){
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
 			aggiornaTuttiIClient();
 			Scommessa scommessa=null;
 			scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
-			if (scommessa.getDanariScommessi()==0) continue;
+			if (scommessa.getDanariScommessi()==0){
+				continue;
+			}
 			else{
 				int count=0;
 				boolean segnaliniScommessaFiniti=false;
 				boolean PiazzatoEVincente=false;
-				while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-				if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0)
+				while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore()){
+					count++;
+				}
+				if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0){
 					segnaliniScommessaFiniti=true;
+				}
 				else if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(0).getScuderia()==scommessa.getScuderia()){
 					if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(0).getTipoScommessa()==scommessa.getTipoScommessa()){
 						PiazzatoEVincente=true;
 					}
-					else 
+					else{ 
 						statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
+					}
 				}
-				else 
+				else{ 
 					statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
+				}
 				while ((scommessa.getDanariScommessi()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)||(segnaliniScommessaFiniti)||(PiazzatoEVincente)){
 					controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
 					scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 					count=0;
 					segnaliniScommessaFiniti=false;
-					while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-					if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0)
+					while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore()){
+						count++;
+					}
+					if(statoDelGioco.getCorsie().get(count).getScommesseDisponibili()==0){
 						segnaliniScommessaFiniti=true;
+					}
 					else if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(0).getScuderia()==scommessa.getScuderia()){
 						if(statoDelGioco.getGiocatori().get(i).getScommesseEffettuate().get(0).getTipoScommessa()==scommessa.getTipoScommessa()){
 							PiazzatoEVincente=true;
 						}
-						else 
+						else{ 
 							statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
+						}
 					}
-					else 
+					else{ 
 						statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
+					}
 				}
 				controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 			}
 			statoDelGioco.aggiungiScommesseFatteSecondaFase(scommessa);
 			statoDelGioco.getGiocatori().get(i).addScommessa(scommessa);
-			
 		}
-		
 	}
 	
+	/**
+	 * Questo metodo rappresenta la fase corsa;
+	 * Essendo molto complessa e articolata questo metodo chiama metodi di supporto 
+	 * definiti nella classe ControlloreOperativo
+	 * @throws CarteFiniteException
+	 */
 	private void faseCorsa() throws CarteFiniteException{
-		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE);
+		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE); //il controllore lato client scoprirà tutte le carte
 		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
 		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
 		aggiornaTuttiIClient();
@@ -264,10 +306,14 @@ public class ControlloreFasiGioco {
 		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.nuoveQuotazioni(statoDelGioco);
 		aggiornaTuttiIClient();
-		
-		
 	}
 	
+	/**
+	 * in questo metodo vengono riassegnate al mazziere e mischiate tutte le carte del gioco
+	 * (tranne i personaggi)
+	 * vengono anche cancellate le liste scommesse e carte azioni in gioco
+	 * @throws IOException
+	 */
 	private void faseFineTurno() throws IOException {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.FINETURNO);
 		mazziere.resetCarteAzione();
@@ -298,6 +344,8 @@ public class ControlloreFasiGioco {
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()==puntiVittoriaMassimi){
 				giocatoriStessiPV.add(statoDelGioco.getGiocatori().get(i));
+			}else{
+				continue;
 			}
 		}
 		if(giocatoriStessiPV.size()==1){
@@ -306,6 +354,8 @@ public class ControlloreFasiGioco {
 			for(int i=0;i<giocatoriStessiPV.size();i++){
 				if(giocatoriStessiPV.get(i).getDanari()==danariMassimi){
 					giocatoriAncheStessiDanari.add(giocatoriStessiPV.get(i));
+				}else{
+					continue;
 				}
 			}
 			if(giocatoriAncheStessiDanari.size()==1){
@@ -315,13 +365,14 @@ public class ControlloreFasiGioco {
 				Collections.shuffle(giocatoriAncheStessiDanari);//a questo punto assegno casualmente la vittoria
 				vittoria(giocatoriAncheStessiDanari);
 			}
-		}
-		
+		}	
 	}
 	
-		
-	
-	
+	/**
+	 * Questo metodo individua il vincitore, setta la fase di gioco in VITTORIA
+	 * e lo inserisce in giocatoreDiTurno
+	 * @param giocatoriCandidati
+	 */
 	private void vittoria(List<Giocatore> giocatoriCandidati){
 		statoDelGioco.setInizio(false);
 		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0)); // qui c'è il giocatore vincitore
@@ -350,11 +401,7 @@ public class ControlloreFasiGioco {
 		faseFineDelGioco();
 	}
 	
-
-
 	public int getTurniTotali(){
 		return numTurniTotali;
 	}
-	
-
 }

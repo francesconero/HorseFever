@@ -1,5 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
@@ -10,6 +11,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
  */
 public class ControlloreOperativo {
 	private final static int posizioneDelTraguardo=12;
+	private final static ControlloreReteServer controllore=new ControlloreReteServer();
 	
 	/**
 	 * Questo metodo restituisce la quotazione massima
@@ -77,6 +80,7 @@ public class ControlloreOperativo {
 			}
 		return posizioneMinima;
 	}
+	
 	/**
 	 * controlla L'eventuale presenza della carta azione PhotoFinish positiva
 	 * @param statoDelGioco
@@ -116,7 +120,7 @@ public class ControlloreOperativo {
 							if(i==scuderie.size()-1){ // se è l'ultimo elemento ritorna la lista
 								return scuderie;
 							}else{
-							scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (lui sarà ultimo) 
+							scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (l'interessato sarà ultimo) 
 							return scuderie;
 							}
 						}
@@ -151,6 +155,7 @@ public class ControlloreOperativo {
 		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate);
 		else statoDelGioco.addClassifica(scuderieArrivate.get(0));
 	}
+	
 	/**
 	 * Applica gli effetti delle carte azione TRAGUARDO
 	 * @param scuderia
@@ -177,8 +182,9 @@ public class ControlloreOperativo {
 		}
 		return posizioneImposta;
 	}
+	
 	/**
-	 * Questo metodo è decisamente il più comlesso del gioco;
+	 * Questo metodo è decisamente il più complesso del gioco;
 	 * Controlla se tra le scuderie arrivate vi sono carte azione di tipo photofinish e le quotazioni di tutte le scuderie.
 	 * In caso di parità manda la lista al primo giocatore che la deve riordinare a suo piacimento e rimandarla al server.
 	 * @param statoDelGioco
@@ -271,15 +277,7 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
-
 		
-		
-		
-		
-		//se sono presenti carte azione applica effetti e aggiungi in classifica
-		//altrimenti
-		
-			
 	/**Questo metodo controlla la presenza di carte azioni negative
 	 * 
 	 * @param carteDaControllare
@@ -292,6 +290,7 @@ public class ControlloreOperativo {
 		}
 		return carteNegative;
 	}
+	
 	/**
 	 * Questo metodo controlla la presenza di carte azioni positive
 	 * @param carteDaControllare
@@ -304,6 +303,7 @@ public class ControlloreOperativo {
 		}
 		return cartePositive;	
 	}
+	
 	/**
 	 * Controlla la presenza di carte azioni EffettiPARTENZA 
 	 * e ne applica gli effetti
@@ -312,7 +312,7 @@ public class ControlloreOperativo {
 	 * @return La scuderia su cui si e' chiesto il controllo
 	 * con l'attributo posizione modificato dalla carta o dal movimento
 	 */
-	private static Scuderia applicaEffettiPARTENZA(Scuderia scuderia, int movimento) { //FATTO
+	private static Scuderia applicaEffettiPARTENZA(Scuderia scuderia, int movimento) { 
 		
 			List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 			for (int j=0;j<carteDaControllare.size();j++){
@@ -329,6 +329,7 @@ public class ControlloreOperativo {
 		
 		return scuderia;
 	}
+	
 	/**
 	 * Questo metodo applica eventuali effettiMODIFICATORE_PARTENZA
 	 * @param scuderia
@@ -351,6 +352,7 @@ public class ControlloreOperativo {
 		}
 		return movimentoTemp;
 	}
+	
 	/**
 	 * Controlla la presenza di carte azioni EffettiSPRINT 
 	 * e ne applica gli effetti
@@ -377,6 +379,7 @@ public class ControlloreOperativo {
 	
 	return scuderia;
 }
+	
 	/**
 	 * Questo metodo applica eventuali effettiMODIFICATORE_SPRINT
 	 * @param scuderia
@@ -399,6 +402,7 @@ public class ControlloreOperativo {
 		}
 		return sprintTemp;
 	}
+	
 	/**
 	 * Questo metodo applica eventuali effettiPRIMO_ULTIMO
 	 * @param statoDelGioco
@@ -441,13 +445,14 @@ public class ControlloreOperativo {
 	 * @return lo stato del gioco modificato
 	 * @throws IllegalArgumentException
 	 */
-	public static StatoDelGioco posizionaCartaAzione(StatoDelGioco statoDelGioco, PosizionaCarta posizionaCarta)throws IllegalArgumentException{//FATTO
+	public static StatoDelGioco posizionaCartaAzione(StatoDelGioco statoDelGioco, PosizionaCarta posizionaCarta)throws IllegalArgumentException{
 		int count=0;
 		if(!(posizionaCarta.getCartaDaPosizionare() instanceof CartaAzione))throw new IllegalArgumentException("non ï¿½ una carta azione"); 
 		while (posizionaCarta.getScuderiaAssociata().getColore()!=statoDelGioco.getCorsie().get(count).getColore())count++;
 		statoDelGioco.getCorsie().get(count).addCartaAzione((CartaAzione)posizionaCarta.getCartaDaPosizionare());
 		return statoDelGioco;
 	}
+	
     /**
      * Questo metodo rappresenta la partenza;
      * chiede una carta movimento al mazziere e applica il movimento ad ogni scuderia
@@ -456,7 +461,7 @@ public class ControlloreOperativo {
      * @return lo stato del gioco modificato
      * @throws CarteFiniteException
      */
-	public static StatoDelGioco partenza(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{//FATTO
+	public static StatoDelGioco partenza(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
 		for(int i=0; i<statoDelGioco.getCorsie().size();i++){
@@ -467,6 +472,7 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
+	
 	/**
 	 * Questo metodo rappresenta lo sprint;
 	 * normalmente lo sprint vale 1 ma potrebbe venir modificato da carte azioni SPRINT
@@ -500,6 +506,7 @@ public class ControlloreOperativo {
 		controllaArrivo(statoDelGioco);
 		return statoDelGioco;
 	}
+	
 	/**
 	 * Questo metodo rappresenta il movimento;
 	 * chiede una carta movimento al mazziere e ne applica gli effetti
@@ -524,6 +531,7 @@ public class ControlloreOperativo {
 		controllaArrivo(statoDelGioco);
 		return statoDelGioco;
 	}
+	
 	/**
 	 * Questo metodo elimina eventuali carte con egual lettera
 	 * @param statoDelGioco
@@ -547,13 +555,14 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
+	
  /**
   * questo metodo controlla l'eventuale presenza di carte azioni che rimuovono tutte le carte
   * azioni positive o negative e ne applica gli effetti
   * @param statoDelGioco
   * @return lo stato del gioco modificato
   */
-	public static StatoDelGioco applicaEffettiCARTE_AZIONEPreCorsa(StatoDelGioco statoDelGioco) { //FATTO
+	public static StatoDelGioco applicaEffettiCARTE_AZIONEPreCorsa(StatoDelGioco statoDelGioco) { 
 		for (int i=0;i<statoDelGioco.getCorsie().size();i++){
 			List<CartaAzione> carteDaControllare = statoDelGioco.getCorsie().get(i).getCarteAzione();
 			List<CartaAzione> carteDaRimuovere = new ArrayList<CartaAzione>();
@@ -575,6 +584,7 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
+	
 	/**
 	 * Cerca eventuali carte azioni che modificano la quotazione delle scuderie
 	 * @param statoDelGioco
@@ -594,6 +604,7 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
+	
 	/**
 	 * Questo metodo paga i giocatori che hanno azzeccato la/e scommessa/e
 	 * e i proprietari delle scuderie sul podio
@@ -638,6 +649,7 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
+	
 	/**
 	 * Questo metodo aggiorna le quotazioni delle scuderie
 	 * @param statoDelGioco
@@ -652,6 +664,7 @@ public class ControlloreOperativo {
 		}
 		return statoDelGioco;
 	}
+	
 	/**
 	 * questo metodo controlla il valore dei punti vittoria del/dei giocatore/i 
 	 * con piu' punti vittoria
@@ -667,6 +680,7 @@ public class ControlloreOperativo {
 		}
 		return puntiVittoriaMassimi;
 	}
+	
 	/**
 	 * questo metodo controlla il valore dei danari del/dei giocatore/i 
 	 * con piu' danari
@@ -682,6 +696,4 @@ public class ControlloreOperativo {
 		}
 		return (danariMassimi);
 	}
-	
-
 }

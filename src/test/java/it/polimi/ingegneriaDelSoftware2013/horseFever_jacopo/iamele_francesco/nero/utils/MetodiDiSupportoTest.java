@@ -1,4 +1,4 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utilsTest;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils;
 
 import static org.junit.Assert.assertEquals;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
