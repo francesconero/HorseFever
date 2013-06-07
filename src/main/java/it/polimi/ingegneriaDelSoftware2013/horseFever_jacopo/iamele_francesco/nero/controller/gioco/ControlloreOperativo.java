@@ -9,6 +9,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,23 @@ import java.util.List;
 public class ControlloreOperativo {
 	private final static int posizioneDelTraguardo=12;
 	
+	/**
+	 * Questo metodo restituisce la quotazione massima
+	 * @param scuderie
+	 * @return la quotazione massima
+	 */
+	private static int quotazioneMassima(List<Scuderia> scuderie){
+		int quotazioneMassima=0;
+		for(int i=0;i<scuderie.size();i++){
+			if(quotazioneMassima<scuderie.get(i).getQuotazione()){
+				quotazioneMassima=scuderie.get(i).getQuotazione();
+			}
+			else{
+				continue;
+			}
+		}
+		return quotazioneMassima;
+	}
 	
 	/**
 	 * Questo metodo restituisce la posizioneMassima
@@ -31,14 +49,13 @@ public class ControlloreOperativo {
 	private static int posizioneMassima(List<Scuderia> scuderie){
 		int posizioneMassima=0;
 		for(int i=0;i<scuderie.size();i++){
-			if(scuderie.get(i).isArrivato());
-			else{
 				if(posizioneMassima<scuderie.get(i).getPosizione()){
 					posizioneMassima=scuderie.get(i).getPosizione();
 				}
-			}
+				else{
+					continue;
+				}
 		}
-		
 		return posizioneMassima;
 	}
 	
@@ -51,29 +68,57 @@ public class ControlloreOperativo {
 	private static int posizioneMinima(List<Scuderia> scuderie){
 		int posizioneMinima=posizioneDelTraguardo;
 		for(int i=0;i<scuderie.size();i++){
-			if(scuderie.get(i).isArrivato());
-			else{
-				if(posizioneMinima>scuderie.get(i).getPosizione()){
+					if(posizioneMinima>scuderie.get(i).getPosizione()){
 					posizioneMinima=scuderie.get(i).getPosizione();
-				}
+					}
+					else{
+						continue;
+					}
 			}
-		}
 		return posizioneMinima;
 	}
 	/**
 	 * controlla L'eventuale presenza della carta azione PhotoFinish positiva
 	 * @param statoDelGioco
 	 * @param scuderie
-	 * @return la scuderia con la carta azione positiva oppure null
+	 * @return la lista di scuderie con la scuderia interessata in PRIMA posizione oppure null
 	 */
-	private static Scuderia scuderiaConCartaPhotoFinishPositiva(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
+	private static List<Scuderia> scuderiaConCartaPhotoFinishPositiva(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
 		
 		for (int i=0;i<scuderie.size();i++){
 			for (int j=0;j<scuderie.get(i).getCarteAzione().size();j++){
 				for (int k=0;k<scuderie.get(i).getCarteAzione().get(j).getEffetti().size();k++){
 					if(scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getTipo()==TipoAzione.PHOTOFINISH){
 						if (scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getValori().get(0)>0){
-							return scuderie.get(i);
+							scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i));
+							return scuderie;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * controlla L'eventuale presenza della carta azione PhotoFinish negativa
+	 * @param statoDelGioco
+	 * @param scuderie
+	 * @return la lista di scuderia con la scuderia interessata in ULTIMA posizione oppure null
+	 */
+	private static List<Scuderia> scuderiaConCartaPhotoFinishNegativa(StatoDelGioco statoDelGioco,List<Scuderia> scuderie){
+		
+		for (int i=0;i<scuderie.size();i++){
+			for (int j=0;j<scuderie.get(i).getCarteAzione().size();j++){
+				for (int k=0;k<scuderie.get(i).getCarteAzione().get(j).getEffetti().size();k++){
+					if(scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getTipo()==TipoAzione.PHOTOFINISH){
+						if (scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getValori().get(0)==0){
+							if(i==scuderie.size()-1){ // se è l'ultimo elemento ritorna la lista
+								return scuderie;
+							}else{
+							scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (lui sarà ultimo) 
+							return scuderie;
+							}
 						}
 					}
 				}
@@ -96,8 +141,11 @@ public class ControlloreOperativo {
 				statoDelGioco.getCorsie().get(i).addNumCicliArrivato(1);
 				scuderieArrivate.add(statoDelGioco.getCorsie().get(i));
 			}
-			else{
+			else if(statoDelGioco.getCorsie().get(i).isArrivato()==true){
 				statoDelGioco.getCorsie().get(i).addNumCicliArrivato(1);
+			}
+			else{
+				continue;
 			}
 		}
 		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate);
@@ -130,28 +178,100 @@ public class ControlloreOperativo {
 		return posizioneImposta;
 	}
 	/**
-	 * DA IMPLEMENTARE
+	 * Questo metodo è decisamente il più comlesso del gioco;
+	 * Controlla se tra le scuderie arrivate vi sono carte azione di tipo photofinish e le quotazioni di tutte le scuderie.
+	 * In caso di parità manda la lista al primo giocatore che la deve riordinare a suo piacimento e rimandarla al server.
 	 * @param statoDelGioco
 	 * @param scuderieArrivate
 	 * @return Lo stato del gioco modificato
 	 */
 	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate){
-		int posizioneMassima=posizioneMassima(scuderieArrivate);
-		List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
-		for(int i=0; i<scuderieArrivate.size();i++){
-			if (scuderieArrivate.get(i).getPosizione()==posizioneMassima){
-				scuderieStessaPosizione.add(scuderieArrivate.get(i));
+		while(scuderieArrivate.size()>0){
+			int posizioneMassima=posizioneMassima(scuderieArrivate);
+			List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
+			for(int i=0; i<scuderieArrivate.size();i++){
+				if (scuderieArrivate.get(i).getPosizione()==posizioneMassima){
+					scuderieStessaPosizione.add(scuderieArrivate.get(i));
+				}
 			}
+			while(scuderieStessaPosizione.size()>1){
+				List<Scuderia> scuderiaTemp=scuderiaConCartaPhotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);
+				List<Scuderia> scuderieConCartaNegativa=scuderiaConCartaPhotoFinishNegativa(statoDelGioco, scuderieStessaPosizione);
+				int quotazioneMassima=quotazioneMassima(scuderieStessaPosizione);
+				if(scuderieConCartaNegativa!=null){
+					while(scuderieStessaPosizione.size()>2){
+						if(scuderiaTemp!=null){
+							statoDelGioco.addClassifica(scuderiaTemp.get(0));
+							scuderieArrivate.remove(scuderiaTemp.get(0));
+							scuderieStessaPosizione.remove(scuderiaTemp.get(0));
+							scuderiaTemp=null;
+						}
+						else{
+							int count=0;
+							int posizioneScuderia=0;
+							for(int i=0;i<scuderieStessaPosizione.size()-1;i++){
+								if(scuderieStessaPosizione.get(i).getQuotazione()==quotazioneMassima){
+									count++;posizioneScuderia=i;
+								}
+								else{
+									continue;
+								}
+							}
+							if(count>1){
+								//manda la lista (meno l'ultimo elemento) al primo giocatore
+							}
+							else{
+								statoDelGioco.addClassifica(scuderieStessaPosizione.get(posizioneScuderia));
+								scuderieArrivate.remove(scuderieStessaPosizione.get(posizioneScuderia));
+								scuderieStessaPosizione.remove(posizioneScuderia);
+							}
+						}
+					}
+					statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
+					scuderieArrivate.remove(scuderieStessaPosizione);
+					scuderieStessaPosizione.remove(0);
+				}
+				else{
+					while(scuderieStessaPosizione.size()>2){
+						if(scuderiaTemp!=null){
+							statoDelGioco.addClassifica(scuderiaTemp.get(0));
+							scuderieArrivate.remove(scuderiaTemp.get(0));
+							scuderieStessaPosizione.remove(scuderiaTemp.get(0));
+							scuderiaTemp=null;
+						}
+						else{
+							int count=0;
+							int posizioneScuderia=0;
+							for(int i=0;i<scuderieStessaPosizione.size();i++){
+								if(scuderieStessaPosizione.get(i).getQuotazione()==quotazioneMassima){
+									count++;posizioneScuderia=i;
+								}
+								else{
+									continue;
+								}
+							}
+							if(count>1){
+								//manda la lista al primo giocatore
+							}
+							else{
+								statoDelGioco.addClassifica(scuderieStessaPosizione.get(posizioneScuderia));
+								scuderieArrivate.remove(scuderieStessaPosizione.get(posizioneScuderia));
+								scuderieStessaPosizione.remove(posizioneScuderia);
+							}
+						}
+						statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
+						scuderieArrivate.remove(scuderieStessaPosizione);
+						scuderieStessaPosizione.remove(0);
+					}
+					
+				}
+			}
+			statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
+			scuderieArrivate.remove(scuderieStessaPosizione);
 		}
-		if(scuderieStessaPosizione.size()==1) statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
-		else{
-			Scuderia scuderia=scuderiaConCartaPhotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);
-			if(scuderia!=null) statoDelGioco.addClassifica(scuderia);
-			
-			
-			
-		}
-		
+		return statoDelGioco;
+	}
+
 		
 		
 		
@@ -159,9 +279,7 @@ public class ControlloreOperativo {
 		//se sono presenti carte azione applica effetti e aggiungi in classifica
 		//altrimenti
 		
-		
-		return statoDelGioco;
-	}
+			
 	/**Questo metodo controlla la presenza di carte azioni negative
 	 * 
 	 * @param carteDaControllare
@@ -331,7 +449,7 @@ public class ControlloreOperativo {
 		return statoDelGioco;
 	}
     /**
-     * Questo metodo rappresenta la partenza
+     * Questo metodo rappresenta la partenza;
      * chiede una carta movimento al mazziere e applica il movimento ad ogni scuderia
      * @param statoDelGioco
      * @param mazziere
@@ -350,7 +468,7 @@ public class ControlloreOperativo {
 		return statoDelGioco;
 	}
 	/**
-	 * Questo metodo rappresenta lo sprint
+	 * Questo metodo rappresenta lo sprint;
 	 * normalmente lo sprint vale 1 ma potrebbe venir modificato da carte azioni SPRINT
 	 * @param statoDelGioco
 	 * @param mazziere

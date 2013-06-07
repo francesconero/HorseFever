@@ -324,7 +324,7 @@ public class ControlloreFasiGioco {
 	
 	private void vittoria(List<Giocatore> giocatoriCandidati){
 		statoDelGioco.setInizio(false);
-		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0));
+		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0)); // qui c'è il giocatore vincitore
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);
 		aggiornaTuttiIClient();
 		
@@ -338,6 +338,7 @@ public class ControlloreFasiGioco {
 		while(statoDelGioco.getNumTurno()!=statoDelGioco.getNumTurniTotali()){
 			faseDistribuzioneCarte();
 			faseEliminazioneGiocatore();
+			if(statoDelGioco.getGiocatori().size()==1)break;//se è rimasto un solo giocatore salta alla faseFineDelGioco dove gli verrà attribuita la vittoria
 			primaFaseScommesse();
 			truccaCorsa();
 			secondaFaseScommesse();
