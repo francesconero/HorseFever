@@ -54,8 +54,6 @@ public abstract class ControlloreConsole {
 			}
 		}
 		
-		view.mostraSituazioneGenerale(visteGiocatori.values().iterator().next());
-		
 	}
 	
 	protected final ControlloreReteClient getClientDiTurno(){
@@ -107,10 +105,8 @@ public abstract class ControlloreConsole {
 		}
 		
 		public ClientViewPair call() throws Exception {
-			System.out.println("attendo stato del gioco");
 			StatoDelGiocoView sGV = utente.riceviStatoDelGioco();			
 			ClientViewPair out = new ClientViewPair(utente, sGV);
-			System.out.println("ricevuto stato del gioco");
 			return out;
 		}
 

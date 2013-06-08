@@ -8,30 +8,37 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Parte del controllore che funge da adapter sul client, per la comunicazione in rete.
+ * Parte del controllore che funge da adapter sul client, per la comunicazione
+ * in rete.
  * <p>
  * Si aspetta di interfacciarsi con {@link ControlloreReteServer}.
  * <p>
  * Estende {@link ControlloreRete}
  * 
  * @author Francesco
- *
+ * 
  */
-public class ControlloreReteClient implements ControlloreUtenteSingolo{
+public class ControlloreReteClient implements ControlloreUtenteSingolo {
 
 	private final int portaServer;
 	private final int portaHeartbeat;
 	private final int tentativiConnessioneMax;
-	private final int timeoutSocket;
+	private final int heartbeatTimeout;
+	private final int timeoutRispostaHeartbeat;
 	private final String proprioNome;
+
+	private AtomicBoolean clientRunning = new AtomicBoolean(true);
+
 	public String getProprioNome() {
 		return proprioNome;
 	}
@@ -39,33 +46,50 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 	private Long ID;
 	private boolean IDSet = false;
 
-	private Socket serverSocket;	
+	private Socket serverSocket;
 	private Socket heartbeatSocket;
 	private InetAddress indirizzoServer;
-
+	private HeartbeatThread heartbeatThread = new HeartbeatThread();
+	
 	/**
-	 * Inizializza un controllore per la rete a lato client, con un proprio nome che sarà visualizzato dagli altri giocatori, e l'indirizzo ip
-	 * del server HorseFever al quale ci si vuole collegare
+	 * Inizializza un controllore per la rete a lato client, con un proprio nome
+	 * che sarà visualizzato dagli altri giocatori, e l'indirizzo ip del server
+	 * HorseFever al quale ci si vuole collegare
 	 * 
-	 * @param proprioNome	il nostro nome preferito
-	 * @param nomeHost	il nome del server a cui vogliamo collegarci (può anche essere una semplice rappresentazione stringa di un indirizzo ip)
-	 * @throws UnknownHostException	se non si riesce a risolvere il nome host in un indirizzo ip
+	 * @param proprioNome
+	 *            il nostro nome preferito
+	 * @param nomeHost
+	 *            il nome del server a cui vogliamo collegarci (può anche essere
+	 *            una semplice rappresentazione stringa di un indirizzo ip)
+	 * @throws UnknownHostException
+	 *             se non si riesce a risolvere il nome host in un indirizzo ip
 	 */
-	public ControlloreReteClient(String proprioNome, String nomeHost) throws UnknownHostException{
+	public ControlloreReteClient(String proprioNome, String nomeHost)
+			throws UnknownHostException {
+		
+		heartbeatThread.setUncaughtExceptionHandler(GestoreEccezioni.getInstance());
+		
 		indirizzoServer = InetAddress.getByName(nomeHost);
-		portaServer = Integer.parseInt(Configurazioni.getInstance().getClientProperties().getProperty("portaServer"));
-		portaHeartbeat = Integer.parseInt(Configurazioni.getInstance().getNetProperties().getProperty("portaHeartbeat"));
-		tentativiConnessioneMax = Integer.parseInt(Configurazioni.getInstance().getClientProperties().getProperty("tentativiConnessione"));
-		timeoutSocket = Integer.parseInt(Configurazioni.getInstance().getClientProperties().getProperty("timeout"));
+		portaServer = Integer.parseInt(Configurazioni.getInstance()
+				.getClientProperties().getProperty("portaServer"));
+		portaHeartbeat = Integer.parseInt(Configurazioni.getInstance()
+				.getNetProperties().getProperty("portaHeartbeat"));
+		tentativiConnessioneMax = Integer.parseInt(Configurazioni.getInstance()
+				.getClientProperties().getProperty("tentativiConnessione"));
+		heartbeatTimeout = Integer.parseInt(Configurazioni.getInstance()
+				.getNetProperties().getProperty("heartbeatTimeout")) / 2; //assicura che inviamo ad una frequenza maggiore di quanto si aspetti il server
+		timeoutRispostaHeartbeat = Integer.parseInt(Configurazioni.getInstance()
+				.getClientProperties().getProperty("timeoutRispostaHeartbeat"));
 		this.proprioNome = proprioNome;
 	}
 
 	/**
-	 * Connette questo client a un server HorseFever, inviandogli anche un nome giocatore.
+	 * Connette questo client a un server HorseFever, inviandogli anche un nome
+	 * giocatore.
 	 */
-	public void collegaGioco(){		
+	public void collegaGioco() {
 		stabilisciConnessione();
-		if(!ControlloreRete.inviaOggettoConRisposta(proprioNome, serverSocket)){
+		if (!ControlloreRete.inviaOggettoConRisposta(proprioNome, serverSocket)) {
 			System.out.println("Connessione fallita!");
 			throw new ConnessioneServerFallitaException("Fallito invio nome");
 		} else {
@@ -75,45 +99,42 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 	}
 
 	public boolean scommetti(Scommessa scommessaDaFare) {
-		return ControlloreRete.inviaOggettoConRisposta(scommessaDaFare, serverSocket);
+		return ControlloreRete.inviaOggettoConRisposta(scommessaDaFare,
+				serverSocket);
 	}
 
 	public boolean posizionaCarta(PosizionaCarta posizionaCarta) {
-		return ControlloreRete.inviaOggettoConRisposta(posizionaCarta, serverSocket);
+		return ControlloreRete.inviaOggettoConRisposta(posizionaCarta,
+				serverSocket);
 	}
 
 	public StatoDelGiocoView riceviStatoDelGioco() {
-		Object possibileStatoDelGioco = null;
-		try{
-			possibileStatoDelGioco = ControlloreRete.riceviOggetto(serverSocket);
-		} catch (RicezioneFallitaException e){
-			if(isServerUp()){
-				riceviStatoDelGioco();
-			} else {
-				throw new DisconnessioneAnomalaException(serverSocket);
-			}
-		}
 
-		if(possibileStatoDelGioco != null){
-			if(possibileStatoDelGioco instanceof StatoDelGiocoView){
+		Object possibileStatoDelGioco = null;
+		possibileStatoDelGioco = ControlloreRete.riceviOggetto(serverSocket);
+
+		if (possibileStatoDelGioco != null) {
+			if (possibileStatoDelGioco instanceof StatoDelGiocoView) {
 				ControlloreRete.rispondiPositivamente(serverSocket);
 				return (StatoDelGiocoView) possibileStatoDelGioco;
 			} else {
 				ControlloreRete.rispondiNegativamente(serverSocket);
-				throw new RicezioneFallitaException("Fallita ricezione del nuovo stato del gioco");
+				throw new RicezioneFallitaException(
+						"Fallita ricezione del nuovo stato del gioco");
 			}
 		} else {
 			ControlloreRete.rispondiNegativamente(serverSocket);
-			throw new RicezioneFallitaException("Fallita ricezione del nuovo stato del gioco");
+			throw new RicezioneFallitaException(
+					"Fallita ricezione del nuovo stato del gioco");
 		}
 
 	}
 
-	public void riceviID(){
+	public void riceviID() {
 		Long ID = (Long) ControlloreRete.riceviOggetto(serverSocket);
-		if(ID==null){
+		if (ID == null) {
 			ControlloreRete.rispondiNegativamente(serverSocket);
-		}else{
+		} else {
 			setID(ID);
 			ControlloreRete.rispondiPositivamente(serverSocket);
 		}
@@ -124,7 +145,7 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 	}
 
 	public void setID(Long iD) {
-		if(!IDSet){
+		if (!IDSet) {
 			ID = iD;
 			IDSet = true;
 		} else {
@@ -137,63 +158,57 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo{
 		return proprioNome;
 	}
 
-	private void stabilisciConnessione() throws ConnessioneServerFallitaException {
+	private void stabilisciConnessione()
+			throws ConnessioneServerFallitaException {
 		int tentativi = 0;
 
-		do{
+		do {
 			tentativi++;
-			System.out.println(proprioNome+": tentativo connessione "+tentativi);
+			System.out.println(proprioNome + ": tentativo connessione "
+					+ tentativi);
 			try {
 				serverSocket = new Socket(indirizzoServer, portaServer);
 				heartbeatSocket = new Socket(indirizzoServer, portaHeartbeat);
 			} catch (IOException e) {
 				e.printStackTrace();
-			}			
-		} while(tentativi<tentativiConnessioneMax && serverSocket == null);
+			}
+		} while (tentativi < tentativiConnessioneMax && serverSocket == null);
 
-		if(serverSocket==null){
-			throw new ConnessioneServerFallitaException("Fallita la connessione al server");
-		}else{
+		if (serverSocket == null || heartbeatSocket == null) {
+			throw new ConnessioneServerFallitaException(
+					"Fallita la connessione al server");
+		} else {
 			try {
-				serverSocket.setSoTimeout(timeoutSocket);
+				heartbeatSocket.setSoTimeout(timeoutRispostaHeartbeat);
+				heartbeatThread.start();
 			} catch (SocketException e) {
-				throw new ConnessioneServerFallitaException("Impossibile settare il timeout sul socket", e);				
-			}			
+				throw new ConnessioneServerFallitaException(
+						"Impossibile settare il timeout sul socket", e);
+			}
 		}
 	}
 
-	private boolean isServerUp() {
-		return ControlloreRete.inviaOggettoConRisposta("Sei ancora vivo?", heartbeatSocket);
-	}
+	private class HeartbeatThread extends Thread {
+		private AtomicBoolean esegui = new AtomicBoolean(true);
 
-	/*
-	 * Piccolo main per testare le funzionalità più macro. Non ho trovato un buon modo per gestire questo test con junit.
-	 * TODO
-	 */
-	public static void main(String[] args){
-		Thread client1Thread = new Thread(){
-			public void run(){
-				ControlloreReteClient client = null;
-				try {
-					client = new ControlloreReteClient("Client1", "127.0.0.1");
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				}
-				try {
-					client.collegaGioco();
-					client.riceviStatoDelGioco();
-					try {
-						Thread.sleep(50000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+		public void run() {
+			while (esegui.get()) {
+				try{
+					if (!ControlloreRete.inviaOggettoConRisposta("Ci sono ancora!",
+							heartbeatSocket)) {
+						throw new DisconnessioneAnomalaException(serverSocket);
+					} else {
+						try {
+							Thread.sleep(heartbeatTimeout);
+						} catch (InterruptedException e) {
+							throw new RuntimeException(e);
+						}
 					}
-				} catch (ConnessioneServerFallitaException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (RicezioneFallitaException e){
+					throw new DisconnessioneAnomalaException(e, serverSocket);
 				}
 			}
-		};
-		client1Thread.start();
+		}
 	}
+
 }

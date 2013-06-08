@@ -15,12 +15,12 @@ public class AiutanteConsole {
 	private static BufferedReader in = new BufferedReader(
 			new InputStreamReader(System.in));
 
-	public static String chiediStringa(String domanda) throws IOException {
+	public static String chiediStringa(String domanda) {
 		System.out.println(domanda);
 		return leggiStringa();
 	}
 
-	public static int chiediIntero(String domanda) throws IOException {
+	public static int chiediIntero(String domanda) {
 		boolean read = false;
 		int out = 0;
 		do {
@@ -35,16 +35,24 @@ public class AiutanteConsole {
 		return out;
 	}
 
-	private static int leggiIntero() throws NumberFormatException, IOException {
-		return Integer.parseInt(in.readLine());
+	private static int leggiIntero() throws NumberFormatException {
+		try {
+			return Integer.parseInt(in.readLine());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	private static String leggiStringa() throws IOException {
-		return in.readLine();
+	private static String leggiStringa() {
+		try {
+			return in.readLine();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static <T extends Enum<T>> T chiediEnum(String domanda,
-			Class<T> enumClass) throws IOException {
+			Class<T> enumClass) {
 		List<T> enums = Arrays.asList(enumClass.getEnumConstants());
 		Map<String, T> enumMap = new TreeMap<String, T>(
 				String.CASE_INSENSITIVE_ORDER);
@@ -62,13 +70,13 @@ public class AiutanteConsole {
 				read = true;
 			} else {
 				System.out
-						.println("Non hai inserito nessuno dei valori possibili!");
+				.println("Non hai inserito nessuno dei valori possibili!");
 			}
 		} while (!read);
 		return out;
 	}
 
-	public static boolean chiediConferma(String domanda) throws IOException {
+	public static boolean chiediConferma(String domanda) {
 		String risp;
 		Set<String> rispPositive = new TreeSet<String>(
 				String.CASE_INSENSITIVE_ORDER);
@@ -84,8 +92,32 @@ public class AiutanteConsole {
 		do {
 			risp = chiediStringa(domanda);
 			out = rispPositive.contains(risp);
-		} while (!(out | rispNegative.contains(risp)));
+		} while (!(out || rispNegative.contains(risp)));
 
 		return !out;
+	}
+
+	public static <T> T chiediValoreLista(String domanda,
+			List<T> lista) {
+		System.out.println(domanda);
+		Set<Integer> valoriPossibili = new TreeSet<Integer>();
+		for(int i = 0; i < lista.size(); i++ ){
+			System.out.println(".:::"+i+":::.");
+			System.out.println(lista.get(i));
+			valoriPossibili.add(i);
+		}
+		
+		boolean OK = false;
+		int risp;
+		do{
+			risp = chiediIntero("Inserisci numero corrispondente all'oggetto da selezionare");
+			if(valoriPossibili.contains(risp)){
+				OK = true;
+			} else {
+				System.out.println("Non hai inserito un numero valido!");
+			}
+		}while(!OK);
+		
+		return lista.get(risp);
 	}
 }

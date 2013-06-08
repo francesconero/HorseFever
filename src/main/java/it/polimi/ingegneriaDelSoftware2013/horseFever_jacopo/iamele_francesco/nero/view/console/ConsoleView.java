@@ -5,18 +5,18 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoScommessa;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ConsoleView {
 
-	public int chiediNumeroGiocatori() throws IOException {
+	public int chiediNumeroGiocatori() {
 		return AiutanteConsole.chiediIntero("In quanti giocate?");
 	}
 
-	public List<String> chiediNomi(int numeroGiocatori) throws IOException {
+	public List<String> chiediNomi(int numeroGiocatori) {
 		List<String> out = new LinkedList<String>();
 		for(int i = 0; i<numeroGiocatori; i++){
 			out.add(AiutanteConsole.chiediStringa("Inserisci il nome del giocatore"+i));
@@ -24,7 +24,7 @@ public class ConsoleView {
 		return out;
 	}
 	
-	public Scommessa chiediScommessa(String nomeGiocatore) throws IOException{
+	public Scommessa chiediScommessa(String nomeGiocatore) {
 		System.out.println(nomeGiocatore+ " e' il tuo turno di scommettere!");
 		
 		Scommessa scommessa;
@@ -52,6 +52,19 @@ public class ConsoleView {
 	public void eliminaGiocatore(String proprioNome, Long id) {
 		System.out.println("Attenzione, il Giocatore "+id+" "+proprioNome+" non ha più denaro da scommettere, nè punti vittoria da barattare!\n");
 		System.out.println("Mi dispiace "+proprioNome+". Sei stato eliminato!");
+	}
+
+	public boolean chiediConferma(String string) {
+		return AiutanteConsole.chiediConferma(string);
+	}
+
+	public CartaAzione chiediCartaAzione(String nomeGiocatore, List<CartaAzione> carteAzionePossedute ) {
+		System.out.println(nomeGiocatore+ " e' il tuo turno di giocare una carta azione!");
+		return AiutanteConsole.chiediValoreLista("Quale vuoi giocare?", carteAzionePossedute );
+	}
+
+	public Colore chiediScuderia(String proprioNome) {
+		return AiutanteConsole.chiediEnum("Su quale scuderia la vuoi giocare?", Colore.class);
 	}
 
 }

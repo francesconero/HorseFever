@@ -11,8 +11,13 @@ public class DisconnessioneAnomalaException extends RuntimeException {
 	}
 
 	public DisconnessioneAnomalaException(String string,
-			RicezioneFallitaException e, Socket socketDisconnesso) {
+			Throwable e, Socket socketDisconnesso) {
 		super(string,e);
+		this.socketDisconnesso = socketDisconnesso;
+	}
+
+	public DisconnessioneAnomalaException(Throwable e, Socket socketDisconnesso) {
+		super(e);
 		this.socketDisconnesso = socketDisconnesso;
 	}
 

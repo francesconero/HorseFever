@@ -2,12 +2,11 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
-
-import java.io.IOException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
 
 
 public class ControlloreConsoleScommessa extends ControlloreConsole {
-
+	
 	public ControlloreConsoleScommessa(
 			ControlloreConsole controlloreConsoleIniziale) {
 		super(controlloreConsoleIniziale);
@@ -15,18 +14,47 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 
 	@Override
 	public void controlla() {
-		chiediScommesse();
+		switch (getViewGenerica().getTipoFaseGiocoFamily()) {
+		case F_S_ORARIA:
+			chiediScommesseOrarie();
+			ControlloreConsoleAlterazione ccA = new ControlloreConsoleAlterazione(this);
+			ccA.controlla();
+			break;
+		case F_S_ANTIORARIA:
+			chiediScommesseAntiorarie();
+			break;
+		default:
+			throw new IllegalStateException("Fase non gestibile");
+		}
 	}
 
-	private void chiediScommesse() {
-		ControlloreReteClient clientDiTurno = getClientDiTurno();
-		Scommessa daFare;
-		try {
-			daFare = view.chiediScommessa(clientDiTurno.getProprioNome());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+	private void chiediScommesseOrarie() {
+		while(getViewGenerica().getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.F_S_ORARIA)){
+			ControlloreReteClient clientDiTurno = getClientDiTurno();
+			faiScommessa(clientDiTurno);
+			aggiornaViste();
 		}
-		clientDiTurno.scommetti(daFare);
+	}
+
+	private void chiediScommesseAntiorarie() {
+		while(getViewGenerica().getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.F_S_ANTIORARIA)){
+			ControlloreReteClient clientDiTurno = getClientDiTurno();
+			if(view.chiediConferma("Vuoi scommettere ancora?")){
+				faiScommessa(clientDiTurno);
+			} else {
+				
+			}
+			aggiornaViste();
+		}
+	}
+
+	private void faiScommessa(ControlloreReteClient clientDiTurno) {
+		Scommessa daFare;
+		daFare = view.chiediScommessa(clientDiTurno.getProprioNome());
+		if(!clientDiTurno.scommetti(daFare)){
+			System.out.println("La tua scommessa e' stata rifutata! Riprova!");
+			faiScommessa(clientDiTurno);
+		}
 	}
 
 }

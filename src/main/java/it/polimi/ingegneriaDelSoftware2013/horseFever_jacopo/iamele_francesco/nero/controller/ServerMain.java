@@ -4,6 +4,8 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
+
 import java.io.IOException;
 
 /**
@@ -16,7 +18,7 @@ public class ServerMain
 {
     public static void main( String[] args ) 
     {
-    	
+    	Thread.currentThread().setUncaughtExceptionHandler(GestoreEccezioni.getInstance());
     	ControlloreFasiGioco controlloreGioco = null;
     	try{
     	int numGiocatori=Integer.parseInt(args[0]);
@@ -45,10 +47,6 @@ public class ServerMain
     	}
     	catch (RuntimeException e){
     		e.printStackTrace();
-    	}
-    	finally {
-    		System.out.println("Controllore gioco: "+controlloreGioco);
-    		controlloreGioco.getControlloreRete().cleanUp();
     	}
     	
     }

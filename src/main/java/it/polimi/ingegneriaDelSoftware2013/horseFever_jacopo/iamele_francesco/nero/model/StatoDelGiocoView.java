@@ -43,10 +43,10 @@ public class StatoDelGiocoView implements Serializable {
 		this.nomi = nomi;
 		this.ids = ids;
 		this.mioGiocatore = new GiocatoreView(clientReclamante,
-				nomi.get(clientReclamante), ids.get(clientReclamante));
+				nomi.get(clientReclamante), ids.get(clientReclamante), false);
 		Giocatore giocatoreDiTurnoIntero = statoDaFiltrare.getGiocatoreDiTurno();
 		this.giocatoreDiTurno = new GiocatoreView(giocatoreDiTurnoIntero,  nomi
-				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero));
+				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero), true);
 		giocatoriView = new ArrayList<GiocatoreView>();
 		oscuraGiocatori(statoDaFiltrare.getGiocatori(), clientReclamante);
 	}
@@ -57,7 +57,7 @@ public class StatoDelGiocoView implements Serializable {
 		for (int i = 0; i < giocatoriDaOscurare.size(); i++) {
 			Giocatore giocatoreDaOscurare = giocatoriDaOscurare.get(i);
 			giocatoriView.add(new GiocatoreView(giocatoreDaOscurare, nomi
-					.get(giocatoreDaOscurare), ids.get(giocatoreDaOscurare)));
+					.get(giocatoreDaOscurare), ids.get(giocatoreDaOscurare), true));
 		}
 	}
 

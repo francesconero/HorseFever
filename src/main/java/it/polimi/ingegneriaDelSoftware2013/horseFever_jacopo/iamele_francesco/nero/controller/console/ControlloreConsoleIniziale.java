@@ -13,11 +13,7 @@ import java.util.concurrent.Executors;
 public class ControlloreConsoleIniziale extends ControlloreConsole {
 
 	public ControlloreConsoleIniziale() {
-		try {
-			this.numeroGiocatori = view.chiediNumeroGiocatori();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		this.numeroGiocatori = view.chiediNumeroGiocatori();
 		 executor = Executors.newCachedThreadPool();
 	}	
 	
@@ -54,17 +50,14 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 			utente.collegaGioco();
 		}
 		
-		aggiornaViste();
+		aggiornaViste(); //dopo distribuzione carte
+		view.mostraSituazioneGenerale(visteGiocatori.values().iterator().next());
 		
-		aspetta(2);
-		
-		aggiornaViste();
+		aggiornaViste(); //dopo eliminazione giocatore
 		
 		controllaEliminati();
 		
-		aspetta(2);
-		
-		aggiornaViste();
+		aggiornaViste(); //attesa prima scomessa
 		
 		ControlloreConsole next = new ControlloreConsoleScommessa(this);
 		next.controlla();

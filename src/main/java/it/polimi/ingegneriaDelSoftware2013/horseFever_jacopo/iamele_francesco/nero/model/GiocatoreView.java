@@ -17,25 +17,37 @@ public class GiocatoreView implements Serializable {
 	private final List<Scuderia> scuderie;
 	private final Personaggio personaggio;
 	private final boolean primoGiocatore;
-	private final List<CartaAzione> carteAzioniCoperte;
+	private final List<CartaAzione> carteAzione;
 	private final String nomeUtente;
 	private final long ID;
+	private final boolean oscurato;
 
-	public GiocatoreView(Giocatore giocatoreDaOscurare, String nomeUtente,
-			long ID) {
-		this.danari = giocatoreDaOscurare.getDanari();
-		this.puntiVittoria = giocatoreDaOscurare.getPuntiVittoria();
-		this.personaggio = giocatoreDaOscurare.getPersonaggio();
-		this.primoGiocatore = giocatoreDaOscurare.isPrimoGiocatore();
-		this.scuderie = giocatoreDaOscurare.getScuderie();
-		carteAzioniCoperte = new ArrayList<CartaAzione>();
-		for (int i = 0; i < giocatoreDaOscurare.getCarteAzione().size(); i++) {
-			CartaAzione cartaDaAggiungere = new CartaAzione();
-			carteAzioniCoperte.add(cartaDaAggiungere);// CartaAzione coperta la
-														// prendiamo da file
+	public GiocatoreView(Giocatore giocatore, String nomeUtente,
+			long ID, boolean oscurato) {
+		this.oscurato = oscurato;
+		this.danari = giocatore.getDanari();
+		this.puntiVittoria = giocatore.getPuntiVittoria();
+		this.personaggio = giocatore.getPersonaggio();
+		this.primoGiocatore = giocatore.isPrimoGiocatore();
+		this.scuderie = giocatore.getScuderie();
+		if(oscurato){
+		this.carteAzione = oscuraCarteAzione(giocatore
+				.getCarteAzione());
+		} else {
+			this.carteAzione = giocatore.getCarteAzione();
 		}
 		this.nomeUtente = nomeUtente;
 		this.ID = ID;
+	}
+
+	private List<CartaAzione> oscuraCarteAzione(List<CartaAzione> carteAzione) {
+		List<CartaAzione> out = new ArrayList<CartaAzione>();
+		for (int i = 0; i < carteAzione.size(); i++) {
+			CartaAzione cartaDaAggiungere = new CartaAzione();
+			out.add(cartaDaAggiungere);// CartaAzione coperta la
+												// prendiamo da file
+		}
+		return out;
 	}
 
 	public int getDanari() {
@@ -58,8 +70,8 @@ public class GiocatoreView implements Serializable {
 		return primoGiocatore;
 	}
 
-	public List<CartaAzione> getCarteAzioniCoperte() {
-		return carteAzioniCoperte;
+	public List<CartaAzione> getCarteAzioni() {
+		return carteAzione;
 	}
 
 	public String getNomeUtente() {
@@ -87,18 +99,15 @@ public class GiocatoreView implements Serializable {
 		String danariS = "Danari: " + danari;
 		String scuderieS = "Scuderia posseduta: " + scuderie.get(0).getColore();
 		String numeroCarte = "Numero carte azione possedute: "
-				+ carteAzioniCoperte.size();
+				+ carteAzione.size();
 
-		String out =	nomeS + "\n" +
-							personaggioS + "\n" +
-							danariS + "\n"+
-							scuderieS +"\n"+
-							numeroCarte;
-		
+		String out = nomeS + "\n" + personaggioS + "\n" + danariS + "\n"
+				+ scuderieS + "\n" + numeroCarte;
+
 		if (primoGiocatore) {
 			out += "\nE' il primo giocatore!";
 		}
-		
+
 		return out;
 	}
 

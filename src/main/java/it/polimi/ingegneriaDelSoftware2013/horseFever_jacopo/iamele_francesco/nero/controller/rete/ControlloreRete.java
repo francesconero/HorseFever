@@ -2,13 +2,11 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.InvioFallitoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.RicezioneFallitaException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Collection;
 
 /**
  * Metodici statici che implementano le funzionalità più a basso livello richieste per la comunicazione in rete.
@@ -17,8 +15,6 @@ import java.util.Collection;
  *
  */
 final class ControlloreRete {
-	
-	private final static int tentativiMax =  Integer.parseInt(Configurazioni.getInstance().getNetProperties().getProperty("tentativiOggetto"));
 
 	private enum Risposta {
 		POSITIVA,
@@ -30,19 +26,19 @@ final class ControlloreRete {
 		out.writeObject(obj);
 		out.flush();
 	}
-	
-	static Object riceviOggetto(Socket socket) {
-		ObjectInputStream in;
-		try {
-			in = new ObjectInputStream(socket.getInputStream());
-			return in.readObject();
-		} catch (IOException e) {
-			throw new RicezioneFallitaException(e);
-		} catch (ClassNotFoundException e) {
-			throw new RicezioneFallitaException(e);
-		}		
+
+	static Object riceviOggetto(Socket socket){
+		do{
+			try {
+				return new ObjectInputStream(socket.getInputStream()).readObject();
+			} catch (IOException e) {
+				throw new RicezioneFallitaException(e);
+			} catch (ClassNotFoundException e) {
+				throw new RicezioneFallitaException(e);
+			}
+		} while (true);
 	}
-	
+
 	/**
 	 * Invia un oggetto tramite un socket, assicurandosi che l'oggetto inviato fosse del tipo richiesto
 	 * @param obj l'oggetto da inviare
@@ -51,52 +47,29 @@ final class ControlloreRete {
 	 * @throws InvioFallitoException se ci sono stati problemi gravi nell'invio dell'oggetto (ad esempio socket chiusi etc)
 	 */
 	static boolean inviaOggettoConRisposta(Object obj, Socket socket) {
-		int tentativi = 0;
-		boolean invioOK = false;
-		boolean arrivato = false;
-		do{
-			tentativi++;
-			try {
-				inviaOggetto(obj, socket);
-			} catch (IOException e) {				
-				throw new InvioFallitoException(e);
+		try {
+			inviaOggetto(obj, socket);
+		} catch (IOException e) {				
+			throw new InvioFallitoException(e);
+		}
+
+		Object risultato = null;
+
+		risultato = riceviOggetto(socket);
+
+		if(risultato instanceof Risposta){
+			Risposta risposta = (Risposta) risultato;
+			if(risposta==Risposta.POSITIVA){
+				return true;
+			} else {
+				return false;
 			}
-			
-			Object risultato = null;
-			
-			try{
-			risultato = riceviOggetto(socket);
-			} catch (RicezioneFallitaException e){
-				e.printStackTrace();
-				continue;
-			}
-			
-			if(risultato instanceof Risposta){
-				arrivato = true;
-				Risposta risposta = (Risposta) risultato;
-				if(risposta==Risposta.POSITIVA){
-					invioOK = true;
-				} else {
-					invioOK = false;
-				}
-			}else{
-				throw new InvioFallitoException("Ricevuta classe diversa da Risposta: "+risultato.getClass().getName());
-			}
-		} while(tentativi<tentativiMax && !arrivato);
+		}else{
+			throw new InvioFallitoException("Ricevuta classe diversa da Risposta: "+risultato.getClass().getName());
+		}
 		
-		if(!arrivato){
-			throw new InvioFallitoException("Fallito invio oggetto " + obj);
-		}
-		return invioOK;
 	}
 
-
-	static void chiudiSockets(Collection<Socket> collection) throws IOException {
-		for(Socket socket : collection){
-			socket.close();
-		}
-	}
-	
 	static void rispondiPositivamente(Socket s) {
 		try {
 			inviaOggetto(Risposta.POSITIVA, s);
@@ -104,7 +77,7 @@ final class ControlloreRete {
 			throw new InvioFallitoException("Errore nell'invio della conferma",e);
 		}
 	}
-	
+
 	static void rispondiNegativamente(Socket s) {
 		try {
 			inviaOggetto(Risposta.NEGATIVA, s);
@@ -112,5 +85,5 @@ final class ControlloreRete {
 			throw new InvioFallitoException("Errore nell'invio della risposta negativa",e);
 		}
 	}
-	
+
 }

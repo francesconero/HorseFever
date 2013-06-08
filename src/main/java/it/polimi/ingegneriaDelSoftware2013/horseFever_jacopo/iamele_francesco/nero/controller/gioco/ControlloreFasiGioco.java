@@ -39,7 +39,7 @@ public class ControlloreFasiGioco {
 	}
 
 	/**
-	 * Questo è il construttore di ControlloreFasiGioco;
+	 * Questo ï¿½ il construttore di ControlloreFasiGioco;
 	 * Vengono inizializzati il mazziere e il controlloreRete,
 	 * Viene assegnato il valore numTurniTotali e segnalini scommesse
 	 * in base al numero di giocatori,
@@ -106,8 +106,8 @@ public class ControlloreFasiGioco {
 	}
 	
 	/**
-	 * questo metodo elimina 2 punti vittoria al giocatore che non può scommettere il valore minimo
-	 * fino a quando non può farlo.
+	 * questo metodo elimina 2 punti vittoria al giocatore che non puï¿½ scommettere il valore minimo
+	 * fino a quando non puï¿½ farlo.
 	 * Se i suoi punti vittoria finiscono, viene eliminato.
 	 */
 	private void faseEliminazioneGiocatore(){
@@ -131,7 +131,7 @@ public class ControlloreFasiGioco {
 				statoDelGioco.assegnaCasualmentePrimoGiocatore();
 			}
 		}
-		aggiornaTuttiIClient();
+		aggiornaTuttiIClient(); //secondo aggiornamento
 	}
 	
 	
@@ -143,15 +143,15 @@ public class ControlloreFasiGioco {
 		for (Giocatore g: statoDelGioco.getGiocatori()){
 			g.setCarteAzione(mazziere.popCartaAzione());
 		}
-		aggiornaTuttiIClient();
+		aggiornaTuttiIClient(); //primo aggiornamento
 	}
 	
 	/**
 	 * Questo metodo rappresenta la prima fase scommesse.
-	 * Dato che i giocatori che non possono fare la scommessa minima sono già stati
+	 * Dato che i giocatori che non possono fare la scommessa minima sono giï¿½ stati
 	 * eliminati so che tutti i rimanenti la possano fare.
-	 * Se mi arriva una scommessa con valore più basso della scommessa minima la richiedo
-	 * finchè l'utente interessato "sbaglia" valore.
+	 * Se mi arriva una scommessa con valore piï¿½ basso della scommessa minima la richiedo
+	 * finchï¿½ l'utente interessato "sbaglia" valore.
 	 * 
 	 */
 	private void primaFaseScommesse() { 
@@ -198,14 +198,13 @@ public class ControlloreFasiGioco {
 	 */
 	private void truccaCorsa(){
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA);
-		aggiornaTuttiIClient();
 		for (int i=0; i<statoDelGioco.getGiocatori().size();i++){
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
+			aggiornaTuttiIClient();
 			PosizionaCarta posizionaCarta=null;
 			posizionaCarta=controlloreRete.riceviPosizionaCarta(statoDelGioco.getGiocatoreDiTurno());
 			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 			statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
-			aggiornaTuttiIClient();
 		}
 	}
 	
@@ -282,7 +281,7 @@ public class ControlloreFasiGioco {
 	 * @throws CarteFiniteException
 	 */
 	private void faseCorsa() throws CarteFiniteException{
-		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE); //il controllore lato client scoprirà tutte le carte
+		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE); //il controllore lato client scoprirï¿½ tutte le carte
 		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
 		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
 		aggiornaTuttiIClient();
@@ -375,7 +374,7 @@ public class ControlloreFasiGioco {
 	 */
 	private void vittoria(List<Giocatore> giocatoriCandidati){
 		statoDelGioco.setInizio(false);
-		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0)); // qui c'è il giocatore vincitore
+		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0)); // qui c'ï¿½ il giocatore vincitore
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);
 		aggiornaTuttiIClient();
 		
@@ -389,7 +388,7 @@ public class ControlloreFasiGioco {
 		while(statoDelGioco.getNumTurno()!=statoDelGioco.getNumTurniTotali()){
 			faseDistribuzioneCarte();
 			faseEliminazioneGiocatore();
-			if(statoDelGioco.getGiocatori().size()==1)break;//se è rimasto un solo giocatore salta alla faseFineDelGioco dove gli verrà attribuita la vittoria
+			if(statoDelGioco.getGiocatori().size()==1)break;//se ï¿½ rimasto un solo giocatore salta alla faseFineDelGioco dove gli verrï¿½ attribuita la vittoria
 			primaFaseScommesse();
 			truccaCorsa();
 			secondaFaseScommesse();

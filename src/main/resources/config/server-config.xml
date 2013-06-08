@@ -2,7 +2,5 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<entry key="porta">5000</entry>
-	<entry key="tentativiRichiestaOggetto">5</entry>
 	<entry key="attesaClientTimeout">60000</entry>
-	<entry key="clientTimeout">60000</entry>
 </properties>
