@@ -1,6 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenti;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
@@ -11,8 +11,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
-
 import java.util.ArrayList;
 import java.util.List;
 /***
@@ -23,7 +21,6 @@ import java.util.List;
  */
 public class ControlloreOperativo {
 	private final static int posizioneDelTraguardo=12;
-	private final static ControlloreReteServer controllore=new ControlloreReteServer();
 	
 	/**
 	 * Questo metodo restituisce la quotazione massima
@@ -135,7 +132,7 @@ public class ControlloreOperativo {
 	 * Controlla l'eventuale presenza di scuderie arrivate
 	 * @param statoDelGioco
 	 */
-	private static void controllaArrivo(StatoDelGioco statoDelGioco){
+	private static void controllaArrivo(StatoDelGioco statoDelGioco,ControlloreUtenti controlloreUtenti){
 		List<Scuderia> scuderieArrivate=new ArrayList<Scuderia>();
 		for (int i=0; i<statoDelGioco.getCorsie().size(); i++){
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
@@ -152,7 +149,7 @@ public class ControlloreOperativo {
 				continue;
 			}
 		}
-		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate);
+		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate, controlloreUtenti);
 		else statoDelGioco.addClassifica(scuderieArrivate.get(0));
 	}
 	
@@ -191,7 +188,7 @@ public class ControlloreOperativo {
 	 * @param scuderieArrivate
 	 * @return Lo stato del gioco modificato
 	 */
-	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate){
+	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate,ControlloreUtenti controlloreUtenti){
 		while(scuderieArrivate.size()>0){
 			int posizioneMassima=posizioneMassima(scuderieArrivate);
 			List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
@@ -313,20 +310,20 @@ public class ControlloreOperativo {
 	 * con l'attributo posizione modificato dalla carta o dal movimento
 	 */
 	private static Scuderia applicaEffettiPARTENZA(Scuderia scuderia, int movimento) { 
-		
+			int movimentoTemp=movimento;
 			List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 			for (int j=0;j<carteDaControllare.size();j++){
 				CartaAzione cartaTemp = carteDaControllare.get(j);
 				for (int k=0;k<cartaTemp.getEffetti().size();k++){
 					if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.PARTENZA){
-					scuderia.addPosizione(cartaTemp.getEffetti().get(k).getValori().get(0));
+					movimentoTemp=cartaTemp.getEffetti().get(k).getValori().get(0);
 					}
 					else{
-						scuderia.addPosizione(movimento);
+						movimentoTemp=movimento;
 					}
 				}
 			}
-		
+		scuderia.addPosizione(movimentoTemp);
 		return scuderia;
 	}
 	
@@ -362,21 +359,21 @@ public class ControlloreOperativo {
 	 * con l'attributo posizione modificato dalla carta o dal normale sprint
 	 */
 	private static Scuderia applicaEffettiSPRINT(Scuderia scuderia, int sprint) { 
-		
+		int sprintTemp=sprint;
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 
 		for (int j=0;j<carteDaControllare.size();j++){
 			CartaAzione cartaTemp = carteDaControllare.get(j);
 			for (int k=0;k<cartaTemp.getEffetti().size();k++){
 				if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.SPRINT){
-				scuderia.addPosizione(cartaTemp.getEffetti().get(k).getValori().get(0));
+				sprintTemp=cartaTemp.getEffetti().get(k).getValori().get(0);
 				}
 				else{
-					scuderia.addPosizione(sprint);
+				sprintTemp=sprint;	
 				}
 			}
 		}
-	
+		scuderia.addPosizione(sprintTemp);
 	return scuderia;
 }
 	
@@ -465,7 +462,7 @@ public class ControlloreOperativo {
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
 		for(int i=0; i<statoDelGioco.getCorsie().size();i++){
-			movimento=cartaMovimento.getCartaMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
+			movimento=cartaMovimento.getMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
 			statoDelGioco.getCorsie().set(i, applicaEffettiPARTENZA(scuderiaTemp, applicaEffettiMODIFICATORE_PARTENZA(scuderiaTemp, movimento)));
 		
@@ -480,7 +477,7 @@ public class ControlloreOperativo {
 	 * @param mazziere
 	 * @return lo stato del gioco modificato
 	 */
-	public static StatoDelGioco sprint(StatoDelGioco statoDelGioco,Mazziere mazziere){
+	public static StatoDelGioco sprint(StatoDelGioco statoDelGioco,Mazziere mazziere, ControlloreUtenti controlloreUtenti){
 		mazziere.getDadoSprint1().lanciaDado();
 		int count=0;
 		final int sprintTemp=1;
@@ -509,7 +506,7 @@ public class ControlloreOperativo {
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
 			
 		}
-		controllaArrivo(statoDelGioco);
+		controllaArrivo(statoDelGioco,controlloreUtenti);
 		return statoDelGioco;
 	}
 	
@@ -521,7 +518,7 @@ public class ControlloreOperativo {
 	 * @return lo stato del gioco modificato
 	 * @throws CarteFiniteException
 	 */
-	public static StatoDelGioco movimento(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{
+	public static StatoDelGioco movimento(StatoDelGioco statoDelGioco, Mazziere mazziere, ControlloreUtenti controlloreUtenti) throws CarteFiniteException{
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
 		for(int i=0; i<statoDelGioco.getCorsie().size();i++){
@@ -529,14 +526,14 @@ public class ControlloreOperativo {
 				;
 			}
 			else{
-			movimento=cartaMovimento.getCartaMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
+			movimento=cartaMovimento.getMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
 			movimento=applicaEffettiPRIMO_ULTIMO(statoDelGioco, scuderiaTemp, movimento);
 			scuderiaTemp.addPosizione(movimento);
 			statoDelGioco.getCorsie().set(i, scuderiaTemp);
 			}
 		}
-		controllaArrivo(statoDelGioco);
+		controllaArrivo(statoDelGioco,controlloreUtenti);
 		return statoDelGioco;
 	}
 	

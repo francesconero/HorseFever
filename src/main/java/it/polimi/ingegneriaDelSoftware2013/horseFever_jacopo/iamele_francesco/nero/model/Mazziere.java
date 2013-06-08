@@ -82,6 +82,11 @@ public class Mazziere {
 		return cartaDaPassare;
 	}
 	
+	public void setCartaMovimento(List<CartaMovimento> carteDaSettare){
+		this.carteMovimento.clear();
+		this.carteMovimento.addAll(carteDaSettare);
+	}
+	
 	public void resetCarteMovimento() throws  IOException{
 		this.carteMovimento.clear();
 		//this.carteMovimento.addAll(Risorse.getCarteMovimento());

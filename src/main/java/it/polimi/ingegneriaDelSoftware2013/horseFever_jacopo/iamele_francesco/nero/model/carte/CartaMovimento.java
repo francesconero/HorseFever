@@ -22,7 +22,7 @@ public class CartaMovimento implements Carta {
 	}
 
 
-	public int getCartaMovimento(int key){
+	public int getMovimento(int key){
 		return movimenti.get(key); 
 	}
 	

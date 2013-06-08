@@ -292,12 +292,12 @@ public class ControlloreFasiGioco {
 		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.partenza(statoDelGioco, mazziere);
 		aggiornaTuttiIClient();
-		statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere);
+		statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere,controlloreRete);
 		aggiornaTuttiIClient();
 		while (statoDelGioco.getClassifica().size()!=statoDelGioco.getCorsie().size()){
-			statoDelGioco=ControlloreOperativo.movimento(statoDelGioco, mazziere);
+			statoDelGioco=ControlloreOperativo.movimento(statoDelGioco, mazziere,controlloreRete);
 			aggiornaTuttiIClient();
-			statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere);
+			statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere,controlloreRete);
 			aggiornaTuttiIClient();
 		}
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_PAGAMENTI_NUOVE_QUOTAZIONI);
@@ -404,4 +404,13 @@ public class ControlloreFasiGioco {
 	public int getTurniTotali(){
 		return numTurniTotali;
 	}
+	
+	public StatoDelGioco getStatoDelGioco(){
+		return statoDelGioco;
+	}
+	public Mazziere getMazziere(){
+		return mazziere;
+	}
 }
+	
+	
