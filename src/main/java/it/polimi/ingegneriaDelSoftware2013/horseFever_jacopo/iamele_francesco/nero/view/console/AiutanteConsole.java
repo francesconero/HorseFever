@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -88,13 +89,14 @@ public class AiutanteConsole {
 		rispNegative.add("no");
 		rispNegative.add("n");
 
-		boolean out;
+		boolean out = false;
+		
 		do {
 			risp = chiediStringa(domanda);
 			out = rispPositive.contains(risp);
 		} while (!(out || rispNegative.contains(risp)));
 
-		return !out;
+		return out;
 	}
 
 	public static <T> T chiediValoreLista(String domanda,
@@ -120,4 +122,53 @@ public class AiutanteConsole {
 		
 		return lista.get(risp);
 	}
+	
+	public static void main(String[] args){
+		List<Integer> posizioni = new LinkedList<Integer>();
+		for(int i = 0; i < Math.random()*10+5; i ++){
+			posizioni.add((int) (Math.random()*19));
+		}
+		aggiornaCorsie(posizioni);
+	}
+	
+	public static void aggiornaCorsie(List<Integer> corsie) {
+		System.out.print("|");
+		for(Integer posizioneScuderia : corsie){
+			System.out.print("=====");
+		};
+		System.out.print("|");
+		System.out.println();
+		for(int i = 0; i < 19; i++){
+			System.out.print("|");
+			for(Integer posizioneScuderia : corsie){
+				String cavalloPresente = "___";
+				if(i==0){
+					cavalloPresente = "===";
+				}
+				if(i==12){
+					cavalloPresente = "###";
+				}
+				if(posizioneScuderia==i){
+					cavalloPresente = ":H:";
+				}
+				if(i==12){
+					System.out.print("#"+cavalloPresente+"#");
+				} else if(i==0){					
+					System.out.print("*"+cavalloPresente+"*");
+				} else {
+					System.out.print("|"+cavalloPresente+"|");
+				}
+			}
+			System.out.print("|");
+			System.out.println();
+		}
+		System.out.print("|");
+		for(Integer posizioneScuderia : corsie){
+			System.out.print("=====");
+		};
+		System.out.print("|");
+		System.out.println();
+		
+	}
+	
 }

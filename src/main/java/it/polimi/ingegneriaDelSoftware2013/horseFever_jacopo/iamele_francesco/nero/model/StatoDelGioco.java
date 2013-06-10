@@ -1,5 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 
 import java.util.ArrayList;
@@ -8,23 +9,19 @@ import java.util.Random;
 
 public class StatoDelGioco  {
 	private boolean inizio=false;
-	private TipoFaseGiocoFamily tipoFaseGiocoFamily;
-	private List<Giocatore> giocatori=null;
-	private List<Scuderia> corsie=null;
-	private List<Scuderia> classifica=null;
 	private int numTurno=0;
-	private List<Scommessa> scommesseFattePrimaFase=null;
-	private List<Scommessa> scommesseFatteSecondaFase=null;
-    private Giocatore giocatoreDiTurno=null;
+	private Giocatore giocatoreDiTurno=null;
+	private TipoFaseGiocoFamily tipoFaseGiocoFamily;
+	private List<Giocatore> giocatori = new ArrayList<Giocatore>();	
+	private List<Scuderia> corsie=new ArrayList<Scuderia>();
+	private List<Scuderia> classifica=new ArrayList<Scuderia>();;
+	private List<Scommessa> scommesseFattePrimaFase=new ArrayList<Scommessa>();
+	private List<Scommessa> scommesseFatteSecondaFase=new ArrayList<Scommessa>();
+    private List<MossaCorsa> mosseCorsa=new ArrayList<MossaCorsa>();
 	private final int numTurniTotali;
 	
 	public StatoDelGioco(int numTurniTotali){
 	this.numTurniTotali=numTurniTotali;
-	giocatori=new ArrayList<Giocatore>();
-	corsie=new ArrayList<Scuderia>();
-	scommesseFattePrimaFase=new ArrayList<Scommessa>();
-	scommesseFatteSecondaFase=new ArrayList<Scommessa>();
-	classifica=new ArrayList<Scuderia>();
 	}
 
 	public boolean isInizio() {
@@ -140,6 +137,14 @@ public class StatoDelGioco  {
 		giocatori.get(0).setPrimoGiocatore(false);
 		giocatori.get(1).setPrimoGiocatore(true);
 		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(1));
+	}
+
+	public List<MossaCorsa> getMosseCorsa() {
+		return mosseCorsa;
+	}
+	
+	public void setMosseCorsa(List<MossaCorsa> mosseCorsa) {
+		this.mosseCorsa = mosseCorsa;
 	}
 	
 }

@@ -31,6 +31,7 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 	private void chiediScommesseOrarie() {
 		while(getViewGenerica().getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.F_S_ORARIA)){
 			ControlloreReteClient clientDiTurno = getClientDiTurno();
+			System.out.println(clientDiTurno.getProprioNome() + " e' il tuo turno di scommettere!");
 			faiScommessa(clientDiTurno);
 			aggiornaViste();
 		}
@@ -39,13 +40,21 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 	private void chiediScommesseAntiorarie() {
 		while(getViewGenerica().getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.F_S_ANTIORARIA)){
 			ControlloreReteClient clientDiTurno = getClientDiTurno();
-			if(view.chiediConferma("Vuoi scommettere ancora?")){
+			if(view.chiediConferma("Vuoi scommettere ancora?", clientDiTurno.getProprioNome())){
+				System.out.println("Ok allora, scommetti ancora");
 				faiScommessa(clientDiTurno);
 			} else {
-				
+				System.out.println("Ok nessuna scommessa");
+				nessunaScommessa(clientDiTurno);
 			}
 			aggiornaViste();
 		}
+	}
+
+	private void nessunaScommessa(ControlloreReteClient clientDiTurno) {
+		Scommessa daFare;
+		daFare = new Scommessa(null, 0, null); //scommessa vuota nell'animo
+		clientDiTurno.scommetti(daFare);
 	}
 
 	private void faiScommessa(ControlloreReteClient clientDiTurno) {

@@ -62,6 +62,13 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 		ControlloreConsole next = new ControlloreConsoleScommessa(this);
 		next.controlla();
 		
+		System.out.println("GIOCO TERMINATO!");
+		
+		System.exit(0);
+		
+		for(ControlloreReteClient utente: utenti){
+			utente.fine();
+		}
 	}
 	
 	private void controllaEliminati() {

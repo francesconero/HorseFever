@@ -37,8 +37,6 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo {
 	private final int timeoutRispostaHeartbeat;
 	private final String proprioNome;
 
-	private AtomicBoolean clientRunning = new AtomicBoolean(true);
-
 	public String getProprioNome() {
 		return proprioNome;
 	}
@@ -191,6 +189,10 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo {
 	private class HeartbeatThread extends Thread {
 		private AtomicBoolean esegui = new AtomicBoolean(true);
 
+		public void ferma() {
+			esegui.set(false);
+		}
+		
 		public void run() {
 			while (esegui.get()) {
 				try{
@@ -209,6 +211,10 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo {
 				}
 			}
 		}
+	}
+
+	public void fine() {
+		heartbeatThread.ferma();
 	}
 
 }

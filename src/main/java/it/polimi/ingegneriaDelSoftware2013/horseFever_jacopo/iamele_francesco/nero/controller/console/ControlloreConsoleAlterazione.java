@@ -16,6 +16,8 @@ public class ControlloreConsoleAlterazione extends ControlloreConsole {
 	@Override
 	protected void controlla() {
 		chiediCarteAzione();
+		ControlloreConsoleScommessa ccS2 = new ControlloreConsoleScommessa(this);
+		ccS2.controlla();
 	}
 
 	private void chiediCarteAzione() {

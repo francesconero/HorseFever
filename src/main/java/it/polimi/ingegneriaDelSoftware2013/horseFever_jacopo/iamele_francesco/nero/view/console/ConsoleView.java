@@ -3,6 +3,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoScommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
@@ -23,26 +24,24 @@ public class ConsoleView {
 		}
 		return out;
 	}
-	
+
 	public Scommessa chiediScommessa(String nomeGiocatore) {
-		System.out.println(nomeGiocatore+ " e' il tuo turno di scommettere!");
-		
 		Scommessa scommessa;
 		do{
-		Colore col = AiutanteConsole.chiediEnum("Su quale scuderia vuoi puntare?", Colore.class);
-		int danariScommessi = AiutanteConsole.chiediIntero("Quanti danari vuoi puntare?");
-		TipoScommessa tS = AiutanteConsole.chiediEnum("Che tipo di scommessa vuoi fare?", TipoScommessa.class);
-		
-		scommessa = new Scommessa(tS, danariScommessi, col);
-		} while(AiutanteConsole.chiediConferma("Vuoi davvero puntare questa scommessa: "+scommessa+"\n?"));
-		
+			Colore col = AiutanteConsole.chiediEnum("Su quale scuderia vuoi puntare?", Colore.class);
+			int danariScommessi = AiutanteConsole.chiediIntero("Quanti danari vuoi puntare?");
+			TipoScommessa tS = AiutanteConsole.chiediEnum("Che tipo di scommessa vuoi fare?", TipoScommessa.class);
+
+			scommessa = new Scommessa(tS, danariScommessi, col);
+		} while(!AiutanteConsole.chiediConferma("Vuoi davvero puntare questa scommessa: "+scommessa+" ? "));
+
 		return scommessa;		
 	}
 
 	public void mostraSituazioneGenerale(StatoDelGiocoView current) {		
 		System.out.println("Siamo nella fase: "+current.getTipoFaseGiocoFamily());
 		System.out.println("Stanno giocando:\n");
-		
+
 		for(GiocatoreView giocatore : current.getGiocatori()){
 			System.out.println(giocatore.getInformazioniGenerali());
 			System.out.println("\n");
@@ -54,8 +53,8 @@ public class ConsoleView {
 		System.out.println("Mi dispiace "+proprioNome+". Sei stato eliminato!");
 	}
 
-	public boolean chiediConferma(String string) {
-		return AiutanteConsole.chiediConferma(string);
+	public boolean chiediConferma(String domanda, String nomeGiocatore) {
+		return AiutanteConsole.chiediConferma(nomeGiocatore + " " + domanda);
 	}
 
 	public CartaAzione chiediCartaAzione(String nomeGiocatore, List<CartaAzione> carteAzionePossedute ) {
@@ -66,5 +65,12 @@ public class ConsoleView {
 	public Colore chiediScuderia(String proprioNome) {
 		return AiutanteConsole.chiediEnum("Su quale scuderia la vuoi giocare?", Colore.class);
 	}
-
+	
+	public void mostraCorsa(List<Scuderia> scuderie){
+		List<Integer> corsie = new LinkedList<Integer>();
+		for(Scuderia scuderia: scuderie){
+			corsie.add(scuderia.getPosizione());
+		}
+		AiutanteConsole.aggiornaCorsie(corsie);
+	}
 }

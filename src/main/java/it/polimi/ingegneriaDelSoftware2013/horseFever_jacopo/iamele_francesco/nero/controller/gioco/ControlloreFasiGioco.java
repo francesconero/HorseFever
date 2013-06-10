@@ -217,10 +217,15 @@ public class ControlloreFasiGioco {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ANTIORARIA);
 		for (int i=statoDelGioco.getGiocatori().size()-1;i>=0;i--){
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
+			System.out.println("Aggiorno client");
 			aggiornaTuttiIClient();
 			Scommessa scommessa=null;
+			System.out.println("Attendo seconde scommesse.");
 			scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
+			System.out.println("Ricevuta scommessa: "+scommessa);
 			if (scommessa.getDanariScommessi()==0){
+				System.out.println("Giocatore non vuole scommettere.");
+				controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 				continue;
 			}
 			else{

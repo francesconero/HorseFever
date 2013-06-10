@@ -9,6 +9,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -54,6 +55,13 @@ public class FramePrincipale implements FamilyView{
 			public void run() {
 				try {
 					FramePrincipale window = new FramePrincipale();
+					GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+					
+					window.frame.setMaximizedBounds(e.getMaximumWindowBounds());
+
+					window.frame.setExtendedState(window.frame.getExtendedState()|JFrame.MAXIMIZED_BOTH );
+
+					window.frame.setSize(e.getMaximumWindowBounds().width, e.getMaximumWindowBounds().height);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,22 +86,12 @@ public class FramePrincipale implements FamilyView{
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 714, 471);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{73, 0};
-		gridBagLayout.rowHeights = new int[]{130, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		frame.getContentPane().setLayout(gridBagLayout);
+		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
 		
 		panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBorder(new CompoundBorder(new EmptyBorder(10, 10, 10, 10), new CompoundBorder(new LineBorder(new Color(0, 0, 0), 2, true), new EmptyBorder(10, 10, 10, 10))));
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		frame.getContentPane().add(panel, gbc_panel);
+		frame.getContentPane().add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		panel_2 = new JPanel();
@@ -135,10 +133,10 @@ public class FramePrincipale implements FamilyView{
 		panel_1 = new JPanel();
 		panel.add(panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{73, 104, 70, 0};
-		gbl_panel_1.rowHeights = new int[]{130, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWidths = new int[]{299, 116, 303, 0};
+		gbl_panel_1.rowHeights = new int[]{736, 0};
+		gbl_panel_1.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		giocatoriPanel = new GiocatoriPanel();
 		GridBagConstraints gbc_giocatoriPanel = new GridBagConstraints();
@@ -150,7 +148,7 @@ public class FramePrincipale implements FamilyView{
 		
 		tabellonePanel = new TabellonePanel();
 		GridBagConstraints gbc_tabellonePanel = new GridBagConstraints();
-		gbc_tabellonePanel.anchor = GridBagConstraints.NORTHWEST;
+		gbc_tabellonePanel.fill = GridBagConstraints.VERTICAL;
 		gbc_tabellonePanel.insets = new Insets(0, 0, 0, 5);
 		gbc_tabellonePanel.gridx = 1;
 		gbc_tabellonePanel.gridy = 0;

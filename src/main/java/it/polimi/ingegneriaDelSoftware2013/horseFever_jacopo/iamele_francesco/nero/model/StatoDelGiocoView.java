@@ -1,5 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class StatoDelGiocoView implements Serializable {
 	private final int numTurniTotali;
 	private final Map<Giocatore, String> nomi;
 	private final Map<Giocatore, Long> ids;
+	private final List<MossaCorsa> mosseCorsa;
 
 	public StatoDelGiocoView(StatoDelGioco statoDaFiltrare,
 			Giocatore clientReclamante,
@@ -49,6 +52,7 @@ public class StatoDelGiocoView implements Serializable {
 				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero), true);
 		giocatoriView = new ArrayList<GiocatoreView>();
 		oscuraGiocatori(statoDaFiltrare.getGiocatori(), clientReclamante);
+		this.mosseCorsa = statoDaFiltrare.getMosseCorsa();
 	}
 
 	private void oscuraGiocatori(List<Giocatore> giocatoriDaOscurare,
@@ -95,6 +99,10 @@ public class StatoDelGiocoView implements Serializable {
 
 	public GiocatoreView getMioGiocatore() {
 		return mioGiocatore;
+	}
+
+	public List<MossaCorsa> getMosseCorsa() {
+		return mosseCorsa;
 	}
 
 }

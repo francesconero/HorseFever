@@ -51,8 +51,6 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	private final int serverTimeout;
 	private final int heartbeatTimeout;
 
-	private final AtomicBoolean serverRunning = new AtomicBoolean(true);
-
 	private long currentID = 0;
 
 	private final HeartbeatThread heartbeatThread = new HeartbeatThread();
