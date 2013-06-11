@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.xml.sax.SAXException;
 
@@ -127,6 +128,15 @@ public class Risorse {
 
 	public List<CartaMovimento> getCarteMovimento() {
 		return carteMovimento;
+	}
+
+	public CartaAzione getCartaAzione(String nomeDaCercare) {
+		for(CartaAzione out : carteAzione){
+			if(out.getNome().equals(nomeDaCercare)){
+				return out;
+			}
+		} 
+		throw new NoSuchElementException("Non esiste nessuna carta con quel nome!");
 	}
 
 }

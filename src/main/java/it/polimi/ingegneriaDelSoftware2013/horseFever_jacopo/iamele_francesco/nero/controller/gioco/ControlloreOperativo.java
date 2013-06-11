@@ -11,6 +11,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
+
 import java.util.ArrayList;
 import java.util.List;
 /***
@@ -114,10 +115,10 @@ public class ControlloreOperativo {
 				for (int k=0;k<scuderie.get(i).getCarteAzione().get(j).getEffetti().size();k++){
 					if(scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getTipo()==TipoAzione.PHOTOFINISH){
 						if (scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getValori().get(0)==0){
-							if(i==scuderie.size()-1){ // se è l'ultimo elemento ritorna la lista
+							if(i==scuderie.size()-1){ // se ï¿½ l'ultimo elemento ritorna la lista
 								return scuderie;
 							}else{
-								scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (l'interessato sarà ultimo) 
+								scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (l'interessato sarï¿½ ultimo) 
 								return scuderie;
 							}
 						}
@@ -136,7 +137,7 @@ public class ControlloreOperativo {
 		List<Scuderia> scuderieArrivate=new ArrayList<Scuderia>();
 		for (int i=0; i<statoDelGioco.getCorsie().size(); i++){
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
-				System.out.println("è arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
+				System.out.println("ï¿½ arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
 				int posizioneModificata=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
 				statoDelGioco.getCorsie().get(i).setPosizione(posizioneModificata);
@@ -155,7 +156,6 @@ public class ControlloreOperativo {
 		else if(scuderieArrivate.size()==1){ 
 			statoDelGioco.addClassifica(scuderieArrivate.get(0));
 			scuderieArrivate.clear();
-
 		}
 		else{
 			;
@@ -190,9 +190,9 @@ public class ControlloreOperativo {
 	}
 
 	/**
-	 * Questo metodo è decisamente il più complesso del gioco;
+	 * Questo metodo ï¿½ decisamente il piï¿½ complesso del gioco;
 	 * Controlla se tra le scuderie arrivate vi sono carte azione di tipo photofinish e le quotazioni di tutte le scuderie.
-	 * In caso di parità manda la lista al primo giocatore che la deve riordinare a suo piacimento e rimandarla al server.
+	 * In caso di paritï¿½ manda la lista al primo giocatore che la deve riordinare a suo piacimento e rimandarla al server.
 	 * @param statoDelGioco
 	 * @param scuderieArrivate
 	 * @return Lo stato del gioco modificato
@@ -350,7 +350,7 @@ public class ControlloreOperativo {
 	 * e ne applica gli effetti
 	 * @param scuderia
 	 * @param sprint
-	 * @return La scuderia su cui si è chiesto il controllo
+	 * @return La scuderia su cui si ï¿½ chiesto il controllo
 	 * con l'attributo posizione modificato dalla carta o dal normale sprint
 	 */
 	private static Scuderia applicaEffettiSPRINT(Scuderia scuderia, int sprint) { 

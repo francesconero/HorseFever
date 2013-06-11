@@ -1,11 +1,13 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.console;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.MossaCorsaVisitor;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Classifica;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Conflitto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.FineGara;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Movimento;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Partenza;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Photofinish;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Sprint;
 
@@ -13,16 +15,16 @@ import java.util.List;
 
 public class ControlloreConsoleCorsa extends ControlloreConsole implements MossaCorsaVisitor{
 
+	private ControlloreReteClient primoGiocatore;
+	
 	public ControlloreConsoleCorsa(ControlloreConsole controlloreConsoleIniziale) {
 		super(controlloreConsoleIniziale);		
 	}
 
 	@Override
 	protected void controlla() {
+		primoGiocatore = getClientPrimoGiocatore();
 		List<MossaCorsa> lista = getViewGenerica().getMosseCorsa();
-		System.out.println("I cavalli sono alle postazioni di partenza...");
-		view.mostraCorsa(getViewGenerica().getCorsie());
-		System.out.println("Sta per iniziare la corsa: 3...2...1...VIA!");
 		
 		for(MossaCorsa mossaCorsa : lista){
 			mossaCorsa.accept(this);
@@ -35,34 +37,46 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 		
 	}
 
-	public void visita(Movimento movimento) {
-		// TODO Auto-generated method stub
-		
+	public void visita(MossaCorsa movimento) {
+		view.scrivi(movimento.getCommento());
+		view.mostraCorsa(movimento.getPosizioni());
 	}
 
 	public void visita(Sprint sprint) {
-		// TODO Auto-generated method stub
-		
+		view.scrivi(sprint.getCommento());
+		view.mostraCorsa(sprint.getPosizioni());
 	}
 
 	public void visita(Photofinish photofinish) {
-		// TODO Auto-generated method stub
-		
+		view.scrivi(photofinish.getCommento());
+		view.mostraCorsa(photofinish.getPosizioni());
 	}
 
 	public void visita(Conflitto conflitto) {
-		// TODO Auto-generated method stub
-		
+		view.scrivi(conflitto.getCommento());
+		List<Colore> conflittoRisolto = view.risolviConflitto(conflitto.getScuderieInConflitto(), primoGiocatore.getProprioNome());
+		primoGiocatore.risolviConflitto(conflittoRisolto);
+		aggiornaViste();
+		ControlloreConsoleCorsa cCC = new ControlloreConsoleCorsa(this);
+		cCC.controlla();
 	}
 
 	public void visita(Classifica classifica) {
-		// TODO Auto-generated method stub
-		
+		view.scrivi(classifica.getCommento());
+		view.mostraClassifica(classifica.getClassifica());
 	}
 
 	public void visita(FineGara fineGara) {
-		// TODO Auto-generated method stub
-		
+		view.scrivi(fineGara.getCommento());
+		view.mostraCorsa(fineGara.getPosizioni());
+		aggiornaViste();
+		ControlloreConsoleFineTurno cCFT = new ControlloreConsoleFineTurno(this);
+		cCFT.controlla();		
+	}
+
+	public void visita(Partenza partenza) {
+		view.scrivi(partenza.getCommento());
+		view.mostraCorsa(getViewGenerica().getCorsie());
 	}
 	
 }

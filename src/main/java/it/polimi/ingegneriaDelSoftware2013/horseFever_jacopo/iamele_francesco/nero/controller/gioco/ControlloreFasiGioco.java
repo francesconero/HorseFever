@@ -392,6 +392,7 @@ public class ControlloreFasiGioco {
 		preparazione();
 		statoDelGioco.addNumTurno();
 		while(statoDelGioco.getNumTurno()!=statoDelGioco.getNumTurniTotali()){
+			aggiornaTuttiIClient();
 			faseDistribuzioneCarte();
 			faseEliminazioneGiocatore();
 			if(statoDelGioco.getGiocatori().size()==1)break;//se � rimasto un solo giocatore salta alla faseFineDelGioco dove gli verr� attribuita la vittoria

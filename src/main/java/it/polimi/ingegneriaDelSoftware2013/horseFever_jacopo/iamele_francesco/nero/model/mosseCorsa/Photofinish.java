@@ -6,6 +6,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 public class Photofinish extends MossaCorsa {
@@ -13,8 +14,8 @@ public class Photofinish extends MossaCorsa {
 	private final List<Colore> scuderieParimerito;
 	private final int posizioneConflittuale;
 	
-	public Photofinish(String commento, List<Scuderia> scuderieParimerito) {
-		super(commento);
+	public Photofinish(String commento, List<Scuderia> scuderieParimerito,  Map<Scuderia, Integer> nuovePosizioniScuderie) {
+		super(commento, nuovePosizioniScuderie);
 		this.scuderieParimerito = ricavaColori(scuderieParimerito);
 		this.posizioneConflittuale = scuderieParimerito.get(0).getPosizione();
 	}

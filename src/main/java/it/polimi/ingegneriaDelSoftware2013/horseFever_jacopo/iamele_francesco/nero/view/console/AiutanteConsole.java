@@ -112,7 +112,7 @@ public class AiutanteConsole {
 		boolean OK = false;
 		int risp;
 		do{
-			risp = chiediIntero("Inserisci numero corrispondente all'oggetto da selezionare");
+			risp = chiediIntero("Inserisci numero corrispondente all'oggetto da selezionare:");
 			if(valoriPossibili.contains(risp)){
 				OK = true;
 			} else {

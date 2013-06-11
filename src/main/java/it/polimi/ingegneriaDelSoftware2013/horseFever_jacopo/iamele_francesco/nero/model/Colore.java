@@ -7,5 +7,4 @@ public enum Colore {
 	ROSSO,
 	GIALLO,
 	BIANCO
-
 }

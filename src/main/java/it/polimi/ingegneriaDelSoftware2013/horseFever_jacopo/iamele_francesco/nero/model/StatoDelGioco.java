@@ -1,6 +1,5 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ public class StatoDelGioco  {
 	private List<Scuderia> classifica=new ArrayList<Scuderia>();;
 	private List<Scommessa> scommesseFattePrimaFase=new ArrayList<Scommessa>();
 	private List<Scommessa> scommesseFatteSecondaFase=new ArrayList<Scommessa>();
-    private List<MossaCorsa> mosseCorsa=new ArrayList<MossaCorsa>();
 	private final int numTurniTotali;
+	private Giocatore primoGiocatore;
 	
 	public StatoDelGioco(int numTurniTotali){
 	this.numTurniTotali=numTurniTotali;
@@ -130,21 +129,19 @@ public class StatoDelGioco  {
 		int s=r.nextInt(giocatori.size());
 		giocatori.get(s).setPrimoGiocatore(true);
 		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(s));
+		primoGiocatore = giocatori.get(s);
 		giocatoreDiTurno = giocatori.get(s);
 	}
 	
 	public void aggiornaPrimoGiocatore(){
 		giocatori.get(0).setPrimoGiocatore(false);
 		giocatori.get(1).setPrimoGiocatore(true);
+		primoGiocatore = giocatori.get(1);
 		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(1));
 	}
 
-	public List<MossaCorsa> getMosseCorsa() {
-		return mosseCorsa;
-	}
-	
-	public void setMosseCorsa(List<MossaCorsa> mosseCorsa) {
-		this.mosseCorsa = mosseCorsa;
+	public Giocatore getPrimoGiocatore() {
+		return primoGiocatore;
 	}
 	
 }

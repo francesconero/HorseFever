@@ -12,8 +12,8 @@ public class Sprint extends MossaCorsa {
 	
 	private final Map<Colore, Integer> relazioneScuderiaNumeroDiSprint;
 
-	public Sprint(String commento, Map<Scuderia, Integer> relazioneScuderiaNumeroDiSprint) {
-		super(commento);
+	public Sprint(String commento, Map<Scuderia, Integer> relazioneScuderiaNumeroDiSprint,  Map<Scuderia, Integer> nuovePosizioniScuderie) {
+		super(commento, nuovePosizioniScuderie);
 		this.relazioneScuderiaNumeroDiSprint = ricavaColori(relazioneScuderiaNumeroDiSprint);
 	}
 

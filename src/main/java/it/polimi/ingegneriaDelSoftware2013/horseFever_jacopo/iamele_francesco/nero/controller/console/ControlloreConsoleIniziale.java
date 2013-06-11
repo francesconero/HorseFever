@@ -3,6 +3,8 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ServerMain;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.ConsoleView;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.View;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -12,108 +14,115 @@ import java.util.concurrent.Executors;
 
 public class ControlloreConsoleIniziale extends ControlloreConsole {
 
-	public ControlloreConsoleIniziale() {
+	public ControlloreConsoleIniziale(View view) {
+		super(view);
 		this.numeroGiocatori = view.chiediNumeroGiocatori();
-		 executor = Executors.newCachedThreadPool();
-	}	
-	
-	public void controlla(){
+		executor = Executors.newCachedThreadPool();
+	}
+
+	public void controlla() {
 		List<String> nomi;
 		try {
 			nomi = chiediNomi();
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
 		}
-		
-		new Thread("Server"){
+
+		new Thread("Server") {
 			public void run() {
-				ServerMain.main(new String[]{Integer.toString(numeroGiocatori)});
-//				try {
-//					JavaProcess.exec(ServerMain.class, new String[]{Integer.toString(numeroGiocatori)});
-//				} catch (IOException e) {
-//					throw new RuntimeException(e);
-//				} catch (InterruptedException e) {
-//					throw new RuntimeException(e);
-//				}
+				ServerMain.main(new String[] { Integer
+						.toString(numeroGiocatori) });
+				// try {
+				// JavaProcess.exec(ServerMain.class, new
+				// String[]{Integer.toString(numeroGiocatori)});
+				// } catch (IOException e) {
+				// throw new RuntimeException(e);
+				// } catch (InterruptedException e) {
+				// throw new RuntimeException(e);
+				// }
 			};
 		}.start();
-		
-		for(String nome: nomi){
+
+		for (String nome : nomi) {
 			try {
 				utenti.add(new ControlloreReteClient(nome, "127.0.0.1"));
 			} catch (UnknownHostException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		
-		for(ControlloreReteClient utente: utenti){
+
+		for (ControlloreReteClient utente : utenti) {
 			utente.collegaGioco();
 		}
 		
-		aggiornaViste(); //dopo distribuzione carte
-		view.mostraSituazioneGenerale(visteGiocatori.values().iterator().next());
+		aggiornaViste();
 		
-		aggiornaViste(); //dopo eliminazione giocatore
-		
-		controllaEliminati();
-		
-		aggiornaViste(); //attesa prima scomessa
-		
-		ControlloreConsole next = new ControlloreConsoleScommessa(this);
-		next.controlla();
-		
-		System.out.println("GIOCO TERMINATO!");
-		
+		for (int i = 0; i < getViewGenerica().getNumTurniTotali(); i++) {
+			aggiornaViste(); // dopo distribuzione carte
+			view.scrivi("Sta iniziando il turno: "+getViewGenerica().getNumTurno()+"!");
+			view.mostraSituazioneGenerale(visteGiocatori.values().iterator()
+					.next());
+
+			aggiornaViste(); // dopo eliminazione giocatore
+
+			controllaEliminati();
+
+			aggiornaViste(); // attesa prima scomessa
+
+			ControlloreConsole next = new ControlloreConsoleScommessa(this);
+			next.controlla();
+		}
+
+		view.scrivi("GIOCO TERMINATO!");
+
 		System.exit(0);
-		
-		for(ControlloreReteClient utente: utenti){
+
+		for (ControlloreReteClient utente : utenti) {
 			utente.fine();
 		}
 	}
-	
+
 	private void controllaEliminati() {
 		List<GiocatoreView> daControllare = getViewGenerica().getGiocatori();
 		List<ControlloreReteClient> daEliminare = new LinkedList<ControlloreReteClient>();
-		
-		for(ControlloreReteClient client : utenti){
+
+		for (ControlloreReteClient client : utenti) {
 			boolean presente = false;
-			for(GiocatoreView g : daControllare){
-				if(client.getID()==g.getID()){
+			for (GiocatoreView g : daControllare) {
+				if (client.getID() == g.getID()) {
 					presente = true;
 				}
 			}
-			if(!presente){
-				System.out.println("Attenzione bisogna eliminare: "+client);
+			if (!presente) {
+				view.scrivi("Attenzione bisogna eliminare: " + client);
 				daEliminare.add(client);
 				view.eliminaGiocatore(client.getProprioNome(), client.getID());
 			}
 		}
-		
-		for(ControlloreReteClient client : daEliminare){
+
+		for (ControlloreReteClient client : daEliminare) {
 			utenti.remove(client);
 		}
 	}
 
 	private List<String> chiediNomi() throws IOException {
 		List<String> nomi = view.chiediNomi(numeroGiocatori);
-		if(nomi.size()!=numeroGiocatori){
+		if (nomi.size() != numeroGiocatori) {
 			throw new RuntimeException("Numero giocatori errato");
 		}
 		return nomi;
 	}
-	
-	public static void main(String[] args){
-		
+
+	public static void main(String[] args) {
+
 		try {
 			ControlloreConsole cc;
-			cc = new ControlloreConsoleIniziale();
+			cc = new ControlloreConsoleIniziale(new ConsoleView());
 			cc.controlla();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }
-
-

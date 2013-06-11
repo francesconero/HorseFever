@@ -5,14 +5,15 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.util.Map;
 
-public class FineGara extends MossaCorsa {
+public class Partenza extends MossaCorsa {
 
-	public FineGara(String commento, Map<Scuderia, Integer> nuovePosizioniScuderie){
+	public Partenza(String commento,  Map<Scuderia, Integer> nuovePosizioniScuderie) {
 		super(commento, nuovePosizioniScuderie);
 	}
+
 	@Override
 	public void accept(MossaCorsaVisitor mossaCorsaVisitor) {
 		mossaCorsaVisitor.visita(this);
 	}
-
+	
 }

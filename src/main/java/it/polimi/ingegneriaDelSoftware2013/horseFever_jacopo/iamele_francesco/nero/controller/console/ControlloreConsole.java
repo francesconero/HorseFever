@@ -2,7 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.ConsoleView;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.View;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,12 +17,12 @@ public abstract class ControlloreConsole {
 
 	protected List<ControlloreReteClient> utenti = new LinkedList<ControlloreReteClient>();
 	protected Map<ControlloreReteClient, StatoDelGiocoView> visteGiocatori = new HashMap<ControlloreReteClient, StatoDelGiocoView>();
-	protected ConsoleView view = new ConsoleView();
+	protected final View view;
 	protected int numeroGiocatori;
 	protected ExecutorService executor;
 	
-	public ControlloreConsole(){
-		
+	public ControlloreConsole(View view){
+		this.view = view;
 	}
 	
 	public ControlloreConsole(ControlloreConsole controllore) {
@@ -69,6 +69,23 @@ public abstract class ControlloreConsole {
 		}
 		if(out==null){
 			throw new NullPointerException("Non esiste un giocatore di turno?");
+		}
+		return out;
+	}
+	
+protected final ControlloreReteClient getClientPrimoGiocatore(){
+		
+		StatoDelGiocoView viewTemp = getViewGenerica();
+		ControlloreReteClient out = null;
+		Long toCheck = viewTemp.getPrimoGiocatore().getID();
+		
+		for(ControlloreReteClient temp : utenti){
+			if(temp.getID().equals(toCheck)){
+				out = temp;
+			}
+		}
+		if(out==null){
+			throw new NullPointerException("Non esiste un primo giocatore?");
 		}
 		return out;
 	}
