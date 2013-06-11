@@ -6,6 +6,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 
 import java.util.List;
 
@@ -59,6 +60,16 @@ public interface ControlloreUtenti {
 	 *            il nuovo stato del gioco
 	 */
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco);
+	
+	/**
+	 * Aggiorna tutti gli utenti con il nuovo stato del gioco e la storia della corsa
+	 * 
+	 * @param statoDelGioco
+	 *            il nuovo stato del gioco
+	 * @param mosseCorsa
+	 * 				gli avvenimenti della corsa
+	 */
+	public void aggiornaUtenti(StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa);
 	
 	/**
 	 * Conferma un'azione eseguita da un giocatore (ad esempio una scommessa esatta)

@@ -79,6 +79,9 @@ public class Giocatore implements Serializable {
 	public void addDanari(int danariDaAggiungere){
 		this.danari=this.danari+danariDaAggiungere;
 	}
+	public void removeDanari(int danariDaRimuovere){
+		this.danari=this.danari-danariDaRimuovere;
+	}
 
 	public List<Scommessa> getScommesseEffettuate() {
 		return scommesseEffettuate;

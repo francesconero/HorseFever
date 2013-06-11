@@ -178,8 +178,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
 		for (Giocatore g : clients.keySet()) {
-			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,
-					g, nomiClients, IDClients, mosseCorsa);
+			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,g, nomiClients, IDClients, mosseCorsa);
 			Socket temp = clients.get(g);
 			ControlloreRete.inviaOggettoConRisposta(daInviare, temp);
 		}

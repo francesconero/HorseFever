@@ -13,7 +13,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -172,7 +171,7 @@ public class ControlloreFasiGioco {
 			else{
 				statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
 			}
-			while ((scommessa.getDanariScommessi()<(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100))||(segnaliniScommessaFiniti)){
+			while ((scommessa.getDanariScommessi()<(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100))||(segnaliniScommessaFiniti)||(statoDelGioco.getGiocatori().get(i).getDanari()<scommessa.getDanariScommessi())){
 				controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
 				scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 				count=0;
@@ -185,7 +184,9 @@ public class ControlloreFasiGioco {
 				}
 				else{
 					statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
-			}	}
+				}	
+			}
+			statoDelGioco.getGiocatori().get(i).removeDanari(scommessa.getDanariScommessi());
 			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 			statoDelGioco.aggiungiScommesseFattePrimaFase(scommessa);
 			statoDelGioco.getGiocatori().get(i).addScommessa(scommessa);
@@ -249,7 +250,7 @@ public class ControlloreFasiGioco {
 				else{ 
 					statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
 				}
-				while ((scommessa.getDanariScommessi()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)||(segnaliniScommessaFiniti)||(PiazzatoEVincente)){
+				while ((scommessa.getDanariScommessi()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)||(segnaliniScommessaFiniti)||(PiazzatoEVincente)||(statoDelGioco.getGiocatori().get(i).getDanari()<scommessa.getDanariScommessi())){
 					controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
 					scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 					count=0;
@@ -272,6 +273,7 @@ public class ControlloreFasiGioco {
 						statoDelGioco.getCorsie().get(count).removeScommesseDisponibili(1);
 					}
 				}
+				statoDelGioco.getGiocatori().get(i).removeDanari(scommessa.getDanariScommessi());
 				controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 			}
 			statoDelGioco.aggiungiScommesseFatteSecondaFase(scommessa);
@@ -293,7 +295,6 @@ public class ControlloreFasiGioco {
 		statoDelGioco=ControlloreOperativo.applicaEffettiQUOTAZIONEPreCorsa(statoDelGioco);
 		aggiornaTuttiIClient();
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_CORSA);
-		//aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.partenza(statoDelGioco, mazziere);
 		//aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere,controlloreRete);
