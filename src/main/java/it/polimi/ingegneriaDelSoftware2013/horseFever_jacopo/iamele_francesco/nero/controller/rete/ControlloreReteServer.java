@@ -10,6 +10,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
 
@@ -173,6 +174,15 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			ControlloreRete.rispondiNegativamente(s);
 		}
 		return nome;
+	}
+	
+	public void aggiornaUtenti(StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
+		for (Giocatore g : clients.keySet()) {
+			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,
+					g, nomiClients, IDClients, mosseCorsa);
+			Socket temp = clients.get(g);
+			ControlloreRete.inviaOggettoConRisposta(daInviare, temp);
+		}
 	}
 
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco) {
