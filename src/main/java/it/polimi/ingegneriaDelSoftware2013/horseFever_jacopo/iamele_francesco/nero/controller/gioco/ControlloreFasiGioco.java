@@ -286,24 +286,25 @@ public class ControlloreFasiGioco {
 	 * @throws CarteFiniteException
 	 */
 	private void faseCorsa() throws CarteFiniteException{
+		
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE); //il controllore lato client scoprir� tutte le carte
 		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
 		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
-		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.applicaEffettiQUOTAZIONEPreCorsa(statoDelGioco);
 		aggiornaTuttiIClient();
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_CORSA);
-		aggiornaTuttiIClient();
+		//aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.partenza(statoDelGioco, mazziere);
-		aggiornaTuttiIClient();
+		//aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere,controlloreRete);
-		aggiornaTuttiIClient();
+		//aggiornaTuttiIClient();
 		while (statoDelGioco.getClassifica().size()!=statoDelGioco.getCorsie().size()){
 			statoDelGioco=ControlloreOperativo.movimento(statoDelGioco, mazziere,controlloreRete);
-			aggiornaTuttiIClient();
+			//aggiornaTuttiIClient();
 			statoDelGioco=ControlloreOperativo.sprint(statoDelGioco, mazziere,controlloreRete);
-			aggiornaTuttiIClient();
+			//aggiornaTuttiIClient();
 		}
+		
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_PAGAMENTI_NUOVE_QUOTAZIONI);
 		aggiornaTuttiIClient();
 		statoDelGioco=ControlloreOperativo.pagamenti(statoDelGioco);
