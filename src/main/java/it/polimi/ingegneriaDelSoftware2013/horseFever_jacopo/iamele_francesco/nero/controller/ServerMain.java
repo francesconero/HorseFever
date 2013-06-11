@@ -4,7 +4,9 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterministico;
 
 import java.io.IOException;
 
@@ -22,7 +24,16 @@ public class ServerMain
     	ControlloreFasiGioco controlloreGioco = null;
     	try{
     	int numGiocatori=Integer.parseInt(args[0]);
-    	controlloreGioco=new ControlloreFasiGioco(numGiocatori);
+    	if(args.length>1){
+    		String det = args[1];
+    		if(det.equals("-d")){
+    			controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0));    			
+    		}
+    	}
+    	if(controlloreGioco==null){
+    		controlloreGioco=new ControlloreFasiGioco(numGiocatori, new Mazziere());    			    		
+    	}
+    	
     	controlloreGioco.inizia();
     	}
     	catch (NumErratoGiocatoriException e){

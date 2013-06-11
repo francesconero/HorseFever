@@ -6,6 +6,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,39 +20,38 @@ import java.util.List;
  *
  */
 public class Mazziere {
-	private DadoSprint dadoSprint2=new DadoSprint();
-	private DadoSprint dadoSprint1=new DadoSprint();
-	private final List<CartaAzione> carteAzione;
-	private final List<Personaggio> personaggi;
-	private final List<CartaMovimento> carteMovimento;
-	
+	protected final List<CartaAzione> carteAzione;
+	protected final List<Personaggio> personaggi;
+	protected final List<CartaMovimento> carteMovimento;
+	protected Colore coloreDado1 = Colore.BIANCO;
+	protected Colore coloreDado2 = Colore.BIANCO;
 	
 	public Mazziere() throws  IOException{
-		
-		dadoSprint2.lanciaDado();
-		dadoSprint1.lanciaDado();
 		this.personaggi=Risorse.getIInstance().getPersonaggi(); 
 		this.carteAzione=Risorse.getIInstance().getCarteAzione();
-		this.carteMovimento=Risorse.getIInstance().getCarteMovimento();
-		
-		
+		this.carteMovimento=Risorse.getIInstance().getCarteMovimento();		
 	}
 	
-	public DadoSprint getDadoSprint2() {
-		return dadoSprint2;
+	public Colore getColoreDado1(){
+		return coloreDado1;
 	}
 	
-	public void setDadoSprint2(DadoSprint dadoSprint2) {
-		this.dadoSprint2 = dadoSprint2;
+	public Colore getColoreDado2(){
+		return coloreDado2;
 	}
 	
-	public DadoSprint getDadoSprint1() {
-		return dadoSprint1;
+	public void lanciaDado1(){
+		List<Colore> colori = Arrays.asList(Colore.values());
+		Collections.shuffle(colori);
+		coloreDado1 = colori.get(0);
 	}
 	
-	public void setDadoSprint1(DadoSprint dadoSprint1) {
-		this.dadoSprint1 = dadoSprint1;
+	public void lanciaDado2(){
+		List<Colore> colori = Arrays.asList(Colore.values());
+		Collections.shuffle(colori);
+		coloreDado2 = colori.get(0);
 	}
+	
 	public void mischiaCarteAzione(){
 		Collections.shuffle(carteAzione);
 	}
@@ -89,12 +89,15 @@ public class Mazziere {
 	
 	public void resetCarteMovimento() throws  IOException{
 		this.carteMovimento.clear();
-		//this.carteMovimento.addAll(Risorse.getCarteMovimento());
-		
+		this.carteMovimento.addAll(Risorse.getIInstance().getCarteMovimento());		
 	}
 	
 	public void resetCarteAzione() throws  IOException{
 		this.carteAzione.clear();
-		//this.carteAzione.addAll(Risorse.getCarteAzione());
+		this.carteAzione.addAll(Risorse.getIInstance().getCarteAzione());
+	}
+
+	public void shuffle(List<Scuderia> scuderieTemp) {
+		Collections.shuffle(scuderieTemp);
 	}
 }

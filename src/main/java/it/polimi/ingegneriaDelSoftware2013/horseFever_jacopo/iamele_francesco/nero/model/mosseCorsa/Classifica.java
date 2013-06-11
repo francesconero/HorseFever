@@ -6,14 +6,13 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class Classifica extends MossaCorsa {
 
 	private final List<Colore> classifica;
 	
-	public Classifica(String commento, List<Scuderia> classifica, Map<Scuderia, Integer> nuovePosizioniScuderie){
-		super(commento, nuovePosizioniScuderie);
+	public Classifica(String commento, List<Scuderia> classifica){
+		super(commento);
 		this.classifica = ricavaColori(classifica);
 	}
 	

@@ -99,10 +99,12 @@ public class ConsoleView implements View{
 		SortedSet<Colore> sortedScuderie = new TreeSet<Colore>(
 				scuderie.keySet());
 		List<Integer> corsie = new LinkedList<Integer>();
+		List<Colore> colori = new LinkedList<Colore>();
 		for (Colore scuderia : sortedScuderie) {
 			corsie.add(scuderie.get(scuderia));
+			colori.add(scuderia);
 		}
-		AiutanteConsole.aggiornaCorsie(corsie);
+		AiutanteConsole.aggiornaCorsie(corsie, colori);
 	}
 
 	public List<Colore> risolviConflitto(
@@ -150,12 +152,12 @@ public class ConsoleView implements View{
 	}
 
 	public void scrivi(String daScrivere) {
-		System.out.print(daScrivere);
+		System.out.print("[ CONSOLE ] : ");
+		scriviACapo(daScrivere);
 	}
 	
 	private void scriviACapo(Object daScrivere) {
 		scrivi(daScrivere.toString());
-		System.out.println();
 	}
 
 }

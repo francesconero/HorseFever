@@ -97,11 +97,12 @@ public class GiocatoreView implements Serializable {
 		String nomeS = "Giocatore " + ID + ": " + nomeUtente;
 		String personaggioS = "Personaggio: " + personaggio.getNome();
 		String danariS = "Danari: " + danari;
+		String PVS = "Punti vittoria: " + puntiVittoria;
 		String scuderieS = "Scuderia posseduta: " + scuderie.get(0).getColore();
 		String numeroCarte = "Numero carte azione possedute: "
 				+ carteAzione.size();
 
-		String out = nomeS + "\n" + personaggioS + "\n" + danariS + "\n"
+		String out = nomeS + "\n" + personaggioS + "\n" + danariS + "\n" + PVS + "\n"
 				+ scuderieS + "\n" + numeroCarte;
 
 		if (primoGiocatore) {

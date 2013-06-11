@@ -7,6 +7,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Conflitto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.FineGara;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Movimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Partenza;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Photofinish;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Sprint;
@@ -16,28 +17,34 @@ import java.util.List;
 public class ControlloreConsoleCorsa extends ControlloreConsole implements MossaCorsaVisitor{
 
 	private ControlloreReteClient primoGiocatore;
-	
+
 	public ControlloreConsoleCorsa(ControlloreConsole controlloreConsoleIniziale) {
 		super(controlloreConsoleIniziale);		
 	}
 
 	@Override
 	protected void controlla() {
-		primoGiocatore = getClientPrimoGiocatore();
-		List<MossaCorsa> lista = getViewGenerica().getMosseCorsa();
-		
-		for(MossaCorsa mossaCorsa : lista){
-			mossaCorsa.accept(this);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+		System.out.println("Inizia il controllore corsa!");
+		switch (getViewGenerica().getTipoFaseGiocoFamily()) {
+			case F_C_SCOPRICARTAAZIONE:
+				view.scrivi("Ecco i cavalli pronti alla partenza!");
+				view.mostraCorsa(getViewGenerica().getCorsie());
+				aggiornaViste();
+			case F_C_CORSA:
+				primoGiocatore = getClientPrimoGiocatore();
+				List<MossaCorsa> lista = getViewGenerica().getMosseCorsa();
+				System.out.println("Ci sono: "+lista.size()+" mosse corsa");
+				for(MossaCorsa mossaCorsa : lista){
+					mossaCorsa.accept(this);
+				}		
+				break;
+			default:
+				throw new IllegalStateException("Fase non gestibile: " + getViewGenerica().getTipoFaseGiocoFamily());
 		}
-		
 	}
 
-	public void visita(MossaCorsa movimento) {
+	public void visita(Movimento movimento) {
+		view.scrivi(movimento.getPosizioni().toString());
 		view.scrivi(movimento.getCommento());
 		view.mostraCorsa(movimento.getPosizioni());
 	}
@@ -49,7 +56,6 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 
 	public void visita(Photofinish photofinish) {
 		view.scrivi(photofinish.getCommento());
-		view.mostraCorsa(photofinish.getPosizioni());
 	}
 
 	public void visita(Conflitto conflitto) {
@@ -67,16 +73,17 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 	}
 
 	public void visita(FineGara fineGara) {
+		System.out.println("Fine gara!");
 		view.scrivi(fineGara.getCommento());
-		view.mostraCorsa(fineGara.getPosizioni());
 		aggiornaViste();
 		ControlloreConsoleFineTurno cCFT = new ControlloreConsoleFineTurno(this);
 		cCFT.controlla();		
 	}
 
 	public void visita(Partenza partenza) {
+		view.scrivi(partenza.getNuovePosizioniScuderie().toString());
 		view.scrivi(partenza.getCommento());
-		view.mostraCorsa(getViewGenerica().getCorsie());
+		view.mostraCorsa(partenza.getNuovePosizioniScuderie());
 	}
-	
+
 }

@@ -5,6 +5,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.DisconnessioneAnomalaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.RicezioneFallitaException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
@@ -211,6 +212,21 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			Object scommessaPossibile = ControlloreRete.riceviOggetto(temp);
 			if (scommessaPossibile instanceof Scommessa) {
 				return (Scommessa) scommessaPossibile;
+			} else {
+				throw new RicezioneFallitaException();
+			}
+		}
+	}
+
+	public List<Colore> riceviSoluzioneConflitto(Giocatore giocatore) {
+		Socket temp = clients.get(giocatore);
+		if (temp == null) {
+			throw new IllegalArgumentException(
+					"Giocatore non associato ad alcun socket");
+		} else {
+			Object soluzionePossibile = ControlloreRete.riceviOggetto(temp);
+			if (soluzionePossibile instanceof List<?>) {
+				return (List<Colore>) soluzionePossibile;
 			} else {
 				throw new RicezioneFallitaException();
 			}

@@ -6,15 +6,14 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 
 public class Conflitto extends MossaCorsa {
 
 	private final List<Colore> scuderieInConflitto;
 	
-	public Conflitto(String commento, List<Scuderia> scuderieInConflitto, Map<Scuderia, Integer> nuovePosizioniScuderie){
-		super(commento, nuovePosizioniScuderie);
+	public Conflitto(String commento, List<Scuderia> scuderieInConflitto){
+		super(commento);
 		this.scuderieInConflitto = ricavaColori(scuderieInConflitto);
 	}
 	

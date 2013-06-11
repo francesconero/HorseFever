@@ -12,6 +12,7 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 
 	@Override
 	public void controlla() {
+		System.out.println("Inizia il controllore scommesse!");
 		switch (getViewGenerica().getTipoFaseGiocoFamily()) {
 			case F_S_ORARIA:
 				chiediScommesseOrarie();
@@ -59,11 +60,14 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 
 	private void faiScommessa(ControlloreReteClient clientDiTurno) {
 		Scommessa daFare;
-		daFare = view.chiediScommessa(clientDiTurno.getProprioNome());
-		if (!clientDiTurno.scommetti(daFare)) {
-			view.scrivi("La tua scommessa e' stata rifutata! Riprova!");
-			faiScommessa(clientDiTurno);
-		}
+		boolean OK = false;
+		do{
+			daFare = view.chiediScommessa(clientDiTurno.getProprioNome());
+			OK  = clientDiTurno.scommetti(daFare);
+			if(!OK){
+				view.scrivi("La tua scommessa e' stata rifutata! Riprova!");			
+			}
+		}while(!OK);
 	}
 
 }

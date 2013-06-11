@@ -1,5 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -128,13 +130,16 @@ public class AiutanteConsole {
 		for(int i = 0; i < Math.random()*10+5; i ++){
 			posizioni.add((int) (Math.random()*19));
 		}
-		aggiornaCorsie(posizioni);
+		//aggiornaCorsie(posizioni);
 	}
 	
-	public static void aggiornaCorsie(List<Integer> corsie) {
+	public static void aggiornaCorsie(List<Integer> corsie, List<Colore> colori) {
 		System.out.print("|");
+		int j = 0;
 		for(Integer posizioneScuderia : corsie){
-			System.out.print("=====");
+			String abbrScud = colori.get(j).name().substring(0,3); 
+			System.out.print("="+abbrScud+"=");
+			j++;
 		};
 		System.out.print("|");
 		System.out.println();

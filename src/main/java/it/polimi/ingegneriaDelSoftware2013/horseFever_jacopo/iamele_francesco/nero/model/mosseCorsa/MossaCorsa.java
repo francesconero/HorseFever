@@ -20,15 +20,9 @@ public abstract class MossaCorsa implements Serializable {
 	private static final long serialVersionUID = -7875944118880415553L;
 	protected static final int NUMERO_SCUDERIE = Integer.parseInt(Configurazioni.getInstance().getGiocoProperties().getProperty("numeroScuderie"));
 	private String commento;
-	protected final Map<Colore, Integer> nuovePosizioniScuderie;
 	
-	public MossaCorsa(String commento, Map<Scuderia, Integer> nuovePosizioniScuderie){
-		this.commento = commento;
-		if(nuovePosizioniScuderie.size() != NUMERO_SCUDERIE){
-			throw new IllegalArgumentException("Numero di scuderie errato");
-		}else{
-			this.nuovePosizioniScuderie = ricavaColori(nuovePosizioniScuderie);
-		}
+	public MossaCorsa(String commento){
+		this.commento = commento;		
 	}
 	
 	public abstract void  accept(MossaCorsaVisitor mossaCorsaVisitor);
@@ -55,10 +49,6 @@ public abstract class MossaCorsa implements Serializable {
 			out.put(scuderia.getColore(), relazioniScuderia.get(scuderia));
 		}
 		return Collections.unmodifiableMap(out);
-	}
-
-	public Map<Colore, Integer> getPosizioni() {
-		return Collections.unmodifiableMap(nuovePosizioniScuderie);
 	}
 	
 }

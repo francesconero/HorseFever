@@ -58,6 +58,7 @@ public class Scuderia implements Serializable{
 	public void setScommesseDisponibili(int scommesseDisponibili) {
 		this.scommesseDisponibili = scommesseDisponibili;
 	}
+	
 	public void removeScommesseDisponibili(int quantitaDaRimuovere){
 		this.scommesseDisponibili=this.scommesseDisponibili-quantitaDaRimuovere;
 	}
@@ -115,6 +116,13 @@ public class Scuderia implements Serializable{
 		}
 		this.quotazione=this.quotazione+valoreDaAggiungere;
 	}
+
+
+	public void resetNumCicliArrivato() {
+		this.numCicliArrivato = 0;
+	}
+
+
 
 
 	

@@ -168,7 +168,7 @@ public class ControlloreOperativo {
 		else if(scuderieArrivate.size()==1){ 
 			statoDelGioco.addClassifica(scuderieArrivate.get(0));
 			scuderieArrivate.clear();
-			mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));
+			mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 		}
 		else{
 			;
@@ -229,7 +229,7 @@ public class ControlloreOperativo {
 					while(scuderieStessaPosizione.size()>2){
 						if(scuderiaTemp!=null){
 							statoDelGioco.addClassifica(scuderiaTemp.get(0));
-							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));
+							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 							System.out.println("rimosso: "+scuderieArrivate.remove(scuderiaTemp.get(0)));	
 							scuderiaTemp=null;
 						}
@@ -250,34 +250,36 @@ public class ControlloreOperativo {
 										scuderieInConflitto.add(scuderieStessaPosizione.get(i));
 									}
 								}
-								mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto, null));
+								mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
 								controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
 								List<Colore> coloriRicevuti=null;
+								coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
+								controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
 								dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
 								mosseCorsa.clear();
 								for(int i=0;i<scuderieInConflitto.size();i++){
 									statoDelGioco.addClassifica(scuderieInConflitto.get(i));
-									mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));	
+									mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));	
 								}
 								scuderieArrivate.removeAll(scuderieInConflitto);
 								scuderieStessaPosizione.removeAll(scuderieInConflitto);
 							}else{
 								statoDelGioco.addClassifica(scuderieStessaPosizione.get(posizioneScuderia));
-								mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));
+								mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 								scuderieArrivate.remove(scuderieStessaPosizione.get(posizioneScuderia));
 								scuderieStessaPosizione.remove(posizioneScuderia);
 							}
 						}
 					}
 					statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
-					mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));
+					mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 					scuderieArrivate.remove(scuderieStessaPosizione);
 					scuderieStessaPosizione.remove(0);
 				}
 				else{
 					if(scuderiaTemp!=null){
 						statoDelGioco.addClassifica(scuderiaTemp.get(0));
-						mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));
+						mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 						scuderieArrivate.remove(scuderiaTemp.get(0));
 						scuderieStessaPosizione.remove(scuderiaTemp.get(0));
 						scuderiaTemp=null;
@@ -297,20 +299,22 @@ public class ControlloreOperativo {
 									scuderieInConflitto.add(scuderieStessaPosizione.get(i));
 								}
 							}
-							mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto, null));
+							mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
 							controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
 							List<Colore> coloriRicevuti=null;
+							coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
+							controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
 							dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
 							mosseCorsa.clear();
 							for(int i=0;i<scuderieInConflitto.size();i++){
 								statoDelGioco.addClassifica(scuderieInConflitto.get(i));
-								mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));	
+								mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));	
 							}
 							scuderieArrivate.removeAll(scuderieInConflitto);
 							scuderieStessaPosizione.removeAll(scuderieInConflitto);
 						}else{
 							statoDelGioco.addClassifica(scuderieStessaPosizione.get(posizioneScuderia));
-							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica(), null));
+							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 							scuderieArrivate.remove(scuderieStessaPosizione.get(posizioneScuderia));
 							scuderieStessaPosizione.remove(posizioneScuderia);
 						}
@@ -519,6 +523,7 @@ public class ControlloreOperativo {
 	 * @throws CarteFiniteException
 	 */
 	public static StatoDelGioco partenza(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{
+		mosseCorsa.clear();
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
 		Map<Scuderia,Integer> mappaPartenza=new HashMap<Scuderia,Integer>();
@@ -543,10 +548,10 @@ public class ControlloreOperativo {
 		String temp=new String();
 		Map <Scuderia, Integer> mappaSprint= new HashMap<Scuderia, Integer>();
 
-		mazziere.getDadoSprint1().lanciaDado();
+		mazziere.lanciaDado1();
 		int count=0;
 		final int sprintTemp=1;
-		while (mazziere.getDadoSprint1().getColore()!=statoDelGioco.getCorsie().get(count).getColore()){
+		while (mazziere.getColoreDado1()!=statoDelGioco.getCorsie().get(count).getColore()){
 			count++;
 		}
 		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)){
@@ -556,16 +561,16 @@ public class ControlloreOperativo {
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
 			temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
 			System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
+			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 
 		}
-		mazziere.getDadoSprint2().lanciaDado();
-		if(mazziere.getDadoSprint1().getColore()==mazziere.getDadoSprint2().getColore()){
+		mazziere.lanciaDado2();
+		if(mazziere.getColoreDado1()==mazziere.getColoreDado2()){
 			return statoDelGioco;
 		}
 		count=0;
-		while(mazziere.getDadoSprint2().getColore()!=statoDelGioco.getCorsie().get(count).getColore())count++;
+		while(mazziere.getColoreDado2()!=statoDelGioco.getCorsie().get(count).getColore())count++;
 		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)){
 			;
 		}
@@ -576,7 +581,7 @@ public class ControlloreOperativo {
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
 			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 		}
-		mosseCorsa.add(new Sprint(temp,null,mappaSprint));
+		mosseCorsa.add(new Sprint(temp,mappaSprint));
 		controllaArrivo(statoDelGioco,controlloreUtenti);
 		return statoDelGioco;
 	}
@@ -775,5 +780,9 @@ public class ControlloreOperativo {
 			}
 		}
 		return (danariMassimi);
+	}
+
+	public static List<MossaCorsa> getMosseCorsa() {
+		return mosseCorsa;
 	}
 }

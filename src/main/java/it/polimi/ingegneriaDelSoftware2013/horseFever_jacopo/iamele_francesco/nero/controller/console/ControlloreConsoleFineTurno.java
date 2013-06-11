@@ -10,6 +10,7 @@ public class ControlloreConsoleFineTurno extends ControlloreConsole {
 	@Override
 	protected void controlla() {
 		System.out.println("La gara è finita! Ecco la situazione:");
+		aggiornaViste();
 		view.mostraSituazioneGenerale(getViewGenerica());
 	}
 

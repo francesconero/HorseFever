@@ -1,11 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import static org.junit.Assert.assertEquals;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
@@ -14,7 +9,14 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.EffettoAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
-import org.junit.BeforeClass;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterministico;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ControlloreOperativoTest {
@@ -27,9 +29,10 @@ public class ControlloreOperativoTest {
 	private List<Integer> valori=new ArrayList<Integer>();
 	private List<CartaMovimento> carteMovimento=new ArrayList<CartaMovimento>();
 	private List<Integer> movimenti=new ArrayList<Integer>();
+	private long randomSeed = 27;
 	
 	private void inizializzaVariabili()throws NumErratoGiocatoriException, CarteFiniteException, IOException{
-		controlloreFasiGiocoTest=new ControlloreFasiGioco(5);
+		controlloreFasiGiocoTest=new ControlloreFasiGioco(5, new MazziereDeterministico(randomSeed));
 		statoDelGiocoTest=controlloreFasiGiocoTest.getStatoDelGioco();
 		mazziere=controlloreFasiGiocoTest.getMazziere();
 		mazziere.mischiaCarteMovimento();
@@ -69,14 +72,14 @@ public class ControlloreOperativoTest {
 		
 	}
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUpBefore() throws Exception {
+		inizializzaVariabili();
 	}
 
 	
 	@Test
-	public void testPartenza() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {
-		inizializzaVariabili();
+	public void testPartenza() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {		
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
 		statoDelGiocoTest.getCorsie().get(1).addCartaAzione(carteAzionePartenza.get(1));
@@ -103,7 +106,18 @@ public class ControlloreOperativoTest {
 			
 		}
 		assertEquals("le scuderie arrivate devono essere 6",statoDelGiocoTest.getClassifica().size(),statoDelGiocoTest.getCorsie().size());
-	
 	}
+	
+	@After
+	public void tearDownAfter(){
+		carteAzionePartenza=new ArrayList<CartaAzione>();
+		carteAzioneEliminaCarte=new ArrayList<CartaAzione>();
+		effettoAzione=new ArrayList<EffettoAzione>();
+		valori=new ArrayList<Integer>();
+		carteMovimento=new ArrayList<CartaMovimento>();
+		movimenti=new ArrayList<Integer>();
+	}
+	
+	
 
 }

@@ -4,17 +4,16 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 
-import java.util.Collections;
 import java.util.Map;
 
 
 public class Sprint extends MossaCorsa {
 	
-	private final Map<Colore, Integer> relazioneScuderiaNumeroDiSprint;
+	private final Map<Colore, Integer> nuovePosizioniScuderie;
 
-	public Sprint(String commento, Map<Scuderia, Integer> relazioneScuderiaNumeroDiSprint,  Map<Scuderia, Integer> nuovePosizioniScuderie) {
-		super(commento, nuovePosizioniScuderie);
-		this.relazioneScuderiaNumeroDiSprint = ricavaColori(relazioneScuderiaNumeroDiSprint);
+	public Sprint(String commento, Map<Scuderia, Integer> nuovePosizioniScuderie) {
+		super(commento);
+		this.nuovePosizioniScuderie = ricavaColori(nuovePosizioniScuderie);
 	}
 
 	@Override
@@ -22,8 +21,8 @@ public class Sprint extends MossaCorsa {
 		mossaCorsaVisitor.visita(this);
 	}
 
-	public Map<Colore, Integer> getRelazioneScuderiaNumeroDiSprint() {
-		return Collections.unmodifiableMap(relazioneScuderiaNumeroDiSprint);
+	public Map<Colore, Integer> getPosizioni() {
+		return nuovePosizioniScuderie;
 	}
 
 }

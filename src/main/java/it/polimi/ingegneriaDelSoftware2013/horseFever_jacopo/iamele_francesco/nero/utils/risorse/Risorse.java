@@ -119,15 +119,15 @@ public class Risorse {
 	}
 
 	public List<Personaggio> getPersonaggi() {
-		return personaggi;
+		return new LinkedList<Personaggio>(personaggi);
 	}
 
 	public List<CartaAzione> getCarteAzione() {
-		return carteAzione;
+		return new LinkedList<CartaAzione>(carteAzione);
 	}
 
 	public List<CartaMovimento> getCarteMovimento() {
-		return carteMovimento;
+		return new LinkedList<CartaMovimento>(carteMovimento);
 	}
 
 	public CartaAzione getCartaAzione(String nomeDaCercare) {

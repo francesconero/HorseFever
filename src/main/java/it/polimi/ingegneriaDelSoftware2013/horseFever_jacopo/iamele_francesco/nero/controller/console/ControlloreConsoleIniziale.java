@@ -26,22 +26,7 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 			nomi = chiediNomi();
 		} catch (IOException e1) {
 			throw new RuntimeException(e1);
-		}
-
-		new Thread("Server") {
-			public void run() {
-				ServerMain.main(new String[] { Integer
-						.toString(numeroGiocatori) });
-				// try {
-				// JavaProcess.exec(ServerMain.class, new
-				// String[]{Integer.toString(numeroGiocatori)});
-				// } catch (IOException e) {
-				// throw new RuntimeException(e);
-				// } catch (InterruptedException e) {
-				// throw new RuntimeException(e);
-				// }
-			};
-		}.start();
+		}	
 
 		for (String nome : nomi) {
 			try {
@@ -114,10 +99,24 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 	}
 
 	public static void main(String[] args) {
-
-		try {
-			ControlloreConsole cc;
-			cc = new ControlloreConsoleIniziale(new ConsoleView());
+		final ControlloreConsole cc;
+		cc = new ControlloreConsoleIniziale(new ConsoleView());
+		new Thread("Server") {
+			public void run() {
+				ServerMain.main(new String[] { Integer
+						.toString(cc.getNumeroGiocatori()) });
+				// try {
+				// JavaProcess.exec(ServerMain.class, new
+				// String[]{Integer.toString(numeroGiocatori)});
+				// } catch (IOException e) {
+				// throw new RuntimeException(e);
+				// } catch (InterruptedException e) {
+				// throw new RuntimeException(e);
+				// }
+			};
+		}.start();
+		
+		try {			
 			cc.controlla();
 		} catch (Exception e) {
 			e.printStackTrace();

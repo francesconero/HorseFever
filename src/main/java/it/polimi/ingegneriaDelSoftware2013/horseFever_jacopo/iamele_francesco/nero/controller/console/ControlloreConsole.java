@@ -53,7 +53,7 @@ public abstract class ControlloreConsole {
 				throw new RuntimeException(e);
 			}
 		}
-		
+		System.out.println("Aggiornata vista, siamo alla fase: "+getViewGenerica().getTipoFaseGiocoFamily());
 	}
 	
 	protected final ControlloreReteClient getClientDiTurno(){
@@ -127,6 +127,10 @@ protected final ControlloreReteClient getClientPrimoGiocatore(){
 			return out;
 		}
 
+	}
+
+	public int getNumeroGiocatori() {
+		return numeroGiocatori;
 	}
 
 }
