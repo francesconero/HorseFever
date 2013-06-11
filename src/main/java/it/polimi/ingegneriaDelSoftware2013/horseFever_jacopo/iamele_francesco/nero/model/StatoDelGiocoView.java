@@ -4,6 +4,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class StatoDelGiocoView implements Serializable {
 	private final List<Scuderia> corsie;
 	private final List<Scuderia> classifica;
 	private final int numTurno;
+	private final GiocatoreView primoGiocatore;
 	private final GiocatoreView giocatoreDiTurno;
 	private final GiocatoreView mioGiocatore;
 	private final int numTurniTotali;
@@ -47,12 +49,22 @@ public class StatoDelGiocoView implements Serializable {
 		this.ids = ids;
 		this.mioGiocatore = new GiocatoreView(clientReclamante,
 				nomi.get(clientReclamante), ids.get(clientReclamante), false);
+		
 		Giocatore giocatoreDiTurnoIntero = statoDaFiltrare.getGiocatoreDiTurno();
+		Giocatore primoGiocatoreIntero = statoDaFiltrare.getPrimoGiocatore();
+		
 		this.giocatoreDiTurno = new GiocatoreView(giocatoreDiTurnoIntero,  nomi
 				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero), true);
+		this.primoGiocatore = new GiocatoreView(primoGiocatoreIntero,  nomi
+				.get(primoGiocatoreIntero), ids.get(primoGiocatoreIntero), true);
 		giocatoriView = new ArrayList<GiocatoreView>();
 		oscuraGiocatori(statoDaFiltrare.getGiocatori(), clientReclamante);
-		this.mosseCorsa = statoDaFiltrare.getMosseCorsa();
+		this.mosseCorsa = new LinkedList<MossaCorsa>();
+	}
+
+	public StatoDelGiocoView(StatoDelGioco statoDelGioco, Giocatore g, Map<Giocatore, String> nomiClients, Map<Giocatore, Long> iDClients, List<MossaCorsa> mosseCorsa) {
+		this(statoDelGioco, g, nomiClients, iDClients);
+		this.mosseCorsa.addAll(mosseCorsa);
 	}
 
 	private void oscuraGiocatori(List<Giocatore> giocatoriDaOscurare,
@@ -103,6 +115,10 @@ public class StatoDelGiocoView implements Serializable {
 
 	public List<MossaCorsa> getMosseCorsa() {
 		return mosseCorsa;
+	}
+
+	public GiocatoreView getPrimoGiocatore() {
+		return primoGiocatore;
 	}
 
 }
