@@ -18,7 +18,7 @@ public class Scuderia implements Serializable{
 	private boolean arrivato;
 	private List<CartaAzione> carteAzione=new ArrayList<CartaAzione>();
 	private int quotazione;
-	private int numCicliArrivato=0; //rappresenta da quanto tempo la scuderia � arrivata 
+	 
 	
 	
 	public Scuderia(Colore colore,int scommesseDisponibili){
@@ -97,12 +97,7 @@ public class Scuderia implements Serializable{
 	}
 	
 	
-	public void addNumCicliArrivato(int valoreDaAggiungere){
-		this.numCicliArrivato=this.numCicliArrivato+valoreDaAggiungere;
-	}
-	public int getNumCicliArrivato(){
-		return numCicliArrivato;
-	}
+	
 
 	/***
 	 * Questo metodo, oltre ad aggiungere un valore alla quotazione,
@@ -118,10 +113,7 @@ public class Scuderia implements Serializable{
 	}
 
 
-	public void resetNumCicliArrivato() {
-		this.numCicliArrivato = 0;
-	}
-
+	
 
 
 

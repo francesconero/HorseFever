@@ -40,8 +40,11 @@ public class ControlloreOperativo {
 	 * @return la quotazione massima
 	 */
 	private static int quotazioneMassima(List<Scuderia> scuderie){
-		int quotazioneMassima=7;
+		int quotazioneMassima=8;
+		
+		
 		for(int i=0;i<scuderie.size();i++){
+			
 			if(quotazioneMassima>scuderie.get(i).getQuotazione()){
 				quotazioneMassima=scuderie.get(i).getQuotazione();
 			}
@@ -153,12 +156,7 @@ public class ControlloreOperativo {
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
 				int posizioneModificata=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
 				statoDelGioco.getCorsie().get(i).setPosizione(posizioneModificata);
-				statoDelGioco.getCorsie().get(i).addNumCicliArrivato(1);
 				scuderieArrivate.add(statoDelGioco.getCorsie().get(i));
-			}
-			else if(statoDelGioco.getCorsie().get(i).isArrivato()==true){
-				statoDelGioco.getCorsie().get(i).addNumCicliArrivato(1);
-				System.out.println("cavallo "+statoDelGioco.getCorsie().get(i).getColore()+" arrivato da "+statoDelGioco.getCorsie().get(i).getNumCicliArrivato());
 			}
 			else{
 				continue;
@@ -203,16 +201,16 @@ public class ControlloreOperativo {
 	}
 
 	/**
-	 * Questo metodo ï¿½ decisamente il piï¿½ complesso del gioco;
+	 * Questo metodo e' decisamente il piu' complesso del gioco;
 	 * Controlla se tra le scuderie arrivate vi sono carte azione di tipo photofinish e le quotazioni di tutte le scuderie.
-	 * In caso di paritï¿½ manda la lista al primo giocatore che la deve riordinare a suo piacimento e rimandarla al server.
+	 * In caso di parita' manda la lista al primo giocatore che la deve riordinare a suo piacimento e rimandarla al server.
 	 * @param statoDelGioco
 	 * @param scuderieArrivate
 	 * @return Lo stato del gioco modificato
 	 */
 	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate,ControlloreUtenti controlloreUtenti){
 		System.out.println("assegno classifica a "+scuderieArrivate.size()+" scuderie");
-
+		boolean assegnatoArrayConFotoFinishNegativo=false;
 		while(scuderieArrivate.size()>0){
 			int posizioneMassima=posizioneMassima(scuderieArrivate);
 			List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
@@ -226,18 +224,35 @@ public class ControlloreOperativo {
 				List<Scuderia> scuderieConCartaNegativa=scuderiaConCartaPhotoFinishNegativa(statoDelGioco, scuderieStessaPosizione);
 				int quotazioneMassima=quotazioneMassima(scuderieStessaPosizione);
 				if(scuderieConCartaNegativa!=null){
-					while(scuderieStessaPosizione.size()>2){
+					while(scuderieStessaPosizione.size()>1){
 						if(scuderiaTemp!=null){
 							statoDelGioco.addClassifica(scuderiaTemp.get(0));
 							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 							System.out.println("rimosso: "+scuderieArrivate.remove(scuderiaTemp.get(0)));	
+							System.out.println("rimosso: "+scuderieConCartaNegativa.remove(scuderiaTemp.get(0)));
+							System.out.println("rimosso:"+scuderieStessaPosizione.remove(scuderiaTemp.get(0)));
 							scuderiaTemp=null;
 						}
 						else{
-							quotazioneMassima=quotazioneMassima(scuderieStessaPosizione);
+							if(!assegnatoArrayConFotoFinishNegativo){
+								scuderieStessaPosizione=scuderieConCartaNegativa;
+								assegnatoArrayConFotoFinishNegativo=true;
+							}
+							if(scuderieStessaPosizione.size()==1){// assegna la quotazione della scuderia con la carta negativa
+								quotazioneMassima=quotazioneMassima(scuderieStessaPosizione);
+							}
+							else{
+								List<Scuderia> scuderieSenzaQuellaNeg = new ArrayList<Scuderia>();
+								for(int i=0;i<scuderieStessaPosizione.size()-1;i++){
+									scuderieSenzaQuellaNeg.add(scuderieStessaPosizione.get(i));
+								}
+								quotazioneMassima=quotazioneMassima(scuderieSenzaQuellaNeg);
+								scuderieSenzaQuellaNeg.clear();
+							}
 							int count=0;
 							int posizioneScuderia=0;
-							for(int i=0;i<scuderieStessaPosizione.size();i++){
+							for(int i=0;i<scuderieStessaPosizione.size()-1;i++){//l'ultimo elemento ha la carta azione fotofinish negativa
+								
 								if(scuderieStessaPosizione.get(i).getQuotazione()==quotazioneMassima){
 									count++;posizioneScuderia=i;
 								}
@@ -245,7 +260,7 @@ public class ControlloreOperativo {
 							}
 							if(count>1){
 								List<Scuderia> scuderieInConflitto=new ArrayList<Scuderia>();
-								for(int i=0;i<scuderieStessaPosizione.size();i++){
+								for(int i=0;i<scuderieStessaPosizione.size()-1;i++){
 									if(scuderieStessaPosizione.get(i).getQuotazione()==quotazioneMassima){
 										scuderieInConflitto.add(scuderieStessaPosizione.get(i));
 									}
@@ -271,9 +286,10 @@ public class ControlloreOperativo {
 							}
 						}
 					}
+					System.out.println("la grandezza di scudStessaPos è "+scuderieStessaPosizione.size());
 					statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
 					mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
-					scuderieArrivate.remove(scuderieStessaPosizione);
+					scuderieArrivate.remove(scuderieStessaPosizione.get(0));
 					scuderieStessaPosizione.remove(0);
 				}
 				else{
@@ -547,23 +563,21 @@ public class ControlloreOperativo {
 	public static StatoDelGioco sprint(StatoDelGioco statoDelGioco,Mazziere mazziere, ControlloreUtenti controlloreUtenti){
 		String temp=new String();
 		Map <Scuderia, Integer> mappaSprint= new HashMap<Scuderia, Integer>();
-
 		mazziere.lanciaDado1();
 		int count=0;
 		final int sprintTemp=1;
 		while (mazziere.getColoreDado1()!=statoDelGioco.getCorsie().get(count).getColore()){
 			count++;
 		}
-		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)){
-			; //se il cavallo e' arrivato da almeno un ciclo non applica lo sprint
+		if(statoDelGioco.getCorsie().get(count).isArrivato()){
+			;
 		}
 		else{
-			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
-			temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-			System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
-			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
-
+		Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
+		temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+		System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+		statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
+		mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 		}
 		mazziere.lanciaDado2();
 		if(mazziere.getColoreDado1()==mazziere.getColoreDado2()){
@@ -571,12 +585,12 @@ public class ControlloreOperativo {
 		}
 		count=0;
 		while(mazziere.getColoreDado2()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-		if((statoDelGioco.getCorsie().get(count).isArrivato())&&(statoDelGioco.getCorsie().get(count).getNumCicliArrivato()>1)){
+		if(statoDelGioco.getCorsie().get(count).isArrivato()){
 			;
 		}
 		else{
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
-			temp=temp+(new String("/nil cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
+			temp=temp+(new String("\nil cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
 			System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
 			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
@@ -654,9 +668,9 @@ public class ControlloreOperativo {
 				for (int k=0;k<cartaTemp.getEffetti().size();k++){
 					if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.CARTE_AZIONE){
 						if (cartaTemp.getEffetti().get(k).getValori().get(0)==1){
-							carteDaRimuovere=cartePositive(carteDaControllare);
+							carteDaRimuovere.addAll(carteNegative(carteDaControllare));
 						}else{
-							carteDaRimuovere=carteNegative(carteDaControllare);
+							carteDaRimuovere.addAll(cartePositive(carteDaControllare));
 						}
 					}
 				}
@@ -741,8 +755,12 @@ public class ControlloreOperativo {
 	public static StatoDelGioco nuoveQuotazioni(StatoDelGioco statoDelGioco){
 		int j=2;
 		for(int i=0;i<statoDelGioco.getClassifica().size();i++){
-			if(statoDelGioco.getClassifica().get(i).getQuotazione()>(i+j))statoDelGioco.getCorsie().get(i).addQuotazione(-1);
-			else if(statoDelGioco.getClassifica().get(i).getQuotazione()<(i+j))statoDelGioco.getCorsie().get(i).addQuotazione(1);
+			if(statoDelGioco.getClassifica().get(i).getQuotazione()>(i+j)){
+				statoDelGioco.getClassifica().get(i).addQuotazione(-1);
+			}
+			else if(statoDelGioco.getClassifica().get(i).getQuotazione()<(i+j)){
+				statoDelGioco.getClassifica().get(i).addQuotazione(1);
+			}
 			else{
 				;
 			}
