@@ -2,7 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ final class LoaderRisorseGUI extends DefaultHandler{
 	
 	private SAXParser saxParser;
 
-	private Map<String, String> out = new HashMap<String, String>();
+	private Map<String, String> out = new LinkedHashMap<String, String>();
 
 	private String nome;
 	private String percorso;

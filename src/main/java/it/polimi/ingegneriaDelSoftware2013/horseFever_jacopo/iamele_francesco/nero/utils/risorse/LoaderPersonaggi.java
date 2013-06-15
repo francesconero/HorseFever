@@ -4,7 +4,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ final class LoaderPersonaggi extends DefaultHandler{
 	
 	private SAXParser saxParser;
 
-	private Map<Personaggio, String> out = new HashMap<Personaggio, String>();
+	private Map<Personaggio, String> out = new LinkedHashMap<Personaggio, String>();
 
 	private String nome;
 	private int danari;

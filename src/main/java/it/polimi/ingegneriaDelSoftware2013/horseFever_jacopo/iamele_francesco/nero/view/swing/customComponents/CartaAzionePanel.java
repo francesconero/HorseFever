@@ -1,155 +1,108 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.FormatoFileErratoException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Personaggio;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.customLayouts.AspectRatioLayout;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.LinkedList;
-import java.util.List;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class CartaAzionePanel extends JPanel {
 	
-	private static class CartaAzionePanelCreator implements Runnable {
-
-		private CartaAzionePanel panel;
-		private CartaAzione cartaAzione;
-
-		public CartaAzionePanelCreator(CartaAzione cartaAzione) {
-			this.cartaAzione = cartaAzione;
-		}
-
-		public void run() {
-			JFrame temp = new JFrame();
-			temp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			panel  = new CartaAzionePanel(cartaAzione);
-			temp.getContentPane().add(panel);
-			temp.pack();
-			temp.setVisible(true);
-			System.out.println(panel.getImagePanel().getSize());
-		}
-		
-		public CartaAzionePanel getGiocatorePanel(){
-			return panel;
-		}
-
-	}
+	private JLabel lblNewLabel;
 	private ImagePanel imagePanel;
 	private JPanel holder;
 	
 	private final CartaAzione cartaAzioneAssociata;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel;
 	
 	public CartaAzionePanel(CartaAzione cartaAzione) {
 		setBackground(Color.WHITE);
 		holder = new JPanel();
+		holder.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		holder.setMinimumSize(new Dimension(250, 400));
+		holder.setPreferredSize(new Dimension(250, 400));
 		holder.setBackground(Color.LIGHT_GRAY);
 		holder.setForeground(Color.BLACK);
-		holder.setBorder(new LineBorder(Color.BLACK, 2));
-		setBorder(new LineBorder(new Color(0, 0, 0), 5));
-		setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
+		setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 5), new EmptyBorder(15, 15, 15, 15)));
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		holder.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		add(holder);
+		GridBagLayout gbl_holder = new GridBagLayout();
+		gbl_holder.columnWidths = new int[]{100, 0};
+		gbl_holder.rowHeights = new int[]{10, 29, 329, 14, 10, 0};
+		gbl_holder.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_holder.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		holder.setLayout(gbl_holder);
+		
+		lblNewLabel = new JLabel("Nome Giocatore");
+		lblNewLabel.setFont(new Font("Kalinga", Font.PLAIN, 18));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 1;
+		holder.add(lblNewLabel, gbc_lblNewLabel);
 		
 		JPanel imageHolder = new JPanel();
+		imageHolder.setBorder(new EmptyBorder(10, 10, 10, 10));
 		imageHolder.setOpaque(false);
 		imagePanel = new ImagePanel(Risorse.getIInstance().getImmagine(cartaAzione));
-		imagePanel.getLayout();
+		FlowLayout flowLayout = (FlowLayout) imagePanel.getLayout();
 		imagePanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		
-		JButton btnNewButton = new JButton("GIOCA CARTA");
-		btnNewButton.setEnabled(false);
-		
-		lblNewLabel_1 = new JLabel("Carta Azione");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		lblNewLabel = new JLabel("New label");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		GroupLayout groupLayout = new GroupLayout(holder);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnNewButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-						.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-						.addComponent(imageHolder, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel_1)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(imageHolder, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton)
-					.addGap(15))
-		);
-		imageHolder.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		imageHolder.setLayout(new AspectRatioLayout());
 		imageHolder.add(imagePanel);
-		groupLayout.setAutoCreateContainerGaps(true);
-		groupLayout.setAutoCreateGaps(true);
-		holder.setLayout(groupLayout);
-		holder.setMaximumSize(getPreferredSize());
-		add(holder);
+		GridBagConstraints gbc_imageHolder = new GridBagConstraints();
+		gbc_imageHolder.fill = GridBagConstraints.BOTH;
+		gbc_imageHolder.insets = new Insets(0, 0, 5, 0);
+		gbc_imageHolder.gridx = 0;
+		gbc_imageHolder.gridy = 2;
+		holder.add(imageHolder, gbc_imageHolder);
 		this.cartaAzioneAssociata = cartaAzione;
 		aggiorna();
 	}
 	
 	public void aggiorna(){
-		lblNewLabel.setText(cartaAzioneAssociata.getNome());
+		GiocatoreView giocatore = null;// = cartaAzioneAssociata;
+		utenteLabel().setText(giocatore.getNomeUtente());
+		String l = "";
+		int i = 0;
+		for(Scuderia s : giocatore.getScuderie()){
+			i++;
+			l += s.getColore().name();
+			if(i<giocatore.getScuderie().size())
+				l += "; ";
+		}
+	}
+	
+	protected JLabel utenteLabel() {
+		return lblNewLabel;
 	}
 	
 	public static void main(String[] args) throws FormatoFileErratoException, IOException{
-		List<Scuderia> scuderie = new LinkedList<Scuderia>();
-		scuderie.add(new Scuderia(Colore.BLU, 5));
-		List<CartaAzione> carte = new LinkedList<CartaAzione>();
-		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
-		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25, false);
-		CartaAzionePanelCreator gPC = new CartaAzionePanelCreator(Risorse.getIInstance().getCarteAzione().get((int) (Math.random()*18)));
-		try {
-			SwingUtilities.invokeAndWait(gPC);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new CartaAzionePanel(Risorse.getIInstance().getCartaAzione("Globus Obscuros"));
 	}
 	
 	protected ImagePanel getImagePanel() {
 		return imagePanel;
-	}
-	
-	public CartaAzione getCartaAzioneAssociata(){
-		return cartaAzioneAssociata;
 	}
 	
 	public JPanel getHolder() {

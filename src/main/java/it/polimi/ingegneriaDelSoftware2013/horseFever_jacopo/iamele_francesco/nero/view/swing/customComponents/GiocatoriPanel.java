@@ -30,12 +30,12 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 public class GiocatoriPanel extends JPanel implements MouseListener {
+	private static final String proprietàSelezionato = "SELEZIONATO";
 	private JPanel panel_1;
 	private HashMap<GiocatoreView, GiocatorePanel> panelGiocatori = new HashMap<GiocatoreView, GiocatorePanel>();
 	private GiocatoreView selezionato = null;
 	
 	private static class GiocatoriPanelCreator implements Runnable {
-
 		private GiocatoriPanel panel;
 		private JFrame temp;
 
@@ -55,6 +55,7 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		public void pack() {
 			temp.pack();
 		}
+
 
 	}
 	
@@ -166,11 +167,13 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 			if(selezionato!=null){
 				panelGiocatori.get(selezionato).seleziona(false);
 			}
+			firePropertyChange(proprietàSelezionato, selezionato,  pannelloCliccato.getGiocatoreAssociato());
 			selezionato = pannelloCliccato.getGiocatoreAssociato();
 			pannelloCliccato.seleziona(true);
 		} else {
 			if(selezionato!=null){
 				panelGiocatori.get(selezionato).seleziona(false);
+				firePropertyChange(proprietàSelezionato, selezionato,  null);
 				selezionato = null;
 			}
 		}

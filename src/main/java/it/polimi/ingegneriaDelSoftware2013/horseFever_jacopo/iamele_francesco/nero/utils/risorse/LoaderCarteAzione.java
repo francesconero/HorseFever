@@ -6,7 +6,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +24,7 @@ final class LoaderCarteAzione extends DefaultHandler {
 
 	private SAXParser saxParser;
 
-	private Map<CartaAzione, String> out = new HashMap<CartaAzione, String>();
+	private Map<CartaAzione, String> out = new LinkedHashMap<CartaAzione, String>();
 	private List<EffettoAzione> effettiTemp = new LinkedList<EffettoAzione>();
 	private String nome;
 	private char lettera;
@@ -98,9 +98,7 @@ final class LoaderCarteAzione extends DefaultHandler {
 			if (letteraPresente) {
 				out.put(new CartaAzione(nome, lettera, effettiTemp, false, false),immagine);
 			} else {
-
 				out.put(new CartaAzione(nome, lettera, effettiTemp, false, false),immagine);
-
 			}
 		} else if (qName.equals("Effetto")) {
 			effettiTemp.add(new EffettoAzione(tipoAzione, valori));

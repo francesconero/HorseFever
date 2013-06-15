@@ -2,6 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
@@ -17,6 +18,8 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +41,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
-public class FramePrincipale implements FamilyView{
+public class FramePrincipale implements FamilyView, PropertyChangeListener {
 
 	private JFrame frame;
 	private List<FramePrincipaleObserver> osservatori = new LinkedList<FramePrincipaleObserver>();
@@ -135,6 +138,7 @@ public class FramePrincipale implements FamilyView{
 		gbc_giocatoriPanel.insets = new Insets(0, 0, 0, 5);
 		gbc_giocatoriPanel.gridx = 0;
 		gbc_giocatoriPanel.gridy = 0;
+		giocatoriPanel.addPropertyChangeListener(this);
 		panel_1.add(giocatoriPanel, gbc_giocatoriPanel);
 		
 		tabellonePanel = new TabellonePanel();
@@ -238,5 +242,13 @@ public class FramePrincipale implements FamilyView{
 	
 	public static void main(String[] args){
 		new FramePrincipale();
+	}
+	
+	public void propertyChange(PropertyChangeEvent evt) {
+		if(evt.getSource().equals(giocatoriPanel)){
+			if(evt.getPropertyName().equals("SELEZIONATO")){
+				attivitaPanel.mano((GiocatoreView)evt.getNewValue());
+			}
+		}
 	}
 }

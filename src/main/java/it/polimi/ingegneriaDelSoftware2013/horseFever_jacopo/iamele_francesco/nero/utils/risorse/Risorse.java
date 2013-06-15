@@ -6,7 +6,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +22,9 @@ import org.xml.sax.SAXException;
 public class Risorse {
 	
 	private static Risorse risorse = null;
-	private Map<Personaggio, String> immaginiPersonaggi = new HashMap<Personaggio, String>();
-	private Map<CartaAzione, String> immaginiCarteAzione = new HashMap<CartaAzione, String>();
-	private Map<String, String> immaginiGeneriche = new HashMap<String, String>();
+	private Map<Personaggio, String> immaginiPersonaggi = new LinkedHashMap<Personaggio, String>();
+	private Map<CartaAzione, String> immaginiCarteAzione = new LinkedHashMap<CartaAzione, String>();
+	private Map<String, String> immaginiGeneriche = new LinkedHashMap<String, String>();
 	private final List<CartaAzione> carteAzione;
 	private final List<Personaggio> personaggi;
 	private final List<CartaMovimento> carteMovimento;

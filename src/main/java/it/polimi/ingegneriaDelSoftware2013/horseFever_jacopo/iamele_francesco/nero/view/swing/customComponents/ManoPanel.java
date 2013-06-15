@@ -1,5 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -42,6 +44,11 @@ public class ManoPanel extends JPanel {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		setPreferredSize(new Dimension(299, 303));
+	}
+
+	public void aggiorna(GiocatoreView newValue) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
