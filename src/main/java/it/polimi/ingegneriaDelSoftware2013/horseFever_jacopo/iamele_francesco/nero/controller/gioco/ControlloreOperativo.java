@@ -228,9 +228,9 @@ public class ControlloreOperativo {
 						if(scuderiaTemp!=null){
 							statoDelGioco.addClassifica(scuderiaTemp.get(0));
 							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
-							System.out.println("rimosso: "+scuderieArrivate.remove(scuderiaTemp.get(0)));	
-							System.out.println("rimosso: "+scuderieConCartaNegativa.remove(scuderiaTemp.get(0)));
-							System.out.println("rimosso:"+scuderieStessaPosizione.remove(scuderiaTemp.get(0)));
+							scuderieArrivate.remove(scuderiaTemp.get(0));	
+							scuderieConCartaNegativa.remove(scuderiaTemp.get(0));
+							scuderieStessaPosizione.remove(scuderiaTemp.get(0));
 							scuderiaTemp=null;
 						}
 						else{
@@ -260,7 +260,7 @@ public class ControlloreOperativo {
 							}
 							if(count>1){
 								List<Scuderia> scuderieInConflitto=new ArrayList<Scuderia>();
-								for(int i=0;i<scuderieStessaPosizione.size()-1;i++){
+								for(int i=0;i<scuderieStessaPosizione.size()-1;i++){//l'ultimo elemento ha la carta azione fotofinish negativa
 									if(scuderieStessaPosizione.get(i).getQuotazione()==quotazioneMassima){
 										scuderieInConflitto.add(scuderieStessaPosizione.get(i));
 									}

@@ -38,6 +38,7 @@ public class ControlloreOperativoTest {
 	private List<Integer> valori=new ArrayList<Integer>();
 	private List<CartaMovimento> carteMovimento=new ArrayList<CartaMovimento>();
 	private List<Integer> movimenti=new ArrayList<Integer>();
+	private List<CartaAzione> carteAzione= new ArrayList<CartaAzione>();
 	private long randomSeed = 27;
 	
 	private void inizializzaVariabili()throws NumErratoGiocatoriException, CarteFiniteException, IOException{
@@ -46,6 +47,14 @@ public class ControlloreOperativoTest {
 		mazziere=controlloreFasiGiocoTest.getMazziere();
 		mazziere.mischiaCarteMovimento();
 		mazziere.mischiaCarteAzione();
+		try{
+			while(true){
+				carteAzione.add(mazziere.popCartaAzione());
+			}
+			
+		}catch (CarteFiniteException e){
+			System.out.println("Carte Azione Finite!! Ho caricato "+carteAzione.size()+" carteAzione");
+		}
 		statoDelGiocoTest.assegnaCasualmentePrimoGiocatore();
 		valori.add(2);
 		effettoAzioneQUOTAZIONE.add(new EffettoAzione(TipoAzione.QUOTAZIONE, valori));
@@ -104,8 +113,8 @@ public class ControlloreOperativoTest {
 
 	
 	@Test
-	public void testPartenza() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {		
-		System.out.println("####같testPartenza같####");
+	public void testPartenzaECorsa() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {		
+		System.out.println("####같testPartenzaECorsa같####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
 		statoDelGiocoTest.getCorsie().get(1).addCartaAzione(carteAzionePartenza.get(1));
@@ -131,7 +140,7 @@ public class ControlloreOperativoTest {
 			statoDelGiocoTest=ControlloreOperativo.sprint(statoDelGiocoTest, mazziere,null);
 			
 		}
-		assertEquals("le scuderie arrivate devono essere 6",statoDelGiocoTest.getClassifica().size(),statoDelGiocoTest.getCorsie().size());
+		assertEquals("le scuderie arrivate devono essere 6",statoDelGiocoTest.getClassifica().size(),statoDelGiocoTest.getCorsie().size()); 
 	}
 	
 	@Test
@@ -268,6 +277,52 @@ public class ControlloreOperativoTest {
 		assertEquals("al terzo posto ci deve essere la scuderia GIALLA",Colore.GIALLO,statoDelGiocoTest.getClassifica().get(2).getColore());
 		assertEquals("all'ultimo posto ci deve essere la scuderia NERA",Colore.NERO,statoDelGiocoTest.getClassifica().get(5).getColore());
 	}
+	
+	@Test
+	public void testFotoFinishConCartaAzionePositiva(){
+		System.out.println("####같testFotoFinishConCartaAzionePositiva같####");
+		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
+			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(1)); 
+			}
+		}
+		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
+			statoDelGiocoTest.getCorsie().get(i).setPosizione(12);
+			
+		}
+		statoDelGiocoTest=ControlloreOperativo.sprint(statoDelGiocoTest, mazziere, null);
+		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
+			System.out.println("Scuderia: "+statoDelGiocoTest.getCorsie().get(i).getColore()+" in posizione "+statoDelGiocoTest.getCorsie().get(i).getPosizione()+" con quotazione "+statoDelGiocoTest.getCorsie().get(i).getQuotazione());
+			System.out.println(i+" Scuderia: "+statoDelGiocoTest.getClassifica().get(i).getColore()+" in posizione "+statoDelGiocoTest.getClassifica().get(i).getPosizione()+" con quotazione "+statoDelGiocoTest.getClassifica().get(i).getQuotazione());
+		}
+		assertEquals("al terzo posto ci deve essere la scuderia GIALLA",Colore.GIALLO,statoDelGiocoTest.getClassifica().get(2).getColore());
+		
+	}
+	
+	@Test
+	public void testEliminaCarte(){
+		System.out.println("####같testEliminaCarte같####");
+		int posizione=0;
+		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
+			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
+				posizione=i;
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(0));
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(1));
+			}
+		}
+		statoDelGiocoTest=ControlloreOperativo.eliminaCarte(statoDelGiocoTest);
+		assertEquals("la scuderia gialla non deve avere carte azione",0,statoDelGiocoTest.getCorsie().get(posizione).getCarteAzione().size());
+	}
+	
+	@Test
+	public void testCarteAzioneTraguardo(){
+		System.out.println("####같testCarteAzioneTraguardo같####");
+		
+		
+	}
+	
+	
+	
 	
 	@After
 	public void tearDownAfter(){

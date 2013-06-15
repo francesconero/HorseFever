@@ -71,8 +71,8 @@ public class Mazziere {
 	}
 	
 	public CartaAzione popCartaAzione() throws CarteFiniteException{
+		if(carteAzione.size()==0) throw new CarteFiniteException();
 		CartaAzione cartaDaPassare= carteAzione.remove(0);
-		if(cartaDaPassare==null) throw new CarteFiniteException();
 		return cartaDaPassare;
 	}
 	
