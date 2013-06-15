@@ -17,8 +17,6 @@ public class ControlloreConsoleAlterazione extends ControlloreConsole {
 	protected void controlla() {
 		System.out.println("Inizia il controllore alterazione!");
 		chiediCarteAzione();
-		ControlloreConsoleScommessa ccS2 = new ControlloreConsoleScommessa(this);
-		ccS2.controlla();
 	}
 
 	private void chiediCarteAzione() {

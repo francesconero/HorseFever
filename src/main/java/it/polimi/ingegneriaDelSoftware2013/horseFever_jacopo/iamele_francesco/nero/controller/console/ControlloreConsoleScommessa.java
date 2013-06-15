@@ -16,13 +16,9 @@ public class ControlloreConsoleScommessa extends ControlloreConsole {
 		switch (getViewGenerica().getTipoFaseGiocoFamily()) {
 			case F_S_ORARIA:
 				chiediScommesseOrarie();
-				ControlloreConsoleAlterazione ccA = new ControlloreConsoleAlterazione(this);
-				ccA.controlla();
 				break;
 			case F_S_ANTIORARIA:
 				chiediScommesseAntiorarie();
-				ControlloreConsoleCorsa cCC = new ControlloreConsoleCorsa(this);
-				cCC.controlla();
 				break;
 			default:
 				throw new IllegalStateException("Fase non gestibile: " + getViewGenerica().getTipoFaseGiocoFamily());

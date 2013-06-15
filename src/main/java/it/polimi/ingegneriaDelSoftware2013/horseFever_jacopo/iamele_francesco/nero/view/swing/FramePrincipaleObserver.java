@@ -4,7 +4,9 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoScommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
-public interface FamilyViewObserver {
+public interface FramePrincipaleObserver {
+	
+	public void pronto();
 	
 	public void scommessa(Scuderia scuderia, int danari, TipoScommessa tipoScommessa);
 	

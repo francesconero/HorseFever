@@ -35,4 +35,37 @@ public class Personaggio implements Serializable{
 		return out;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + danari;
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + quotazioneAssociata;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Personaggio other = (Personaggio) obj;
+		if (danari != other.danari)
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (quotazioneAssociata != other.quotazioneAssociata)
+			return false;
+		return true;
+	}
+	
+	
+
 }

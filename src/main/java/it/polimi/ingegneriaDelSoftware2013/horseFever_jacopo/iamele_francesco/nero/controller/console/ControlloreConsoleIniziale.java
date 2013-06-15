@@ -56,6 +56,14 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 
 			ControlloreConsole next = new ControlloreConsoleScommessa(this);
 			next.controlla();
+			next = new ControlloreConsoleAlterazione(next);
+			next.controlla();
+			next = new ControlloreConsoleScommessa(next);
+			next.controlla();
+			next = new ControlloreConsoleCorsa(next);
+			next.controlla();
+			next = new ControlloreConsoleFineTurno(next);
+			next.controlla();
 		}
 
 		view.scrivi("GIOCO TERMINATO!");

@@ -13,7 +13,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -29,6 +28,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Implementazione network del {@link ControlloreUtenti} Parte del controllore
@@ -57,15 +59,15 @@ public class ControlloreReteServer implements ControlloreUtenti {
 
 	private final HeartbeatThread heartbeatThread = new HeartbeatThread();
 
+	private final AtomicInteger counter = new AtomicInteger(0);
+	private final ReentrantLock lock = new ReentrantLock();
+	private final Condition threadsFinished = lock.newCondition();
 	/**
 	 * Inizializza un controllore network lato server, caricando varie
 	 * impostazioni da file. NON mette in ascolto il server. Per quello vedi
 	 * {@link #accettaUtenti(List) accettaClients}.
 	 */
 	public ControlloreReteServer() {
-		
-		heartbeatThread.setUncaughtExceptionHandler(GestoreEccezioni.getInstance());
-		
 		portaServer = Integer.parseInt(Configurazioni.getInstance()
 				.getServerProperties().getProperty("porta"));
 		portaHeartbeat = Integer.parseInt(Configurazioni.getInstance()
@@ -87,12 +89,28 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	 */
 	public void accettaUtenti(List<Giocatore> giocatori) {
 		System.out.println("Attendo " + giocatori.size() + " giocatori...");
-		for (Giocatore g : giocatori) {
-			SocketHolder sockets = apriSocket();
-			assegnaGiocatore(sockets, g);
-		}
 
 		heartbeatThread.start();
+
+		for (Giocatore g : giocatori) {
+			apriSocket(g);
+		}
+
+		if(counter.get()>0){
+			lock.lock();
+			try{
+				if(counter.get()>0){
+					try {
+						threadsFinished.await();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			} finally {
+				lock.unlock();
+			}
+		}
+
 
 		System.out.println("Si sono collegati i seguenti giocatori: ");
 		for (String nome : nomiClients.values()) {
@@ -100,22 +118,30 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 	}
 
-	private void assegnaGiocatore(SocketHolder sockets, Giocatore g) {
+	private void assegnaGiocatore(SocketHolder sockets, Giocatore g) {		
 		Socket s = sockets.mainSocket;
 		Socket heartbeatSocket = sockets.heartbeatSocket;
 
-		String nome = ricavaNome(s);
-		long ID = getNewID();
+		long ID;
+		synchronized (clientsHeartbeat) {
+			ID = getNewID();
+			clientsHeartbeat.put(g, heartbeatSocket);
+		}
 
-		System.out.println("Aggiungo giocatore " + nome);
-		clients.put(g, s);
-		clientsHeartbeat.put(g, heartbeatSocket);
-		nomiClients.put(g, nome);
-		IDClients.put(g, ID);
+		String nome = ricavaNome(s);
+
+		synchronized (clientsHeartbeat) {
+			System.out.println("Aggiungo giocatore " + nome);
+			clients.put(g, s);
+			nomiClients.put(g, nome);
+			IDClients.put(g, ID);
+		}
+
 		ControlloreRete.inviaOggettoConRisposta(ID, s); // assegna ID al client
 	}
 
-	private SocketHolder apriSocket() {
+
+	private SocketHolder apriSocket(Giocatore g) {
 		ServerSocket accettore = null;
 		ServerSocket heartbeatAccettore = null;
 
@@ -142,6 +168,8 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			}
 			holder.mainSocket = accettato;
 			holder.heartbeatSocket = heartbeatAccettato;
+			counter.incrementAndGet();
+			new Thread(new AssegnamentoThread(holder, g)).start();
 		} catch (IOException e) {
 			throw new AttesaUtentiFallitaException(
 					"Errore durante l'attesa dei client", e);
@@ -176,7 +204,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 		return nome;
 	}
-	
+
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
 		for (Giocatore g : clients.keySet()) {
 			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,g, nomiClients, IDClients, mosseCorsa);
@@ -186,7 +214,6 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	}
 
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco) {
-
 		if (!heartbeatThread.isAlive()) {
 			DisconnessioneAnomalaException disconnesso = heartbeatThread.eccezione;
 
@@ -278,6 +305,32 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		private Socket heartbeatSocket;
 	}
 
+	private class AssegnamentoThread implements Runnable{
+
+		private SocketHolder socketHolder;
+		private Giocatore giocatore;
+
+		public AssegnamentoThread(SocketHolder socketHolder, Giocatore giocatore){
+			this.socketHolder = socketHolder;
+			this.giocatore = giocatore;
+		}
+
+		public void run() {
+			assegnaGiocatore(socketHolder, giocatore);
+			int numberOfUnfinishedThreads = counter.decrementAndGet();
+			assert(numberOfUnfinishedThreads>=0);
+			lock.lock();
+			try{
+				if(numberOfUnfinishedThreads==0){
+					threadsFinished.signalAll();
+				}
+			} finally {
+				lock.unlock();
+			}
+		}
+
+	}
+
 	private class HeartbeatThread extends Thread {
 		private AtomicBoolean esegui = new AtomicBoolean(true);
 		private DisconnessioneAnomalaException eccezione = null;
@@ -311,11 +364,13 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		@Override
 		public void run() {
 
-			for (Socket heartbeatSocket : clientsHeartbeat.values()) {				
-				heartBeatThreads.add(new SingleHeartBeat(heartbeatSocket));
-			}
-
 			while (esegui.get()) {
+				synchronized (clientsHeartbeat) {
+					heartBeatThreads.clear();
+					for (Socket heartbeatSocket : clientsHeartbeat.values()) {				
+						heartBeatThreads.add(new SingleHeartBeat(heartbeatSocket));
+					}
+				}
 				List<Future<String>> results;
 				try {
 					results = clientsExecutor.invokeAll(heartBeatThreads);
@@ -333,6 +388,12 @@ public class ControlloreReteServer implements ControlloreUtenti {
 						clientsExecutor.shutdownNow();
 						throw new RuntimeException(e);
 					}
+				}
+				
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
 		}

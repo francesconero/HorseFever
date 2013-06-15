@@ -20,10 +20,18 @@ public class ServerMain
 {
     public static void main( String[] args ) 
     {
-    	Thread.currentThread().setUncaughtExceptionHandler(GestoreEccezioni.getInstance());
+    	Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioni.getInstance());
+    	
     	ControlloreFasiGioco controlloreGioco = null;
     	try{
-    	int numGiocatori=Integer.parseInt(args[0]);
+    	int numGiocatori;
+		
+    	if(args.length>0){
+    	numGiocatori=Integer.parseInt(args[0]);
+    	} else {
+    	numGiocatori = 2;
+    	}
+		
     	if(args.length>1){
     		String det = args[1];
     		if(det.equals("-d")){
@@ -35,30 +43,15 @@ public class ServerMain
     	}
     	
     	controlloreGioco.inizia();
-    	}
-    	catch (NumErratoGiocatoriException e){
-    		e.printStackTrace();
-    		System.err.println("numero giocatori non valido");    		
-    	}
-    	catch (NumberFormatException e){
-    		e.printStackTrace();
-    		System.err.println("l'argomento deve essere un numero intero");
-    	} 
-    	catch (CarteFiniteException e) {
-			e.printStackTrace();
-			System.err.println("carte esaurite");
-		} 
-    	catch (AttesaUtentiFallitaException e) {
-			e.printStackTrace();
-			System.err.println("attesa client fallita");
+    	} catch (AttesaUtentiFallitaException e) {
+			throw new RuntimeException(e);
+		} catch (CarteFiniteException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (NumErratoGiocatoriException e) {
+			throw new RuntimeException(e);
 		}
-    	catch (IOException e){
-    		e.printStackTrace();
-    		System.exit(-1);
-    	}
-    	catch (RuntimeException e){
-    		e.printStackTrace();
-    	}
     	
     }
 }

@@ -2,5 +2,5 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 	<entry key="portaHeartbeat">5001</entry>
-	<entry key="heartbeatTimeout">5000</entry>
+	<entry key="heartbeatTimeout">10000</entry>
 </properties>

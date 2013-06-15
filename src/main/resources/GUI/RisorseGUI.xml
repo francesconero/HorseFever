@@ -3,4 +3,16 @@
 <ROOT>
 	<Risorsa
 		percorso="src/main/resources/immagini/FamilyGame/Tabellone.jpg"
-		nome="Tabellone" /></ROOT>
+		nome="Tabellone" /><Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaBianca.jpg"
+		nome="SegnalinoQuotazioneBianco" /><Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaBlu.jpg"
+		nome="SegnalinoQuotazioneBlu" /><Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaGialla.jpg"
+		nome="SegnalinoQuotazioneGiallo" /><Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaNera.jpg"
+		nome="SegnalinoQuotazioneNero" /><Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaRossa.jpg"
+		nome="SegnalinoQuotazioneRosso" /><Risorsa
+		percorso="src/main/resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaVerde.jpg"
+		nome="SegnalinoQuotazioneVerde" /></ROOT>

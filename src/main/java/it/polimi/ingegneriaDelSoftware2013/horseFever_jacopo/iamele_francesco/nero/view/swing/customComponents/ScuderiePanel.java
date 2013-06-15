@@ -47,7 +47,7 @@ public class ScuderiePanel extends JPanel {
 		setBackground(Color.ORANGE);
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new Dimension(2, 600));
-		scrollPane.setMinimumSize(new Dimension(23, 500));
+		scrollPane.setMinimumSize(new Dimension(23, 200));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);

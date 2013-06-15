@@ -9,7 +9,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -66,8 +65,6 @@ public class ControlloreReteClient implements ControlloreUtenteSingolo {
 	 */
 	public ControlloreReteClient(String proprioNome, String nomeHost)
 			throws UnknownHostException {
-		
-		heartbeatThread.setUncaughtExceptionHandler(GestoreEccezioni.getInstance());
 		
 		indirizzoServer = InetAddress.getByName(nomeHost);
 		portaServer = Integer.parseInt(Configurazioni.getInstance()

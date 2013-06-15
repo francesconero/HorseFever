@@ -3,9 +3,13 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import java.lang.Thread.UncaughtExceptionHandler;
 
 public class GestoreEccezioni implements UncaughtExceptionHandler {
-	public static GestoreEccezioni instance;
+	protected static GestoreEccezioni instance;
 	
-	public void uncaughtException(Thread arg0, Throwable arg1) {
+	protected GestoreEccezioni(){
+		
+	}
+	
+	public synchronized void uncaughtException(Thread arg0, Throwable arg1) {
 		arg1.printStackTrace();
 		System.exit(-1);
 	}

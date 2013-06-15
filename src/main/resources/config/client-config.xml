@@ -3,5 +3,5 @@
 <properties>
 	<entry key="tentativiConnessione">5</entry>
 	<entry key="portaServer">5000</entry>
-	<entry key="timeoutRispostaHeartbeat">1000</entry>
+	<entry key="timeoutRispostaHeartbeat">5000</entry>
 </properties>

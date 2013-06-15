@@ -8,23 +8,28 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.customLayouts.AspectRatioLayout;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class GiocatorePanel extends JPanel {
@@ -44,7 +49,6 @@ public class GiocatorePanel extends JPanel {
 			temp.getContentPane().add(panel);
 			temp.pack();
 			temp.setVisible(true);
-			System.out.println(panel.getImagePanel().getSize());
 		}
 		
 		public GiocatorePanel getGiocatorePanel(){
@@ -61,95 +65,126 @@ public class GiocatorePanel extends JPanel {
 	private JPanel holder;
 	
 	private final GiocatoreView giocatoreAssociato;
+	private JPanel panel_1;
 	
 	public GiocatorePanel(GiocatoreView giocatore) {
 		setBackground(Color.WHITE);
 		holder = new JPanel();
+		holder.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		holder.setMinimumSize(new Dimension(250, 400));
+		holder.setPreferredSize(new Dimension(250, 400));
 		holder.setBackground(Color.LIGHT_GRAY);
 		holder.setForeground(Color.BLACK);
-		holder.setBorder(new LineBorder(Color.BLACK, 2));
-		setBorder(new LineBorder(new Color(0, 0, 0), 5));
-		setLayout(new FlowLayout(FlowLayout.CENTER, 15, 15));
+		setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 5), new EmptyBorder(15, 15, 15, 15)));
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		holder.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		add(holder);
+		GridBagLayout gbl_holder = new GridBagLayout();
+		gbl_holder.columnWidths = new int[]{100, 0};
+		gbl_holder.rowHeights = new int[]{10, 29, 329, 14, 10, 0};
+		gbl_holder.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_holder.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		holder.setLayout(gbl_holder);
 		
 		lblNewLabel = new JLabel("Nome Giocatore");
 		lblNewLabel.setFont(new Font("Kalinga", Font.PLAIN, 18));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		JLabel lblNewLabel_1 = new JLabel("Nome Personaggio:");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		JLabel lblDanari = new JLabel("Danari");
-		lblDanari.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblDanari.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		JLabel lblScuderia = new JLabel("Scuderia");
-		lblScuderia.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblScuderia.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		lblNewLabel_2 = new JLabel("New Label");
-		
-		lblNewLabel_3 = new JLabel("New label");
-		
-		lblNewLabel_4 = new JLabel("New label");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 1;
+		holder.add(lblNewLabel, gbc_lblNewLabel);
 		
 		JPanel imageHolder = new JPanel();
+		imageHolder.setBorder(new EmptyBorder(10, 10, 10, 10));
 		imageHolder.setOpaque(false);
 		imagePanel = new ImagePanel(Risorse.getIInstance().getImmagine(giocatore.getPersonaggio()));
 		FlowLayout flowLayout = (FlowLayout) imagePanel.getLayout();
 		imagePanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		
-		GroupLayout groupLayout = new GroupLayout(holder);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(imageHolder, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-						.addComponent(lblNewLabel, Alignment.TRAILING, 0, 169, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel_1)
-								.addComponent(lblDanari)
-								.addComponent(lblScuderia))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel_2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_3, 0, 55, Short.MAX_VALUE)
-								.addComponent(lblNewLabel_4, 0, 55, Short.MAX_VALUE))))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(imageHolder, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_1)
-						.addComponent(lblNewLabel_2))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblDanari)
-						.addComponent(lblNewLabel_3))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblScuderia)
-						.addComponent(lblNewLabel_4))
-					.addGap(11))
-		);
-		imageHolder.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		imageHolder.setLayout(new AspectRatioLayout());
 		imageHolder.add(imagePanel);
-		groupLayout.setAutoCreateContainerGaps(true);
-		groupLayout.setAutoCreateGaps(true);
-		holder.setLayout(groupLayout);
-		holder.setMaximumSize(getPreferredSize());
-		add(holder);
+		GridBagConstraints gbc_imageHolder = new GridBagConstraints();
+		gbc_imageHolder.fill = GridBagConstraints.BOTH;
+		gbc_imageHolder.insets = new Insets(0, 0, 5, 0);
+		gbc_imageHolder.gridx = 0;
+		gbc_imageHolder.gridy = 2;
+		holder.add(imageHolder, gbc_imageHolder);
+		
+		panel_1 = new JPanel();
+		panel_1.setOpaque(false);
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_1.fill = GridBagConstraints.BOTH;
+		gbc_panel_1.gridx = 0;
+		gbc_panel_1.gridy = 3;
+		holder.add(panel_1, gbc_panel_1);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[]{10, 73, 169, 10, 0};
+		gbl_panel_1.rowHeights = new int[]{14, 14, 14, 0};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_1.setLayout(gbl_panel_1);
+		
+		JLabel lblNewLabel_1 = new JLabel("Personaggio:");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 1;
+		gbc_lblNewLabel_1.gridy = 0;
+		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		lblNewLabel_2 = new JLabel("New Label");
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 2;
+		gbc_lblNewLabel_2.gridy = 0;
+		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		JLabel lblDanari = new JLabel("Danari");
+		lblDanari.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDanari.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblDanari = new GridBagConstraints();
+		gbc_lblDanari.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblDanari.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDanari.gridx = 1;
+		gbc_lblDanari.gridy = 1;
+		panel_1.add(lblDanari, gbc_lblDanari);
+		
+		lblNewLabel_3 = new JLabel("New label");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_3.gridx = 2;
+		gbc_lblNewLabel_3.gridy = 1;
+		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		JLabel lblScuderia = new JLabel("Scuderia");
+		lblScuderia.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblScuderia.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblScuderia = new GridBagConstraints();
+		gbc_lblScuderia.anchor = GridBagConstraints.NORTHWEST;
+		gbc_lblScuderia.insets = new Insets(0, 0, 0, 5);
+		gbc_lblScuderia.gridx = 1;
+		gbc_lblScuderia.gridy = 2;
+		panel_1.add(lblScuderia, gbc_lblScuderia);
+		
+		lblNewLabel_4 = new JLabel("New label");
+		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel_4.fill = GridBagConstraints.VERTICAL;
+		gbc_lblNewLabel_4.gridx = 2;
+		gbc_lblNewLabel_4.gridy = 2;
+		panel_1.add(lblNewLabel_4, gbc_lblNewLabel_4);
 		this.giocatoreAssociato = giocatore;
 		aggiorna();
 	}
+	
 	public void aggiorna(){
 		GiocatoreView giocatore = giocatoreAssociato;
 		utenteLabel().setText(giocatore.getNomeUtente());

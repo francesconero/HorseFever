@@ -107,15 +107,30 @@ public class Risorse {
 	}
 
 	public String getImmagine(Personaggio personaggio) {
-		return immaginiPersonaggi.get(personaggio);
+		String out = immaginiPersonaggi.get(personaggio); 
+		if(out==null){
+			throw new RuntimeException("Nessuna immagine trovata per il personaggio " + personaggio.getNome());
+		} else {
+			return out;
+		}
 	}
 
 	public String getImmagine(CartaAzione cartaAzione) {
-		return immaginiCarteAzione.get(cartaAzione);
+		String out = immaginiCarteAzione.get(cartaAzione);; 
+		if(out==null){
+			throw new RuntimeException("Nessuna immagine trovata per la carta azione " + cartaAzione.getNome());
+		} else {
+			return out;
+		}
 	}
 	
 	public String getImmagine(String string) {
-		return immaginiGeneriche.get(string);
+		String out = immaginiGeneriche.get(string);
+		if(out==null){
+			throw new RuntimeException("Nessuna immagine associata a quella stringa " + string);
+		} else {
+			return out;
+		}
 	}
 
 	public List<Personaggio> getPersonaggi() {

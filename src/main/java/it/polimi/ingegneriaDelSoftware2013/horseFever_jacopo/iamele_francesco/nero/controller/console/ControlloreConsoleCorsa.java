@@ -75,9 +75,7 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 	public void visita(FineGara fineGara) {
 		System.out.println("Fine gara!");
 		view.scrivi(fineGara.getCommento());
-		aggiornaViste();
-		ControlloreConsoleFineTurno cCFT = new ControlloreConsoleFineTurno(this);
-		cCFT.controlla();		
+		aggiornaViste();	
 	}
 
 	public void visita(Partenza partenza) {

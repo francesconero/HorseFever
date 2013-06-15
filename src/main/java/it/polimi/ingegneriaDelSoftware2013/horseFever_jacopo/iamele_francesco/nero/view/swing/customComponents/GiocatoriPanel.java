@@ -6,7 +6,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Personaggio;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 
 import java.awt.BorderLayout;
@@ -38,12 +37,7 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 	private static class GiocatoriPanelCreator implements Runnable {
 
 		private GiocatoriPanel panel;
-		private List<GiocatoreView> giocatori;
 		private JFrame temp;
-
-		public GiocatoriPanelCreator(List<GiocatoreView> giocatori) {
-			this.giocatori = giocatori;
-		}
 
 		public void run() {
 			temp = new JFrame();
@@ -78,7 +72,7 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		panel_1.setBackground(Color.ORANGE);
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(299, 383));
+		setPreferredSize(new Dimension(350, 383));
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.NORTH);
@@ -91,59 +85,66 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		panel.setMaximumSize(newMaximumSize);
 	}
 	
-	private void aggiorna(List<GiocatoreView> giocatori) {
-		List<GiocatoreView> toDelete = new LinkedList<GiocatoreView>();
-		List<GiocatoreView> toAdd = new LinkedList<GiocatoreView>();
-		for(GiocatoreView g: panelGiocatori.keySet()){
-			if(!giocatori.contains(g)){
-				toDelete.add(g);
+	public void aggiorna(final List<GiocatoreView> giocatori) {
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			public void run() {
+				List<GiocatoreView> toDelete = new LinkedList<GiocatoreView>();
+				List<GiocatoreView> toAdd = new LinkedList<GiocatoreView>();
+				for(GiocatoreView g: panelGiocatori.keySet()){
+					if(!giocatori.contains(g)){
+						toDelete.add(g);
+					}
+				}
+				for(GiocatoreView g: giocatori){
+					if(!panelGiocatori.containsKey(g)){
+						toAdd.add(g);
+						System.out.println("Aggiungo giocatore");
+					}
+				}
+				for(GiocatoreView g: toDelete){
+					if(g.equals(selezionato)){
+						selezionato=null;
+					}
+					panel_1.remove(panelGiocatori.remove(g).getParent());
+					System.out.println("Rimuovo giocatore");
+				}
+				for(GiocatoreView g: toAdd){
+					panelGiocatori.put(g, new GiocatorePanel(g));
+					JPanel holder = new JPanel();
+					holder.setBackground(Color.RED);
+					holder.setOpaque(false);
+					holder.add(panelGiocatori.get(g));
+					Dimension newSize = panelGiocatori.get(g).getPreferredSize();
+					newSize.width += 10;
+					newSize.height += 10;
+					holder.setPreferredSize(newSize );
+					holder.setMaximumSize(newSize);
+					panelGiocatori.get(g).addMouseListener(GiocatoriPanel.this);
+					panel_1.add(holder);
+				}
+				panel_1.revalidate();
+				panel_1.repaint();
 			}
-		}
-		for(GiocatoreView g: giocatori){
-			if(!panelGiocatori.containsKey(g)){
-				toAdd.add(g);
-			}
-		}
-		for(GiocatoreView g: toDelete){
-			if(g.equals(selezionato)){
-				selezionato=null;
-			}
-			panel_1.remove(panelGiocatori.remove(g).getParent());
-		}
-		for(GiocatoreView g: toAdd){
-			panelGiocatori.put(g, new GiocatorePanel(g));
-			JPanel holder = new JPanel();
-			holder.setBackground(Color.RED);
-			holder.setOpaque(false);
-			holder.add(panelGiocatori.get(g));
-			Dimension newSize = panelGiocatori.get(g).getPreferredSize();
-			newSize.width += 10;
-			newSize.height += 10;
-			holder.setPreferredSize(newSize );
-			holder.setMaximumSize(newSize);
-			panelGiocatori.get(g).addMouseListener(this);
-			panel_1.add(holder);
-		}
-		panel_1.revalidate();
-		panel_1.repaint();
+		});
+		
 	}
 
 	public static void main(String[] args) throws FormatoFileErratoException, IOException, InvocationTargetException, InterruptedException{
 		List<Scuderia> scuderie = new LinkedList<Scuderia>();
 		scuderie.add(new Scuderia(Colore.BLU, 5));
-		List<CartaAzione> carte = new LinkedList<CartaAzione>();
 		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
 		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25, false);
 		List<GiocatoreView> listGiocatori = new LinkedList<GiocatoreView>();
 		listGiocatori.add(giocatore);
-		GiocatoriPanelCreator gPC = new GiocatoriPanelCreator(listGiocatori);
+		GiocatoriPanelCreator gPC = new GiocatoriPanelCreator();
 		SwingUtilities.invokeAndWait(gPC);
 		while(true){
-			long sleepTime = 5000;
-			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25, true));
+			long sleepTime = 1000;
+			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 251, true));
 			gPC.getGiocatorePanel().aggiorna(listGiocatori);
 			Thread.sleep(sleepTime);
-			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25, true));
+			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 252, true));
 			gPC.getGiocatorePanel().aggiorna(listGiocatori);
 			Thread.sleep(sleepTime);
 			listGiocatori.remove(listGiocatori.size()-1);
