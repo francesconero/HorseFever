@@ -157,7 +157,7 @@ public class ConsoleView implements View{
 	}
 	
 	private void scriviACapo(Object daScrivere) {
-		scrivi(daScrivere.toString());
+		System.out.println(daScrivere);
 	}
 
 }
