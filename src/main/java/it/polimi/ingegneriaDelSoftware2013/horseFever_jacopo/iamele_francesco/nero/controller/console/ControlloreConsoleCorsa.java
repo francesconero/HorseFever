@@ -44,14 +44,14 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 	}
 
 	public void visita(Movimento movimento) {
-		view.scrivi(movimento.getPosizioni().toString());
+		view.scrivi(movimento.getNuovePosizioni().toString());
 		view.scrivi(movimento.getCommento());
-		view.mostraCorsa(movimento.getPosizioni());
+		view.mostraCorsa(movimento.getNuovePosizioni());
 	}
 
 	public void visita(Sprint sprint) {
 		view.scrivi(sprint.getCommento());
-		view.mostraCorsa(sprint.getPosizioni());
+		view.mostraCorsa(sprint.getNuovePosizioni());
 	}
 
 	public void visita(Photofinish photofinish) {
@@ -79,9 +79,9 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 	}
 
 	public void visita(Partenza partenza) {
-		view.scrivi(partenza.getNuovePosizioniScuderie().toString());
+		view.scrivi(partenza.getNuovePosizioni().toString());
 		view.scrivi(partenza.getCommento());
-		view.mostraCorsa(partenza.getNuovePosizioniScuderie());
+		view.mostraCorsa(partenza.getNuovePosizioni());
 	}
 
 }

@@ -21,7 +21,7 @@ public class Sprint extends MossaCorsa {
 		mossaCorsaVisitor.visita(this);
 	}
 
-	public Map<Colore, Integer> getPosizioni() {
+	public Map<Colore, Integer> getNuovePosizioni() {
 		return nuovePosizioniScuderie;
 	}
 

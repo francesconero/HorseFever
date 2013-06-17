@@ -1,4 +1,4 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

@@ -1,6 +1,9 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.Animatable;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.AnimatableComponent;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.AnimationHelper;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +13,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
-public class SegnalinoCavallo extends JPanel {
+public class SegnalinoCavallo extends JPanel implements AnimatableComponent{
 
 	private Animatable animatable = new Animatable();
 	private int border = 1;
@@ -21,6 +24,7 @@ public class SegnalinoCavallo extends JPanel {
 
 	private Colore colore;
 	private Point2D.Float dimensioneClassifica = new Point2D.Float(0.028f,0.0195f);
+	private boolean arrivato = false;
 	/**
 	 * Create the panel.
 	 */
@@ -49,6 +53,7 @@ public class SegnalinoCavallo extends JPanel {
 	}
 
 	public void classifica(int posizione){
+		arrivato = true;
 		switch(posizione){
 			case 1:
 				animatable.setPosizioneTarget(new Point2D.Float(0.70420f, 0.04117f));
@@ -92,6 +97,11 @@ public class SegnalinoCavallo extends JPanel {
 
 	public int getPosizioneCorsa() {
 		return posizioneCorsa;
+	}
+	
+	public void reset(){
+		arrivato = false;
+		setPosizioneCorsa(0);
 	}
 
 	public void setPosizioneCorsa(int posizioneCorsa) {
@@ -178,6 +188,10 @@ public class SegnalinoCavallo extends JPanel {
 
 	public Colore getColore() {
 		return colore;
+	}
+
+	public boolean isArrivato() {
+		return arrivato ;
 	}
 
 }

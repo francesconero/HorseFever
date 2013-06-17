@@ -41,8 +41,9 @@ public class AspectRatioLayout implements LayoutManager {
 		}
 	}
 
-	public Dimension minimumLayoutSize(Container arg0) {
-		return preferredLayoutSize(arg0);
+	public Dimension minimumLayoutSize(Container parent) {
+		Component onlyChild = parent.getComponent(0);
+		return onlyChild.getSize();
 	}
 
 	public Dimension preferredLayoutSize(Container parent) {
@@ -56,7 +57,6 @@ public class AspectRatioLayout implements LayoutManager {
 		Dimension d = onlyChild[0].getPreferredSize();
 		d.width += x;
 		d.height += y;
-
 		return d;
 	}
 

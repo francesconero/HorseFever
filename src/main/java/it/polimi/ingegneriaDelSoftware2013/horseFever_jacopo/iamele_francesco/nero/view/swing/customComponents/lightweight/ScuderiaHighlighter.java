@@ -1,4 +1,6 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight;
+
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -12,14 +14,16 @@ public class ScuderiaHighlighter extends JPanel {
 	private Point2D.Float posizioneTabellone;
 	private Point2D.Float dimensione = new Point2D.Float(0.13600f, 0.14705f);
 	private boolean selezionato = false;
+	private final Colore colore;
 	
 	/**
 	 * Create the panel.
 	 */
-	public ScuderiaHighlighter() {
+	public ScuderiaHighlighter(Colore colore) {
 		setBorder(new LineBorder(new Color(255, 0, 0), 3));
 		setOpaque(false);
 		seleziona(false);
+		this.colore = colore;
 	}
 
 	public Point2D.Float getPosizioneTabellone() {
@@ -55,6 +59,10 @@ public class ScuderiaHighlighter extends JPanel {
 
 	public boolean isSelected() {
 		return selezionato;
+	}
+
+	public Colore getColore() {
+		return colore;
 	}
 
 }

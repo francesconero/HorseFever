@@ -1,5 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils;
 
+import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,16 @@ public class MetodiDiSupporto
 		return listaOrdinata;
 	}
 
+	/**
+	 * Wrapper per l'utilità invokeAndWait delle SwingUtilities. Per evitare deadlock è VIETATO chiamare questo metodo dall'EDT.
+	 * 
+	 * @param runnable la classe runnable da  eseguire sull'EDT.
+	 */
 	public static void swingInvokeAndWait(Runnable runnable) {
+		if(EventQueue.isDispatchThread()){
+			(new IllegalStateException("Hai chiamato questo metodo dall'EDT!")).printStackTrace();
+			System.exit(-1);
+		}
 		try {
 			SwingUtilities.invokeAndWait(runnable);
 		} catch (InvocationTargetException e) {
@@ -37,6 +47,22 @@ public class MetodiDiSupporto
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static void dormi(long ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public static void nuovoThread(final Runnable runnable){ 
+		new Thread(){
+			public void run() {
+				runnable.run();
+			};
+		}.start();
 	}
 	
 	

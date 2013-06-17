@@ -1,8 +1,11 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller;
 
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
+
+import java.util.List;
 
 /**
  * Interfaccia che espone i principali metodi del gioco HorseFever, così come visti da un utente del gioco.
@@ -37,5 +40,7 @@ public interface ControlloreUtenteSingolo {
 	 * @return StatoDelGiocoView il nuvo stato del gioco
 	 */
 	public StatoDelGiocoView riceviStatoDelGioco();
+
+	public boolean risolviConflitto(List<Colore> conflittoRisolto);
 
 }

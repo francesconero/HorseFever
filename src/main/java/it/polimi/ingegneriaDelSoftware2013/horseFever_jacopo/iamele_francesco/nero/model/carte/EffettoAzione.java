@@ -12,6 +12,34 @@ import java.util.List;
  */
 public class EffettoAzione implements Serializable {
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
+		result = prime * result + ((valori == null) ? 0 : valori.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EffettoAzione other = (EffettoAzione) obj;
+		if (tipo != other.tipo)
+			return false;
+		if (valori == null) {
+			if (other.valori != null)
+				return false;
+		} else if (!valori.equals(other.valori))
+			return false;
+		return true;
+	}
+
 	private final TipoAzione tipo;
 	private final List<Integer> valori;
 	

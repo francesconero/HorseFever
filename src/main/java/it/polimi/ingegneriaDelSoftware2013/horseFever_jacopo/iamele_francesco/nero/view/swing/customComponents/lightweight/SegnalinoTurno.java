@@ -1,4 +1,7 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight;
+
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.Animatable;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.AnimatableComponent;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,7 +12,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
-public class SegnalinoTurno extends JPanel {
+public class SegnalinoTurno extends JPanel implements AnimatableComponent {
 
 	private Animatable animatable = new Animatable();
 	private int border = 3;

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /***
  * Questa classe filtra lo stato del gioco di tutti gli elementi che NON devono
@@ -41,7 +42,7 @@ public class StatoDelGiocoView implements Serializable {
 			Map<Giocatore, String> nomi, Map<Giocatore, Long> ids) {
 		this.inizio = statoDaFiltrare.isInizio();
 		this.tipoFaseGiocoFamily = statoDaFiltrare.getTipoFaseGiocoFamily();
-		this.corsie = statoDaFiltrare.getCorsie();
+		this.corsie = filtraCorsie(statoDaFiltrare.getCorsie(), statoDaFiltrare.getTipoFaseGiocoFamily());
 		this.classifica = statoDaFiltrare.getClassifica();
 		this.numTurno = statoDaFiltrare.getNumTurno();
 		this.numTurniTotali = statoDaFiltrare.getNumTurniTotali();
@@ -49,10 +50,10 @@ public class StatoDelGiocoView implements Serializable {
 		this.ids = ids;
 		this.mioGiocatore = new GiocatoreView(clientReclamante,
 				nomi.get(clientReclamante), ids.get(clientReclamante), false);
-		
+
 		Giocatore giocatoreDiTurnoIntero = statoDaFiltrare.getGiocatoreDiTurno();
 		Giocatore primoGiocatoreIntero = statoDaFiltrare.getPrimoGiocatore();
-		
+
 		this.giocatoreDiTurno = new GiocatoreView(giocatoreDiTurnoIntero,  nomi
 				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero), true);
 		this.primoGiocatore = new GiocatoreView(primoGiocatoreIntero,  nomi
@@ -60,6 +61,24 @@ public class StatoDelGiocoView implements Serializable {
 		giocatoriView = new ArrayList<GiocatoreView>();
 		oscuraGiocatori(statoDaFiltrare.getGiocatori(), clientReclamante);
 		this.mosseCorsa = new LinkedList<MossaCorsa>();
+	}
+
+	private List<Scuderia> filtraCorsie(List<Scuderia> corsie, TipoFaseGiocoFamily tipoFaseGiocoFamily) {
+		if(tipoFaseGiocoFamily.equals(TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA) ||
+				tipoFaseGiocoFamily.equals(TipoFaseGiocoFamily.F_S_ANTIORARIA)){		
+			List<Scuderia> scuderieOscurate = new LinkedList<Scuderia>();
+			for(Scuderia s : corsie){
+				scuderieOscurate.add(oscuraScuderia(s));
+			}
+			return scuderieOscurate;
+		} else {
+			return corsie;
+		}
+	}
+
+	private Scuderia oscuraScuderia(Scuderia s) {
+		Scuderia oscurata = Scuderia.oscura(s);
+		return oscurata;
 	}
 
 	public StatoDelGiocoView(StatoDelGioco statoDelGioco, Giocatore g, Map<Giocatore, String> nomiClients, Map<Giocatore, Long> iDClients, List<MossaCorsa> mosseCorsa) {
@@ -70,10 +89,13 @@ public class StatoDelGiocoView implements Serializable {
 	private void oscuraGiocatori(List<Giocatore> giocatoriDaOscurare,
 			Giocatore clientReclamante) {
 
-		for (int i = 0; i < giocatoriDaOscurare.size(); i++) {
-			Giocatore giocatoreDaOscurare = giocatoriDaOscurare.get(i);
-			giocatoriView.add(new GiocatoreView(giocatoreDaOscurare, nomi
-					.get(giocatoreDaOscurare), ids.get(giocatoreDaOscurare), true));
+		for (Giocatore g : giocatoriDaOscurare) {
+			if(g.equals(clientReclamante)){
+				giocatoriView.add(new GiocatoreView(g, nomi.get(g), ids.get(g), false));
+			}else {
+				giocatoriView.add(new GiocatoreView(g, nomi
+						.get(g), ids.get(g), true));
+			}
 		}
 	}
 
@@ -119,6 +141,15 @@ public class StatoDelGiocoView implements Serializable {
 
 	public GiocatoreView getPrimoGiocatore() {
 		return primoGiocatore;
+	}
+
+	public Scuderia getScuderiaDalColore(Colore colore) {
+		for(Scuderia scud : corsie){
+			if(scud.getColore().equals(colore)){
+				return scud;
+			}
+		}
+		throw new NoSuchElementException("Nessuna scuderia associata al colore: "+colore);
 	}
 
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.containers;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.FormatoFileErratoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
@@ -7,6 +7,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Personaggio;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight.GiocatorePanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,7 +35,7 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 	private JPanel panel_1;
 	private HashMap<GiocatoreView, GiocatorePanel> panelGiocatori = new HashMap<GiocatoreView, GiocatorePanel>();
 	private GiocatoreView selezionato = null;
-	
+
 	private static class GiocatoriPanelCreator implements Runnable {
 		private GiocatoriPanel panel;
 		private JFrame temp;
@@ -47,7 +48,7 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 			temp.pack();
 			temp.setVisible(true);
 		}
-		
+
 		public GiocatoriPanel getGiocatorePanel(){
 			return panel;
 		}
@@ -58,83 +59,82 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 
 
 	}
-	
+
 	public GiocatoriPanel() {
+		setMinimumSize(new Dimension(400, 10));
+		setPreferredSize(new Dimension(400, 10));
 		setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		addMouseListener(this);
 		setLayout(new BorderLayout(0, 0));
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-		
+
 		panel_1 = new JPanel();
 		panel_1.setBackground(Color.ORANGE);
 		scrollPane.setViewportView(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
-		setPreferredSize(new Dimension(350, 383));
-		
+
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.NORTH);
 		panel.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(0, 0, 0)));
-		
+
 		JLabel lblNewLabel = new JLabel("Giocatori");
 		panel.add(lblNewLabel);
 		Dimension newMaximumSize = panel.getPreferredSize();
 		newMaximumSize.width = panel.getMaximumSize().width;
-		panel.setMaximumSize(newMaximumSize);
 	}
-	
-	public void aggiorna(final List<GiocatoreView> giocatori) {
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			public void run() {
-				List<GiocatoreView> toDelete = new LinkedList<GiocatoreView>();
-				List<GiocatoreView> toAdd = new LinkedList<GiocatoreView>();
-				for(GiocatoreView g: panelGiocatori.keySet()){
-					if(!giocatori.contains(g)){
-						toDelete.add(g);
-					}
-				}
-				for(GiocatoreView g: giocatori){
-					if(!panelGiocatori.containsKey(g)){
-						toAdd.add(g);
-						System.out.println("Aggiungo giocatore");
-					}
-				}
-				for(GiocatoreView g: toDelete){
-					if(g.equals(selezionato)){
-						selezionato=null;
-					}
-					panel_1.remove(panelGiocatori.remove(g).getParent());
-					System.out.println("Rimuovo giocatore");
-				}
-				for(GiocatoreView g: toAdd){
-					panelGiocatori.put(g, new GiocatorePanel(g));
-					JPanel holder = new JPanel();
-					holder.setBackground(Color.RED);
-					holder.setOpaque(false);
-					holder.add(panelGiocatori.get(g));
-					Dimension newSize = panelGiocatori.get(g).getPreferredSize();
-					newSize.width += 10;
-					newSize.height += 10;
-					holder.setPreferredSize(newSize );
-					holder.setMaximumSize(newSize);
-					panelGiocatori.get(g).addMouseListener(GiocatoriPanel.this);
-					panel_1.add(holder);
-				}
-				panel_1.revalidate();
-				panel_1.repaint();
+
+	public void aggiorna(final List<GiocatoreView> giocatori) {		
+		List<GiocatoreView> toDelete = new LinkedList<GiocatoreView>();
+		List<GiocatoreView> toAdd = new LinkedList<GiocatoreView>();
+		List<GiocatoreView> toUpdate = new LinkedList<GiocatoreView>();
+		for(GiocatoreView g: panelGiocatori.keySet()){
+			if(!giocatori.contains(g)){
+				toDelete.add(g);
 			}
-		});
-		
+		}
+		for(GiocatoreView g: giocatori){
+			if(!panelGiocatori.containsKey(g)){
+				toAdd.add(g);
+			} else {
+				panelGiocatori.put(g, panelGiocatori.get(g));
+				toUpdate.add(g);
+			}
+		}
+		for(GiocatoreView g: toDelete){
+			if(g.equals(selezionato)){
+				selezionato=null;
+			}
+			panel_1.remove(panelGiocatori.remove(g).getParent());
+		}
+		for(GiocatoreView g: toAdd){
+			panelGiocatori.put(g, new GiocatorePanel(g));
+			JPanel holder = new JPanel();
+			holder.setBackground(Color.RED);
+			holder.setOpaque(false);
+			holder.add(panelGiocatori.get(g));
+			Dimension newSize = panelGiocatori.get(g).getPreferredSize();
+			newSize.width += 10;
+			newSize.height += 10;
+			holder.setPreferredSize(newSize);
+			holder.setMaximumSize(newSize);
+			panelGiocatori.get(g).addMouseListener(this);
+			panel_1.add(holder);
+		}
+		for(GiocatoreView g: toUpdate){
+			GiocatorePanel panelGiocatore = panelGiocatori.get(g);
+			panelGiocatore.setGiocatoreAssociato(g);
+		}
+		panel_1.revalidate();
+		panel_1.repaint();
 	}
 
 	public static void main(String[] args) throws FormatoFileErratoException, IOException, InvocationTargetException, InterruptedException{
 		List<Scuderia> scuderie = new LinkedList<Scuderia>();
 		scuderie.add(new Scuderia(Colore.BLU, 5));
-		Personaggio p = Risorse.getIInstance().getPersonaggi().get(0);
+		Personaggio p = Risorse.getInstance().getPersonaggi().get(0);
 		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25, false);
 		List<GiocatoreView> listGiocatori = new LinkedList<GiocatoreView>();
 		listGiocatori.add(giocatore);
@@ -162,40 +162,38 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 	}
 
 	public void mouseClicked(MouseEvent arg0) {		
+		
+	}
+
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void mousePressed(MouseEvent arg0) {
 		if(arg0.getComponent() instanceof GiocatorePanel){
 			GiocatorePanel pannelloCliccato = (GiocatorePanel) arg0.getComponent();
 			if(selezionato!=null){
 				panelGiocatori.get(selezionato).seleziona(false);
 			}
-			firePropertyChange(proprietàSelezionato, selezionato,  pannelloCliccato.getGiocatoreAssociato());
 			selezionato = pannelloCliccato.getGiocatoreAssociato();
 			pannelloCliccato.seleziona(true);
+			firePropertyChange(proprietàSelezionato, null,  selezionato);
 		} else {
 			if(selezionato!=null){
-				panelGiocatori.get(selezionato).seleziona(false);
-				firePropertyChange(proprietàSelezionato, selezionato,  null);
+				panelGiocatori.get(selezionato).seleziona(false);				
 				selezionato = null;
 			}
 		}
 	}
 
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

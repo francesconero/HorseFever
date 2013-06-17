@@ -3,6 +3,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 /***
  * Questa � la classe Scuderia
@@ -110,6 +111,20 @@ public class Scuderia implements Serializable{
 		else valoreDaAggiungere--;
 		}
 		this.quotazione=this.quotazione+valoreDaAggiungere;
+	}
+
+
+	public static Scuderia oscura(Scuderia s) {
+		Scuderia oscurata = new Scuderia(s.colore, s.scommesseTotaliDisponibili);
+		oscurata.scommesseDisponibili = s.scommesseDisponibili;
+		oscurata.arrivato = s.arrivato;
+		oscurata.posizione = s.posizione;
+		oscurata.quotazione = s.quotazione;
+		oscurata.carteAzione = new LinkedList<CartaAzione>();
+		for(CartaAzione cA : s.getCarteAzione()){
+			oscurata.carteAzione.add(new CartaAzione());
+		}
+		return oscurata;
 	}
 
 

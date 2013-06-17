@@ -24,7 +24,7 @@ public class Movimento extends MossaCorsa{
 		}
 	}
 	
-	public Map<Colore, Integer> getPosizioni() {
+	public Map<Colore, Integer> getNuovePosizioni() {
 		return Collections.unmodifiableMap(nuovePosizioniScuderie);
 	}
 	

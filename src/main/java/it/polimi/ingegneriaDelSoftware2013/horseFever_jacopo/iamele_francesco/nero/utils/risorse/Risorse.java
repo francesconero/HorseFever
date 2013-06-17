@@ -46,7 +46,7 @@ public class Risorse {
 		}
 	}
 
-	public static Risorse getIInstance(){
+	public static Risorse getInstance(){
 		if(risorse == null){
 			try {
 				risorse = new Risorse();
@@ -109,16 +109,19 @@ public class Risorse {
 	public String getImmagine(Personaggio personaggio) {
 		String out = immaginiPersonaggi.get(personaggio); 
 		if(out==null){
-			throw new RuntimeException("Nessuna immagine trovata per il personaggio " + personaggio.getNome());
+			throw new RuntimeException("Nessuna immagine trovata per il personaggio " + personaggio);
 		} else {
 			return out;
 		}
 	}
 
 	public String getImmagine(CartaAzione cartaAzione) {
+		if(cartaAzione.isCoperta()){
+			return Risorse.getInstance().getImmagine("RetroCarteAzione");
+		}
 		String out = immaginiCarteAzione.get(cartaAzione);; 
 		if(out==null){
-			throw new RuntimeException("Nessuna immagine trovata per la carta azione " + cartaAzione.getNome());
+			throw new RuntimeException("Nessuna immagine trovata per la carta azione " + cartaAzione);
 		} else {
 			return out;
 		}

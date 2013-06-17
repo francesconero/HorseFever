@@ -13,32 +13,37 @@ public class StatoDelGioco  {
 	private TipoFaseGiocoFamily tipoFaseGiocoFamily;
 	private List<Giocatore> giocatori = new ArrayList<Giocatore>();	
 	private List<Scuderia> corsie=new ArrayList<Scuderia>();
-	private List<Scuderia> classifica=new ArrayList<Scuderia>();;
+	private List<Scuderia> classifica=new ArrayList<Scuderia>();
 	private List<Scommessa> scommesseFattePrimaFase=new ArrayList<Scommessa>();
 	private List<Scommessa> scommesseFatteSecondaFase=new ArrayList<Scommessa>();
 	private final int numTurniTotali;
 	private Giocatore primoGiocatore;
-	
-	public StatoDelGioco(int numTurniTotali){
-	this.numTurniTotali=numTurniTotali;
+	private final Mazziere mazziere;
+
+	public Mazziere getMazziere() {
+		return mazziere;
+	}
+
+	public StatoDelGioco(int numTurniTotali, Mazziere mazziere){
+		this.numTurniTotali=numTurniTotali;
+		this.mazziere = mazziere;
 	}
 
 	public boolean isInizio() {
 		return inizio;
 	}
 	public void setInizio(boolean inizio) {
-		this.inizio = inizio;
-	
-	
+		this.inizio = inizio;	
 	}
+
 	public TipoFaseGiocoFamily getTipoFaseGiocoFamily() {
 		return tipoFaseGiocoFamily;
 	}
 	public void setTipoFaseGiocoFamily(TipoFaseGiocoFamily tipoFaseGiocoFamily) {
 		this.tipoFaseGiocoFamily = tipoFaseGiocoFamily;
 	}
-	
-	
+
+
 	public List<Giocatore> getGiocatori() {
 		return giocatori;
 	}
@@ -48,8 +53,8 @@ public class StatoDelGioco  {
 	public void rimuoviGiocatore(int indirizzo){
 		giocatori.remove(indirizzo);
 	}
-	
-	
+
+
 	public List<Scuderia> getCorsie() {
 		return corsie;
 	}
@@ -61,19 +66,19 @@ public class StatoDelGioco  {
 	}
 	public void setCorsie(List<Scuderia> corsieDaSettare){
 		this.corsie=corsieDaSettare;
-		
+
 	}
-	
-	
+
+
 	public List<Scuderia> getClassifica() {
 		return classifica;
 	}
-	
+
 	public void addClassifica(Scuderia classifica) {
 		this.classifica.add(classifica);
 	}
-	
-	
+
+
 	public int getNumTurno() {
 		return numTurno;
 	}
@@ -83,8 +88,8 @@ public class StatoDelGioco  {
 	public void addNumTurno(){
 		this.numTurno++;
 	}
-	
-	
+
+
 	public List<Scommessa> getScommesseFattePrimaFase() {
 		return scommesseFattePrimaFase;
 	}
@@ -94,8 +99,8 @@ public class StatoDelGioco  {
 	public void rimuoviScommesseFattePrimaFase(int indirizzo){
 		scommesseFattePrimaFase.remove(indirizzo);
 	}
-	
-	
+
+
 	public void setGiocatori(List<Giocatore> giocatori){
 		this.giocatori=giocatori;
 	}
@@ -108,8 +113,8 @@ public class StatoDelGioco  {
 	public int getNumTurniTotali(){
 		return numTurniTotali;
 	}
-	
-	
+
+
 	public List<Scommessa> getScommesseFatteSecondaFase() {
 		return scommesseFatteSecondaFase;
 	}
@@ -123,7 +128,7 @@ public class StatoDelGioco  {
 	public void rimuoviScommesseFatteSecondaFase(int indirizzo){
 		scommesseFatteSecondaFase.remove(indirizzo);
 	}	
-	
+
 	public void assegnaCasualmentePrimoGiocatore(){
 		Random r= new Random();
 		int s=r.nextInt(giocatori.size());
@@ -132,7 +137,7 @@ public class StatoDelGioco  {
 		primoGiocatore = giocatori.get(s);
 		giocatoreDiTurno = giocatori.get(s);
 	}
-	
+
 	public void aggiornaPrimoGiocatore(){
 		giocatori.get(0).setPrimoGiocatore(false);
 		giocatori.get(1).setPrimoGiocatore(true);
@@ -143,5 +148,5 @@ public class StatoDelGioco  {
 	public Giocatore getPrimoGiocatore() {
 		return primoGiocatore;
 	}
-	
+
 }

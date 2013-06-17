@@ -1,7 +1,9 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.Animatable;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.AnimatableComponent;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
@@ -10,7 +12,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 
 
-public class SegnalinoQuotazione extends ImagePanel {
+public class SegnalinoQuotazione extends ImagePanel implements AnimatableComponent {
 
 	private Colore colore;
 	private int quotazione;
@@ -90,17 +92,17 @@ public class SegnalinoQuotazione extends ImagePanel {
 	private static String ritornaStringaAssociata(Colore c){
 		switch (c) {
 			case BIANCO:
-				return Risorse.getIInstance().getImmagine("SegnalinoQuotazioneBianco");
+				return Risorse.getInstance().getImmagine("SegnalinoQuotazioneBianco");
 			case BLU:
-				return Risorse.getIInstance().getImmagine("SegnalinoQuotazioneBlu");
+				return Risorse.getInstance().getImmagine("SegnalinoQuotazioneBlu");
 			case GIALLO:
-				return Risorse.getIInstance().getImmagine("SegnalinoQuotazioneGiallo");
+				return Risorse.getInstance().getImmagine("SegnalinoQuotazioneGiallo");
 			case NERO:
-				return Risorse.getIInstance().getImmagine("SegnalinoQuotazioneNero");
+				return Risorse.getInstance().getImmagine("SegnalinoQuotazioneNero");
 			case ROSSO:
-				return Risorse.getIInstance().getImmagine("SegnalinoQuotazioneRosso");
+				return Risorse.getInstance().getImmagine("SegnalinoQuotazioneRosso");
 			case VERDE:
-				return Risorse.getIInstance().getImmagine("SegnalinoQuotazioneVerde");
+				return Risorse.getInstance().getImmagine("SegnalinoQuotazioneVerde");
 			default:
 				throw new RuntimeException("Errore interno");
 		}

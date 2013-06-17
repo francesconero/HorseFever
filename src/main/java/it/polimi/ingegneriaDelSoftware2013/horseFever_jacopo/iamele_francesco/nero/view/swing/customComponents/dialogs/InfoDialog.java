@@ -1,9 +1,12 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.locks.Condition;
@@ -22,7 +25,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-public class InfoDialog {
+public class InfoDialog extends WindowAdapter {
 	private JFrame main;
 	private String nome = null;
 	private String ip = null;
@@ -38,7 +41,7 @@ public class InfoDialog {
 			
 			public void run() {
 				main = new JFrame("Inserisci il tuo nome e l'indirizzo ip della macchina che hosta la partita");
-				main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				main.setResizable(false);
 				
 				JLabel lblInserisciIlTuo = new JLabel("Nome giocatore:");
@@ -47,6 +50,16 @@ public class InfoDialog {
 				textField = new JTextField();
 				textField.setHorizontalAlignment(SwingConstants.CENTER);
 				textField.setColumns(10);
+				textField.addKeyListener(new KeyListener() {					
+					public void keyTyped(KeyEvent arg0) {}public void keyReleased(KeyEvent arg0) {}
+					public void keyPressed(KeyEvent arg0) {
+						if(arg0.getKeyCode()==KeyEvent.VK_ENTER){
+							if(!textField.getText().isEmpty()){
+								textField_1.requestFocus();
+							}
+						}
+					}
+				});
 				
 				JLabel lblIndirizzoIp = new JLabel("Indirizzo IP:");
 				lblIndirizzoIp.setHorizontalAlignment(SwingConstants.CENTER);
@@ -57,6 +70,7 @@ public class InfoDialog {
 				textField_1 = new JTextField();
 				textField_1.setHorizontalAlignment(SwingConstants.CENTER);
 				textField_1.setColumns(10);
+				textField_1.setAction(action);
 				GroupLayout groupLayout = new GroupLayout(main.getContentPane());
 				groupLayout.setHorizontalGroup(
 					groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -125,6 +139,11 @@ public class InfoDialog {
 	
 	public String getIndirizzoIP(){
 		return ip;
+	}
+	
+	@Override
+	public void windowClosing(WindowEvent e) {
+		System.exit(0);
 	}
 	
 	private class SwingAction extends AbstractAction {

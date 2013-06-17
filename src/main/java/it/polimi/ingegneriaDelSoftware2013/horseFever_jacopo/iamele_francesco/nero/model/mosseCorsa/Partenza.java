@@ -20,7 +20,7 @@ public class Partenza extends MossaCorsa {
 		mossaCorsaVisitor.visita(this);
 	}
 
-	public Map<Colore, Integer> getNuovePosizioniScuderie() {
+	public Map<Colore, Integer> getNuovePosizioni() {
 		return nuovePosizioniScuderie;
 	}
 	

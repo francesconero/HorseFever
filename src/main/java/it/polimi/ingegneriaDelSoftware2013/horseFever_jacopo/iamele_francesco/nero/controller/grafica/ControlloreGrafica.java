@@ -2,22 +2,27 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenteSingolo;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoScommessa;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.FramePrincipale;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.ControlloreFramePrincipale;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.FramePrincipaleObserver;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.ConnettendoFrame;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.InfoDialog;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.ConnettendoFrame;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.InfoDialog;
+
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 public class ControlloreGrafica implements FramePrincipaleObserver {
 
-	private final FramePrincipale framePrincipale;
+	private final ControlloreFramePrincipale framePrincipale;
 	private final ControlloreUtenteSingolo controlloreUtenteSingolo;
-	private boolean iniziato = true;
+	private StatoDelGiocoView ultimoStatoRicevuto;
 
 	public ControlloreGrafica(){
 		Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioniGrafico.getInstance());
@@ -40,30 +45,20 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 		}		
 		connettendo.chiudi();
 
-		this.framePrincipale = new FramePrincipale();
-		framePrincipale.aggiungiObserver(this);
+		this.framePrincipale = new ControlloreFramePrincipale();
+		framePrincipale.settaObserver(this);
 		
-		while(iniziato){
-			framePrincipale.aggiorna(controlloreUtenteSingolo.riceviStatoDelGioco());
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		
-		framePrincipale.chiudi();
+		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
+		framePrincipale.aggiorna(ultimoStatoRicevuto);
+
 	}
 
-	public void scommessa(Scuderia scuderia, int danari,
-			TipoScommessa tipoScommessa) {
-		// TODO Auto-generated method stub
-
+	public void scommessa(Scommessa scommessa) {
+			framePrincipale.risultatoScommessa(controlloreUtenteSingolo.scommetti(scommessa));
 	}
 
 	public void giocaCartaAzione(CartaAzione carta, Scuderia scuderia) {
-		// TODO Auto-generated method stub
-
+		controlloreUtenteSingolo.posizionaCarta(new PosizionaCarta(carta, scuderia));
 	}
 
 	public void pronto() {
@@ -72,5 +67,20 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 
 	public static void main(String[] args){
 		new ControlloreGrafica();
+	}
+	
+	public void stessoAggiornamento() {
+		framePrincipale.aggiorna(ultimoStatoRicevuto);
+	}
+
+	public void prossimoAggiornamento() {
+		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
+		framePrincipale.aggiorna(ultimoStatoRicevuto);
+	}
+
+	public void risolviConflitto(List<Colore> soluzioneConflitto) {
+		controlloreUtenteSingolo.risolviConflitto(soluzioneConflitto);
+		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
+		framePrincipale.aggiorna(ultimoStatoRicevuto);
 	}
 }

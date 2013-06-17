@@ -1,8 +1,8 @@
-package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents;
+package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other;
 
 import java.awt.geom.Point2D;
 
-class AnimationHelper {
+public class AnimationHelper {
 
 	public static void step(Point2D.Float posizioneTarget, Point2D.Float posizionePartenza, Point2D.Float dimensioneTarget, Point2D.Float dimensionePartenza, float step, Point2D.Float dimensioneAttuale, Point2D.Float posizioneAttuale, int frames){
 		float d = (float) posizioneTarget.distance(posizionePartenza);
@@ -61,7 +61,7 @@ class AnimationHelper {
 		spostamento.y /= new Point2D.Float(0, 0).distance(spostamentoTemp);
 	}	
 
-	static Point2D.Float clonaPunto(Point2D.Float puntoDaClonare) {
+	public static Point2D.Float clonaPunto(Point2D.Float puntoDaClonare) {
 		return new Point2D.Float(puntoDaClonare.x, puntoDaClonare.y);
 	}
 	

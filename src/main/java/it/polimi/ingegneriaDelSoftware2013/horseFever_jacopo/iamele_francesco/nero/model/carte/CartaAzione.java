@@ -91,4 +91,47 @@ public class CartaAzione implements Carta, Serializable{
 		out += "\n";
 		return out;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (coperta ? 1231 : 1237);
+		result = prime * result + ((effetti == null) ? 0 : effetti.hashCode());
+		result = prime * result + lettera;
+		result = prime * result + (negativa ? 1231 : 1237);
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + (positiva ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CartaAzione other = (CartaAzione) obj;
+		if (coperta != other.coperta)
+			return false;
+		if (effetti == null) {
+			if (other.effetti != null)
+				return false;
+		} else if (!effetti.equals(other.effetti))
+			return false;
+		if (lettera != other.lettera)
+			return false;
+		if (negativa != other.negativa)
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (positiva != other.positiva)
+			return false;
+		return true;
+	}
 }

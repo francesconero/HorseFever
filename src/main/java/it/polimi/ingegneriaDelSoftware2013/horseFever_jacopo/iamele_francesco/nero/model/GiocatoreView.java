@@ -21,7 +21,8 @@ public class GiocatoreView implements Serializable {
 	private final String nomeUtente;
 	private final long ID;
 	private final boolean oscurato;
-
+	private final List<Scommessa> scommesseEffettuate;
+	
 	public GiocatoreView(Giocatore giocatore, String nomeUtente,
 			long ID, boolean oscurato) {
 		this.oscurato = oscurato;
@@ -36,6 +37,7 @@ public class GiocatoreView implements Serializable {
 		} else {
 			this.carteAzione = giocatore.getCarteAzione();
 		}
+		this.scommesseEffettuate = giocatore.getScommesseEffettuate();
 		this.nomeUtente = nomeUtente;
 		this.ID = ID;
 	}
@@ -121,6 +123,10 @@ public class GiocatoreView implements Serializable {
 		}
 
 		return out;
+	}
+
+	public List<Scommessa> getScommesseEffettuate() {
+		return scommesseEffettuate;
 	}
 
 }

@@ -27,9 +27,9 @@ public class Mazziere {
 	protected Colore coloreDado2 = Colore.BIANCO;
 	
 	public Mazziere() throws  IOException{
-		this.personaggi=Risorse.getIInstance().getPersonaggi(); 
-		this.carteAzione=Risorse.getIInstance().getCarteAzione();
-		this.carteMovimento=Risorse.getIInstance().getCarteMovimento();		
+		this.personaggi=Risorse.getInstance().getPersonaggi(); 
+		this.carteAzione=Risorse.getInstance().getCarteAzione();
+		this.carteMovimento=Risorse.getInstance().getCarteMovimento();		
 	}
 	
 	public Colore getColoreDado1(){
@@ -89,12 +89,12 @@ public class Mazziere {
 	
 	public void resetCarteMovimento() throws  IOException{
 		this.carteMovimento.clear();
-		this.carteMovimento.addAll(Risorse.getIInstance().getCarteMovimento());		
+		this.carteMovimento.addAll(Risorse.getInstance().getCarteMovimento());		
 	}
 	
 	public void resetCarteAzione() throws  IOException{
 		this.carteAzione.clear();
-		this.carteAzione.addAll(Risorse.getIInstance().getCarteAzione());
+		this.carteAzione.addAll(Risorse.getInstance().getCarteAzione());
 	}
 
 	public void shuffle(List<Scuderia> scuderieTemp) {

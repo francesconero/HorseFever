@@ -65,7 +65,7 @@ public class ControlloreFasiGioco {
 		case 6: {numTurniTotali=6; segnaliniScommesse=4;break;}
 		default : {throw new NumErratoGiocatoriException();}
 		}
-		statoDelGioco=new StatoDelGioco(numTurniTotali);
+		statoDelGioco=new StatoDelGioco(numTurniTotali, mazziere);
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.NERO, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.BLU, segnaliniScommesse));
 		statoDelGioco.aggiungiCorsia(new Scuderia(Colore.VERDE, segnaliniScommesse));
@@ -201,6 +201,7 @@ public class ControlloreFasiGioco {
 			posizionaCarta=controlloreRete.riceviPosizionaCarta(statoDelGioco.getGiocatoreDiTurno());
 			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
 			statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
+			statoDelGioco.getGiocatoreDiTurno().getCarteAzione().remove(posizionaCarta.getCartaDaPosizionare());
 		}
 	}
 	

@@ -22,24 +22,24 @@ public class RisorseTest {
 
 	@Before
 	public void setUp() throws Exception {
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Magna Velocitas"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Fortuna Benevola"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Flagellum Folgoris"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Herba Magica"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("In Igni Veritas"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Fustis et Radix"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Vigor Ferreum"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Globus Obscuros"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Aqua Putrida"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Serum Maleficum"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Venenum Veneficum"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Mala Tempora"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("XIII"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Felix Infernalis"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Alfio Allibratore"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Steven Sting"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Friz Finden"));
-		carteAzioneOrdinate.add(Risorse.getIInstance().getCartaAzione("Rochelle Recherche"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Magna Velocitas"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Fortuna Benevola"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Flagellum Folgoris"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Herba Magica"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("In Igni Veritas"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Fustis et Radix"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Vigor Ferreum"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Globus Obscuros"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Aqua Putrida"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Serum Maleficum"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Venenum Veneficum"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Mala Tempora"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("XIII"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Felix Infernalis"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Alfio Allibratore"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Steven Sting"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Friz Finden"));
+		carteAzioneOrdinate.add(Risorse.getInstance().getCartaAzione("Rochelle Recherche"));
 	}
 
 	@After
@@ -48,7 +48,7 @@ public class RisorseTest {
 
 	@Test
 	public void testOrdineCarteAzionet() {
-		List<CartaAzione> carteAzioneDaTestare = Risorse.getIInstance().getCarteAzione();		
+		List<CartaAzione> carteAzioneDaTestare = Risorse.getInstance().getCarteAzione();		
 		assertEquals(carteAzioneOrdinate, carteAzioneDaTestare);
 	}
 
