@@ -49,8 +49,15 @@ public class ConflittoDialog extends JDialog {
 		}
 	}
 
-	public List<Colore> getSoluzioneConflitto(){		
+	private List<Colore> getSoluzioneConflitto(){		
 		return Collections.list(listModel.elements());
+	}
+	
+	public List<Colore> showDialog(){
+		pack();
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setVisible(true);
+		return getSoluzioneConflitto();
 	}
 	
 	/**

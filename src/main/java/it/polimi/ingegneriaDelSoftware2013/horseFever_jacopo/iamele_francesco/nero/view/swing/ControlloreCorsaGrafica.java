@@ -81,7 +81,7 @@ public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChang
 		if(ultimoAggiornamento.getPrimoGiocatore().equals(ultimoAggiornamento.getMioGiocatore())){
 			informazioniDiGioco.addInformazione("Sei il primo giocatore, quindi spetta a te l'ardua sentenza!");
 			ConflittoDialog cD = new ConflittoDialog(conflitto.getScuderieInConflitto());
-			osservatore.risolviConflitto(cD.getSoluzioneConflitto());
+			osservatore.risolviConflitto(cD.showDialog());
 		} else {
 			informazioniDiGioco.addInformazione("Attendi che : "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!");
 			JOptionPane.showMessageDialog(tabellonePanel, "Attendi che : "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!", "Attendi", JOptionPane.INFORMATION_MESSAGE);

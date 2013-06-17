@@ -5,6 +5,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -26,6 +27,8 @@ public class AttivitaPanel extends JTabbedPane implements PropertyChangeListener
 	 * Create the panel.
 	 */
 	public AttivitaPanel() {
+		setPreferredSize(new Dimension(400, 5));
+		setMinimumSize(new Dimension(400, 5));
 		setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		
 	    

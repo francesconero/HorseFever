@@ -183,6 +183,7 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 			}
 			selezionato = pannelloCliccato.getGiocatoreAssociato();
 			pannelloCliccato.seleziona(true);
+			firePropertyChange(proprietaSelezionato, null,  selezionato);
 		} else {
 			if(selezionato!=null){
 				panelGiocatori.get(selezionato).seleziona(false);				

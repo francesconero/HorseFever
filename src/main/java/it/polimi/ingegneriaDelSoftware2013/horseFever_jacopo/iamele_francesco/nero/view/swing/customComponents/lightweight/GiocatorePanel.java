@@ -66,6 +66,8 @@ public class GiocatorePanel extends JPanel {
 	
 	private GiocatoreView giocatoreAssociato;
 	private JPanel panel_1;
+	private JLabel label;
+	private JLabel pVLabel;
 	
 	public GiocatorePanel(GiocatoreView giocatore) {
 		setBackground(Color.WHITE);
@@ -79,6 +81,7 @@ public class GiocatorePanel extends JPanel {
 		holder.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 		add(holder);
 		GridBagLayout gbl_holder = new GridBagLayout();
+		gbl_holder.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0};
 		gbl_holder.columnWidths = new int[]{100, 0};
 		gbl_holder.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		holder.setLayout(gbl_holder);
@@ -120,9 +123,9 @@ public class GiocatorePanel extends JPanel {
 		holder.add(panel_1, gbc_panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{10, 73, 169, 10, 0};
-		gbl_panel_1.rowHeights = new int[]{14, 14, 14, 0};
+		gbl_panel_1.rowHeights = new int[]{14, 14, 14, 0, 0};
 		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblNewLabel_1 = new JLabel("Personaggio:");
@@ -143,7 +146,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel_2.gridy = 0;
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		JLabel lblDanari = new JLabel("Danari");
+		JLabel lblDanari = new JLabel("Danari:");
 		lblDanari.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDanari.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblDanari = new GridBagConstraints();
@@ -161,24 +164,42 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel_3.gridy = 1;
 		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		JLabel lblScuderia = new JLabel("Scuderia");
+		JLabel lblScuderia = new JLabel("Scuderia:");
 		lblScuderia.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblScuderia.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_lblScuderia = new GridBagConstraints();
 		gbc_lblScuderia.anchor = GridBagConstraints.NORTHWEST;
-		gbc_lblScuderia.insets = new Insets(0, 0, 0, 5);
+		gbc_lblScuderia.insets = new Insets(0, 0, 5, 5);
 		gbc_lblScuderia.gridx = 1;
 		gbc_lblScuderia.gridy = 2;
 		panel_1.add(lblScuderia, gbc_lblScuderia);
 		
 		lblNewLabel_4 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
-		gbc_lblNewLabel_4.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_4.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_4.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel_4.gridx = 2;
 		gbc_lblNewLabel_4.gridy = 2;
 		panel_1.add(lblNewLabel_4, gbc_lblNewLabel_4);
+		
+		label = new JLabel("Punti Vittoria:");
+		label.setHorizontalAlignment(SwingConstants.LEFT);
+		label.setFont(new Font("Tahoma", Font.BOLD, 11));
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.fill = GridBagConstraints.BOTH;
+		gbc_label.insets = new Insets(0, 0, 0, 5);
+		gbc_label.gridx = 1;
+		gbc_label.gridy = 3;
+		panel_1.add(label, gbc_label);
+		
+		pVLabel = new JLabel(giocatore.getPuntiVittoria()+"");
+		GridBagConstraints gbc_pVLabel = new GridBagConstraints();
+		gbc_pVLabel.fill = GridBagConstraints.BOTH;
+		gbc_pVLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_pVLabel.gridx = 2;
+		gbc_pVLabel.gridy = 3;
+		panel_1.add(pVLabel, gbc_pVLabel);
 		this.giocatoreAssociato = giocatore;
 		aggiorna();
 	}
@@ -188,6 +209,8 @@ public class GiocatorePanel extends JPanel {
 		utenteLabel().setText(giocatore.getNomeUtente());
 		personaggioLabel().setText(giocatore.getPersonaggio().getNome());
 		danariLabel().setText(giocatore.getDanari()+" $");
+		pVLabel.setText(giocatore.getPuntiVittoria()+"");
+		
 		String l = "";
 		int i = 0;
 		for(Scuderia s : giocatore.getScuderie()){
