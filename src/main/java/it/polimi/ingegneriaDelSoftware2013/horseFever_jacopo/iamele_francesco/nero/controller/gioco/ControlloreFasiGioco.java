@@ -196,12 +196,14 @@ public class ControlloreFasiGioco {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA);
 		for (int i=0; i<statoDelGioco.getGiocatori().size();i++){
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
-			aggiornaTuttiIClient();
-			PosizionaCarta posizionaCarta=null;
-			posizionaCarta=controlloreRete.riceviPosizionaCarta(statoDelGioco.getGiocatoreDiTurno());
-			controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
-			statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
-			statoDelGioco.getGiocatoreDiTurno().getCarteAzione().remove(posizionaCarta.getCartaDaPosizionare());
+			while(statoDelGioco.getGiocatoreDiTurno().getCarteAzione().size()!=0){
+				aggiornaTuttiIClient();
+				PosizionaCarta posizionaCarta=null;
+				posizionaCarta=controlloreRete.riceviPosizionaCarta(statoDelGioco.getGiocatoreDiTurno());
+				controlloreRete.conferma(statoDelGioco.getGiocatoreDiTurno());
+				statoDelGioco=ControlloreOperativo.posizionaCartaAzione(statoDelGioco, posizionaCarta);
+				statoDelGioco.getGiocatoreDiTurno().getCarteAzione().remove(posizionaCarta.getCartaDaPosizionare());
+			}
 		}
 	}
 	
