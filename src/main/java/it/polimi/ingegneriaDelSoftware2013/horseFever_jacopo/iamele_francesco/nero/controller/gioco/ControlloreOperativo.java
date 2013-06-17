@@ -20,6 +20,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +42,10 @@ public class ControlloreOperativo {
 	 */
 	private static int quotazioneMassima(List<Scuderia> scuderie){
 		int quotazioneMassima=8;
-		
-		
+
+
 		for(int i=0;i<scuderie.size();i++){
-			
+
 			if(quotazioneMassima>scuderie.get(i).getQuotazione()){
 				quotazioneMassima=scuderie.get(i).getQuotazione();
 			}
@@ -252,7 +253,7 @@ public class ControlloreOperativo {
 							int count=0;
 							int posizioneScuderia=0;
 							for(int i=0;i<scuderieStessaPosizione.size()-1;i++){//l'ultimo elemento ha la carta azione fotofinish negativa
-								
+
 								if(scuderieStessaPosizione.get(i).getQuotazione()==quotazioneMassima){
 									count++;posizioneScuderia=i;
 								}
@@ -266,11 +267,15 @@ public class ControlloreOperativo {
 									}
 								}
 								mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
-								controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
-								List<Colore> coloriRicevuti=null;
-								coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
-								controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
-								dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
+								if(controlloreUtenti!=null){
+									controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
+									List<Colore> coloriRicevuti=null;
+									coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
+									controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
+									dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
+								}else{
+									Collections.reverse(scuderieInConflitto);
+								}
 								mosseCorsa.clear();
 								for(int i=0;i<scuderieInConflitto.size();i++){
 									statoDelGioco.addClassifica(scuderieInConflitto.get(i));
@@ -316,11 +321,15 @@ public class ControlloreOperativo {
 								}
 							}
 							mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
-							controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
-							List<Colore> coloriRicevuti=null;
-							coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
-							controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
-							dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
+							if(controlloreUtenti!=null){
+								controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
+								List<Colore> coloriRicevuti=null;
+								coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
+								controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
+								dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
+							}else{
+								Collections.reverse(scuderieInConflitto);
+							}
 							mosseCorsa.clear();
 							for(int i=0;i<scuderieInConflitto.size();i++){
 								statoDelGioco.addClassifica(scuderieInConflitto.get(i));
@@ -573,11 +582,11 @@ public class ControlloreOperativo {
 			;
 		}
 		else{
-		Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
-		temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-		System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-		statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
-		mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
+			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
+			temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+			System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
+			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 		}
 		mazziere.lanciaDado2();
 		if(mazziere.getColoreDado1()==mazziere.getColoreDado2()){

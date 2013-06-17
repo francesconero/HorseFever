@@ -65,8 +65,8 @@ public class Mazziere {
 	}
 	
 	public Personaggio popPersonaggio() throws CarteFiniteException{ // distribuisce carte personaggio
+		if (personaggi.size()==0) throw new CarteFiniteException(); 
 		Personaggio personaggioDaPassare= personaggi.remove(0);
-		if (personaggioDaPassare==null) throw new CarteFiniteException(); 
 		return personaggioDaPassare;
 	}
 	
@@ -77,8 +77,8 @@ public class Mazziere {
 	}
 	
 	public CartaMovimento popCartaMovimento() throws CarteFiniteException{
+		if (carteMovimento.size()==0) throw new CarteFiniteException();
 		CartaMovimento cartaDaPassare= carteMovimento.remove(0);
-		if (cartaDaPassare==null) throw new CarteFiniteException();
 		return cartaDaPassare;
 	}
 	

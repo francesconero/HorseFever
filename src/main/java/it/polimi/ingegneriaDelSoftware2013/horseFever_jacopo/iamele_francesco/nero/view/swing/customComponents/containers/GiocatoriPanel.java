@@ -31,7 +31,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 public class GiocatoriPanel extends JPanel implements MouseListener {
-	private static final String proprietàSelezionato = "SELEZIONATO";
+	private static final String proprietaSelezionato = "SELEZIONATO";
 	private JPanel panel_1;
 	private HashMap<GiocatoreView, GiocatorePanel> panelGiocatori = new HashMap<GiocatoreView, GiocatorePanel>();
 	private GiocatoreView selezionato = null;
@@ -183,7 +183,6 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 			}
 			selezionato = pannelloCliccato.getGiocatoreAssociato();
 			pannelloCliccato.seleziona(true);
-			firePropertyChange(proprietàSelezionato, null,  selezionato);
 		} else {
 			if(selezionato!=null){
 				panelGiocatori.get(selezionato).seleziona(false);				
