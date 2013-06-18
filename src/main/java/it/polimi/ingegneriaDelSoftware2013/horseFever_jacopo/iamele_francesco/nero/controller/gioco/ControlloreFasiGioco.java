@@ -127,6 +127,9 @@ public class ControlloreFasiGioco {
 			}
 		}
 		statoDelGioco.getGiocatori().removeAll(giocatoriDaEliminare);
+		if(statoDelGioco.getGiocatori().size()==0){
+			return;
+		}
 		for(int i=0;i<giocatoriDaEliminare.size();i++){
 			if(giocatoriDaEliminare.get(i).isPrimoGiocatore()){
 				statoDelGioco.assegnaCasualmentePrimoGiocatore();
@@ -328,6 +331,10 @@ public class ControlloreFasiGioco {
 		int puntiVittoriaMassimi=ControlloreOperativo.puntiVittoriaMassimi(statoDelGioco);
 		List<Giocatore> giocatoriStessiPV =new ArrayList<Giocatore>();
 		List<Giocatore> giocatoriAncheStessiDanari=new ArrayList<Giocatore>();
+		if(statoDelGioco.getGiocatori()==null){
+			vittoria(null);
+			return;
+		}
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()==puntiVittoriaMassimi){
 				giocatoriStessiPV.add(statoDelGioco.getGiocatori().get(i));
@@ -366,6 +373,17 @@ public class ControlloreFasiGioco {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);		
 	}
 
+	/**
+	 *Questo metodo viene chiamato se TUTTI i giocatori sono stati eliminati;
+	 *setta la fase di gioco in VITTORIA
+	 * e setta a null il giocatoreDiTurno 
+	 */
+	private void sconfitta() {
+		statoDelGioco.setInizio(false);
+		statoDelGioco.setGiocatoreDiTurno(null); 
+		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);	
+		
+	}
 	public void inizia() throws CarteFiniteException, AttesaUtentiFallitaException, IOException {
 		controlloreRete.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
@@ -375,6 +393,9 @@ public class ControlloreFasiGioco {
 			faseDistribuzioneCarte();
 			aggiornaTuttiIClient();
 			faseEliminazioneGiocatore();
+			if(statoDelGioco.getGiocatori().size()==0){
+				break;
+			}
 			aggiornaTuttiIClient();
 			if(statoDelGioco.getGiocatori().size()==1)break;//se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
 			primaFaseScommesse();
@@ -385,9 +406,15 @@ public class ControlloreFasiGioco {
 			aggiornaTuttiIClient();
 			statoDelGioco.addNumTurno();
 		}
+		if(statoDelGioco.getGiocatori().size()==0){
+			sconfitta();
+			
+		}else{
 		faseFineDelGioco();
 		aggiornaTuttiIClient();
+		}
 	}
+
 
 	public int getTurniTotali(){
 		return numTurniTotali;
