@@ -227,7 +227,6 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 
 	protected void selezionaScuderia(
 			ScuderiaHighlighter scuderiaHighlighter) {
-		Colore vecchia = scuderiaSelezionata.getColore();
 		if(!scuderiaHighlighter.isSelected()){
 			scuderiaSelezionata.seleziona(false);
 			scuderiaHighlighter.seleziona(true);
@@ -236,7 +235,7 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 		firePropertyChange("SELEZIONATO", null, scuderiaSelezionata.getColore());
 	}
 
-	
+
 
 	private static Map<Colore, Integer> creaArrivi() {
 		Map<Colore, Integer> out = new HashMap<Colore, Integer>();
@@ -254,173 +253,173 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 	}
 
 	private static Map<Colore, Integer> creaQuotatzioni() {
-	Map<Colore, Integer> out = new HashMap<Colore, Integer>();
-	out.put(Colore.NERO, r(2,7));
-	out.put(Colore.BLU, r(2,7));
-	out.put(Colore.VERDE, r(2,7));
-	out.put(Colore.ROSSO, r(2,7));
-	out.put(Colore.GIALLO, r(2,7));
-	out.put(Colore.BIANCO, r(2,7));
-	return out;
-}
-
-private static Integer r(int min, int max) {
-	int out = new Random().nextInt(max-min+1);
-	out += min;
-	return out;
-}
-
-private static int r() {
-	return (int) (Math.random()*19);
-}
-
-public void aggiornaClassifica(final List<Colore> classifica) {
-	for(int i = 0; i < classifica.size(); i++){
-		for(SegnalinoCavallo sC: segnalini){
-			if(sC.getColore().equals(classifica.get(i))){
-				sC.classifica(i+1);
-			}
-		}
-	}
-	ActionListener taskPerformer = new AnimationActionListener(segnalini);
-	Timer timer = new Timer(animationDelay, taskPerformer);
-	timers.put(taskPerformer, timer);
-	timer.start();
-}
-
-public void aggiornaTurno(int nuovoTurno) {
-	segnalinoTurno.setTurno(nuovoTurno);
-	List<AnimatableComponent> aCL = new LinkedList<AnimatableComponent>();
-	aCL.add(segnalinoTurno);
-	ActionListener taskPerformer = new AnimationActionListener(aCL);
-	Timer timer = new Timer(animationDelay, taskPerformer);
-	timers.put(taskPerformer, timer);
-	timer.start();
-}
-
-public void aggiornaQuotazioni(Map<Colore, Integer> nuoveQuotazioni){		
-	for(SegnalinoQuotazione sQ : segnaliniQuotazione){
-		sQ.setQuotazione(nuoveQuotazioni.get(sQ.getColore()));
-	}
-	ActionListener taskPerformer = new AnimationActionListener(segnaliniQuotazione);
-	Timer timer = new Timer(animationDelay, taskPerformer);
-	timers.put(taskPerformer, timer);
-	timer.start();
-}
-
-public void aggiornaPosizioni(Map<Colore, Integer> nuovePosizioni) {
-	for(SegnalinoCavallo sC : segnalini){
-		if(nuovePosizioni.containsKey(sC.getColore())&&!sC.isArrivato()){
-			sC.setPosizioneCorsa(nuovePosizioni.get(sC.getColore()));
-		}
-	}
-	ActionListener taskPerformer = new AnimationActionListener(segnalini);
-	Timer timer = new Timer(animationDelay, taskPerformer);
-	timers.put(taskPerformer, timer);
-	timer.start();
-}
-
-public void resetCorsa(){
-	for(SegnalinoCavallo sC : segnalini){
-		sC.reset();
-	}
-	ActionListener taskPerformer = new AnimationActionListener(segnalini);
-	Timer timer = new Timer(animationDelay, taskPerformer);
-	timers.put(taskPerformer, timer);
-	timer.start();
-}
-
-private class AnimationActionListener implements ActionListener {
-	final List<? extends AnimatableComponent> animatableComponents;
-	private final long stepTime = 16666666;
-	private long lastStep = System.nanoTime() - stepTime;
-	private long timePool = 0;
-	private boolean finished = false;
-
-	private AnimationActionListener(List<? extends AnimatableComponent> animatableComponents){
-		this.animatableComponents = animatableComponents;
+		Map<Colore, Integer> out = new HashMap<Colore, Integer>();
+		out.put(Colore.NERO, r(2,7));
+		out.put(Colore.BLU, r(2,7));
+		out.put(Colore.VERDE, r(2,7));
+		out.put(Colore.ROSSO, r(2,7));
+		out.put(Colore.GIALLO, r(2,7));
+		out.put(Colore.BIANCO, r(2,7));
+		return out;
 	}
 
-	public void actionPerformed(ActionEvent evt) {
-		timePool += System.nanoTime() - lastStep;
-		lastStep = System.nanoTime();
+	private static Integer r(int min, int max) {
+		int out = new Random().nextInt(max-min+1);
+		out += min;
+		return out;
+	}
 
-		while(timePool>stepTime&&!finished){
-			for(AnimatableComponent aC : animatableComponents){
-				if(aC.getAnimatable().step()){
-					finished = true;
+	private static int r() {
+		return (int) (Math.random()*19);
+	}
+
+	public void aggiornaClassifica(final List<Colore> classifica) {
+		for(int i = 0; i < classifica.size(); i++){
+			for(SegnalinoCavallo sC: segnalini){
+				if(sC.getColore().equals(classifica.get(i))){
+					sC.classifica(i+1);
 				}
 			}
-			timePool -= stepTime;
+		}
+		ActionListener taskPerformer = new AnimationActionListener(segnalini);
+		Timer timer = new Timer(animationDelay, taskPerformer);
+		timers.put(taskPerformer, timer);
+		timer.start();
+	}
+
+	public void aggiornaTurno(int nuovoTurno) {
+		segnalinoTurno.setTurno(nuovoTurno);
+		List<AnimatableComponent> aCL = new LinkedList<AnimatableComponent>();
+		aCL.add(segnalinoTurno);
+		ActionListener taskPerformer = new AnimationActionListener(aCL);
+		Timer timer = new Timer(animationDelay, taskPerformer);
+		timers.put(taskPerformer, timer);
+		timer.start();
+	}
+
+	public void aggiornaQuotazioni(Map<Colore, Integer> nuoveQuotazioni){		
+		for(SegnalinoQuotazione sQ : segnaliniQuotazione){
+			sQ.setQuotazione(nuoveQuotazioni.get(sQ.getColore()));
+		}
+		ActionListener taskPerformer = new AnimationActionListener(segnaliniQuotazione);
+		Timer timer = new Timer(animationDelay, taskPerformer);
+		timers.put(taskPerformer, timer);
+		timer.start();
+	}
+
+	public void aggiornaPosizioni(Map<Colore, Integer> nuovePosizioni) {
+		for(SegnalinoCavallo sC : segnalini){
+			if(nuovePosizioni.containsKey(sC.getColore())&&!sC.isArrivato()){
+				sC.setPosizioneCorsa(nuovePosizioni.get(sC.getColore()));
+			}
+		}
+		ActionListener taskPerformer = new AnimationActionListener(segnalini);
+		Timer timer = new Timer(animationDelay, taskPerformer);
+		timers.put(taskPerformer, timer);
+		timer.start();
+	}
+
+	public void resetCorsa(){
+		for(SegnalinoCavallo sC : segnalini){
+			sC.reset();
+		}
+		ActionListener taskPerformer = new AnimationActionListener(segnalini);
+		Timer timer = new Timer(animationDelay, taskPerformer);
+		timers.put(taskPerformer, timer);
+		timer.start();
+	}
+
+	private class AnimationActionListener implements ActionListener {
+		final List<? extends AnimatableComponent> animatableComponents;
+		private final long stepTime = 16666666;
+		private long lastStep = System.nanoTime() - stepTime;
+		private long timePool = 0;
+		private boolean finished = false;
+
+		private AnimationActionListener(List<? extends AnimatableComponent> animatableComponents){
+			this.animatableComponents = animatableComponents;
+		}
+
+		public void actionPerformed(ActionEvent evt) {
 			timePool += System.nanoTime() - lastStep;
 			lastStep = System.nanoTime();
+
+			while(timePool>stepTime&&!finished){
+				for(AnimatableComponent aC : animatableComponents){
+					if(aC.getAnimatable().step()){
+						finished = true;
+					}
+				}
+				timePool -= stepTime;
+				timePool += System.nanoTime() - lastStep;
+				lastStep = System.nanoTime();
+			}
+			if(finished){
+				timers.get(this).stop();
+				timers.remove(this);
+				firePropertyChange("ANIMATION_STOPPED", null, null);
+			}
+			aggiorna();
 		}
-		if(finished){
-			timers.get(this).stop();
-			timers.remove(this);
-			firePropertyChange("ANIMATION_STOPPED", null, null);
+	}
+
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void componentResized(ComponentEvent e) {
+		if (e.getComponent().equals(this)) {
+			aggiorna();
 		}
-		aggiorna();
 	}
-}
 
-public void componentHidden(ComponentEvent e) {
-	// TODO Auto-generated method stub
+	private void aggiorna() {
+		int newX = (int) (getImagePanel().getWidth()*segnalinoTurno.getAnimatable().getPosizioneAttuale().x);
+		int newY = (int) (getImagePanel().getHeight()*segnalinoTurno.getAnimatable().getPosizioneAttuale().y);
+		int newSizeX = (int) (getImagePanel().getWidth()*segnalinoTurno.getAnimatable().getDimensione().x);
+		int newSizeY = (int) (getImagePanel().getHeight()*segnalinoTurno.getAnimatable().getDimensione().y);
+		segnalinoTurno.setBounds(newX-newSizeX/2, newY-newSizeY/2, newSizeX, newSizeY);
 
-}
-
-public void componentMoved(ComponentEvent e) {
-	// TODO Auto-generated method stub
-
-}
-
-public void componentResized(ComponentEvent e) {
-	if (e.getComponent().equals(this)) {
-		aggiorna();
+		for(SegnalinoCavallo sC: segnalini){
+			newX = (int) (getImagePanel().getWidth()*sC.getAnimatable().getPosizioneAttuale().x);
+			newY = (int) (getImagePanel().getHeight()*sC.getAnimatable().getPosizioneAttuale().y);
+			newSizeX = (int) (getImagePanel().getWidth()*sC.getAnimatable().getDimensione().x);
+			newSizeY = (int) (getImagePanel().getHeight()*sC.getAnimatable().getDimensione().y);
+			sC.setBounds(newX-newSizeX/2, newY-newSizeY/2, newSizeX, newSizeY);
+		}
+		for(ScuderiaHighlighter s : scuderie){
+			newX = (int) (getImagePanel().getWidth()*s.getPosizioneTabellone().x);
+			newY = (int) (getImagePanel().getHeight()*s.getPosizioneTabellone().y);
+			newSizeX = (int) (getImagePanel().getWidth()*s.getDimensione().x);
+			newSizeY = (int) (getImagePanel().getHeight()*s.getDimensione().y);
+			s.setBounds(newX, newY, newSizeX, newSizeY);
+		}
+		for(SegnalinoQuotazione sQ : segnaliniQuotazione){
+			newX = (int) (getImagePanel().getWidth()*sQ.getAnimatable().getPosizioneAttuale().x);
+			newY = (int) (getImagePanel().getHeight()*sQ.getAnimatable().getPosizioneAttuale().y);
+			newSizeX = (int) (getImagePanel().getWidth()*sQ.getAnimatable().getDimensione().x);
+			newSizeY = (int) (getImagePanel().getHeight()*sQ.getAnimatable().getDimensione().y);
+			sQ.setBounds(newX-newSizeX/2, newY-newSizeY/2, newSizeX, newSizeY);
+		}
+		revalidate();
+		repaint();
 	}
-}
 
-private void aggiorna() {
-	int newX = (int) (getImagePanel().getWidth()*segnalinoTurno.getAnimatable().getPosizioneAttuale().x);
-	int newY = (int) (getImagePanel().getHeight()*segnalinoTurno.getAnimatable().getPosizioneAttuale().y);
-	int newSizeX = (int) (getImagePanel().getWidth()*segnalinoTurno.getAnimatable().getDimensione().x);
-	int newSizeY = (int) (getImagePanel().getHeight()*segnalinoTurno.getAnimatable().getDimensione().y);
-	segnalinoTurno.setBounds(newX-newSizeX/2, newY-newSizeY/2, newSizeX, newSizeY);
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
 
-	for(SegnalinoCavallo sC: segnalini){
-		newX = (int) (getImagePanel().getWidth()*sC.getAnimatable().getPosizioneAttuale().x);
-		newY = (int) (getImagePanel().getHeight()*sC.getAnimatable().getPosizioneAttuale().y);
-		newSizeX = (int) (getImagePanel().getWidth()*sC.getAnimatable().getDimensione().x);
-		newSizeY = (int) (getImagePanel().getHeight()*sC.getAnimatable().getDimensione().y);
-		sC.setBounds(newX-newSizeX/2, newY-newSizeY/2, newSizeX, newSizeY);
 	}
-	for(ScuderiaHighlighter s : scuderie){
-		newX = (int) (getImagePanel().getWidth()*s.getPosizioneTabellone().x);
-		newY = (int) (getImagePanel().getHeight()*s.getPosizioneTabellone().y);
-		newSizeX = (int) (getImagePanel().getWidth()*s.getDimensione().x);
-		newSizeY = (int) (getImagePanel().getHeight()*s.getDimensione().y);
-		s.setBounds(newX, newY, newSizeX, newSizeY);
+	protected ImagePanel getImagePanel() {
+		return imagePanel;
 	}
-	for(SegnalinoQuotazione sQ : segnaliniQuotazione){
-		newX = (int) (getImagePanel().getWidth()*sQ.getAnimatable().getPosizioneAttuale().x);
-		newY = (int) (getImagePanel().getHeight()*sQ.getAnimatable().getPosizioneAttuale().y);
-		newSizeX = (int) (getImagePanel().getWidth()*sQ.getAnimatable().getDimensione().x);
-		newSizeY = (int) (getImagePanel().getHeight()*sQ.getAnimatable().getDimensione().y);
-		sQ.setBounds(newX-newSizeX/2, newY-newSizeY/2, newSizeX, newSizeY);
+
+	public Colore getScuderiaSelezionata() {
+		return scuderiaSelezionata.getColore();
 	}
-	revalidate();
-	repaint();
-}
-
-public void componentShown(ComponentEvent e) {
-	// TODO Auto-generated method stub
-
-}
-protected ImagePanel getImagePanel() {
-	return imagePanel;
-}
-
-public Colore getScuderiaSelezionata() {
-	return scuderiaSelezionata.getColore();
-}
 }

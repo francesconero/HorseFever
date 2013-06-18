@@ -3,6 +3,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -149,6 +150,22 @@ public class StatoDelGioco  {
 		giocatori.get(1).setPrimoGiocatore(true);
 		primoGiocatore = giocatori.get(1);
 		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(1));
+	}
+	
+	public Scuderia getScuderiaDalColore(Colore colore){
+		List<Scuderia> temp = new LinkedList<Scuderia>();
+		for(Scuderia s : corsie){
+			if(s.getColore().equals(colore)){
+				temp.add(s);
+			}
+		}
+		if(temp.size()==1){
+			return temp.get(0);
+		} else if(temp.size()<1) {
+			throw new IllegalStateException("Nessuna scuderia trovata");
+		} else {
+			throw new IllegalStateException("Troppe scuderie con lo stesso colore: "+temp.size());
+		}
 	}
 
 	public Giocatore getPrimoGiocatore() {

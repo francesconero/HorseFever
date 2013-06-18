@@ -352,17 +352,17 @@ public class ControlloreOperativo {
 		return statoDelGioco;
 	}
 
-	private static void dalColoreAScuderia(List<Scuderia> scuderieInConflitto, List<Colore> colori) {
+	public static void dalColoreAScuderia(List<Scuderia> scuderie, List<Colore> colori) {
 		List<Scuderia> scuderieTemp=new ArrayList<Scuderia>();
 		for(Colore c: colori){
-			for(Scuderia s: scuderieInConflitto){
+			for(Scuderia s: scuderie){
 				if(c.equals(s.getColore())){
 					scuderieTemp.add(s);
 				}
 			}
 		}
-		scuderieInConflitto.clear();
-		scuderieInConflitto.addAll(scuderieTemp);
+		scuderie.clear();
+		scuderie.addAll(scuderieTemp);
 	}
 
 	/**Questo metodo controlla la presenza di carte azioni negative
