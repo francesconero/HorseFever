@@ -116,14 +116,14 @@
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-14.jpg"
 		nome="Alfio Allibratore">
 		<Effetto tipo="QUOTAZIONE">
-			<Valore valore="2" />
+			<Valore valore="-2" />
 		</Effetto>
 	</CartaAzione>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-18.jpg"
 		nome="Steven Sting">
 		<Effetto tipo="QUOTAZIONE">
-			<Valore valore="-2" />
+			<Valore valore="2" />
 		</Effetto>
 	</CartaAzione>
 	<CartaAzione

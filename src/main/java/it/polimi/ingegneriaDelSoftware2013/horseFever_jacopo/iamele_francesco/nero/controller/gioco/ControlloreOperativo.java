@@ -591,19 +591,20 @@ public class ControlloreOperativo {
 		}
 		mazziere.lanciaDado2();
 		if(mazziere.getColoreDado1()==mazziere.getColoreDado2()){
-			return statoDelGioco;
-		}
-		count=0;
-		while(mazziere.getColoreDado2()!=statoDelGioco.getCorsie().get(count).getColore())count++;
-		if(statoDelGioco.getCorsie().get(count).isArrivato()){
 			;
-		}
-		else{
-			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
-			temp=temp+(new String("\nil cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
-			System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
-			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
+		}else{
+			count=0;
+			while(mazziere.getColoreDado2()!=statoDelGioco.getCorsie().get(count).getColore())count++;
+			if(statoDelGioco.getCorsie().get(count).isArrivato()){
+				;
+			}
+			else{
+				Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
+				temp=temp+(new String("\nil cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
+				System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+				statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
+				mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
+			}
 		}
 		mosseCorsa.add(new Sprint(temp,mappaSprint));
 		controllaArrivo(statoDelGioco,controlloreUtenti);
