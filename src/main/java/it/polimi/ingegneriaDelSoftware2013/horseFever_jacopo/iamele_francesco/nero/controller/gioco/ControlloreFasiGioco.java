@@ -220,6 +220,7 @@ public class ControlloreFasiGioco {
 			
 			while(!(valida||passato)){
 				controlloreRete.nega(statoDelGioco.getGiocatoreDiTurno());
+				scommessa=controlloreRete.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 				passato = scommessa.getDanariScommessi()==0;
 				controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
 			}
