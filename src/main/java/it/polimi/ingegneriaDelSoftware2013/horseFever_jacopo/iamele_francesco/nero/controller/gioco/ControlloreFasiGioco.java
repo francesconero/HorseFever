@@ -100,7 +100,6 @@ public class ControlloreFasiGioco {
 	}
 
 	private void preparazione() throws CarteFiniteException{
-		statoDelGioco.setInizio(true);
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.PREPARAZIONE);
 		mazziere.mischiaCarteMovimento();
 		mazziere.mischiaCarteAzione();
@@ -370,7 +369,6 @@ public class ControlloreFasiGioco {
 	 * @param giocatoriCandidati
 	 */
 	private void vittoria(List<Giocatore> giocatoriCandidati){
-		statoDelGioco.setInizio(false);
 		statoDelGioco.setGiocatoreDiTurno(giocatoriCandidati.get(0)); // qui c'e' il giocatore vincitore
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);		
 	}
@@ -381,8 +379,6 @@ public class ControlloreFasiGioco {
 	 * e setta a null il giocatoreDiTurno 
 	 */
 	private void sconfitta() {
-		statoDelGioco.setInizio(false);
-		statoDelGioco.setGiocatoreDiTurno(null); 
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);	
 		
 	}
@@ -409,12 +405,11 @@ public class ControlloreFasiGioco {
 			statoDelGioco.addNumTurno();
 		}
 		if(statoDelGioco.getGiocatori().size()==0){
-			sconfitta();
-			
+			sconfitta();			
 		}else{
-		faseFineDelGioco();
-		aggiornaTuttiIClient();
+			faseFineDelGioco();
 		}
+		aggiornaTuttiIClient();
 	}
 
 

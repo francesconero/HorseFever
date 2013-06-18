@@ -22,6 +22,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 /***
@@ -155,7 +156,7 @@ public class ControlloreOperativo {
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
 				System.out.println("e' arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
-				int posizioneModificata=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
+				int posizioneModificata=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione(), statoDelGioco, mosseCorsa);
 				statoDelGioco.getCorsie().get(i).setPosizione(posizioneModificata);
 				scuderieArrivate.add(statoDelGioco.getCorsie().get(i));
 			}
@@ -167,7 +168,7 @@ public class ControlloreOperativo {
 			statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate, controlloreUtenti);
 		else if(scuderieArrivate.size()==1){ 
 			statoDelGioco.addClassifica(scuderieArrivate.get(0));
-			scuderieArrivate.clear();
+			scuderieArrivate.clear();			
 			mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 		}
 		else{
@@ -176,13 +177,15 @@ public class ControlloreOperativo {
 	}
 
 	/**
-	 * Applica gli effetti delle carte azione TRAGUARDO
+	 * Applica gli effetti delle carte azione TRAGUARDO ed eventualmente aggiunge un movimento alle mosse della corsa
 	 * @param scuderia
 	 * @param posizioneEccessoTraguardo
+	 * @param statoDelGioco
+	 * @param mosseCorsa
 	 * @return il valore modificato dalla carta azione oppure
 	 * il valore passato come parametro (nel caso non vi siano carte)
 	 */
-	private static int applicaEffettiTRAGUARDO(Scuderia scuderia, int posizioneEccessoTraguardo){
+	private static int applicaEffettiTRAGUARDO(Scuderia scuderia, int posizioneEccessoTraguardo, StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 		int posizioneImposta=posizioneEccessoTraguardo;
 		for (int i=0; i<carteDaControllare.size();i++){
@@ -195,11 +198,19 @@ public class ControlloreOperativo {
 					else{
 						posizioneImposta=posizioneImposta+cartaTemp.getEffetti().get(j).getValori().get(0);
 					}
-
+					mosseCorsa.add(new Movimento("Sono state applicate delle carte traguardo!", creaPosizioni(statoDelGioco.getCorsie())));
 				}
 			}
 		}
 		return posizioneImposta;
+	}
+
+	private static Map<Scuderia, Integer> creaPosizioni(List<Scuderia> corsie) {
+		Map<Scuderia, Integer> out = new LinkedHashMap<Scuderia, Integer>();
+		for(Scuderia s: corsie){
+			out.put(s, s.getPosizione());
+		}
+		return out;
 	}
 
 	/**
@@ -678,7 +689,7 @@ public class ControlloreOperativo {
 				CartaAzione cartaTemp = carteDaControllare.get(j);
 				for (int k=0;k<cartaTemp.getEffetti().size();k++){
 					if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.CARTE_AZIONE){
-						if (cartaTemp.getEffetti().get(k).getValori().get(0)==1){
+						if (cartaTemp.getEffetti().get(k).getValori().get(0)==-1){
 							carteDaRimuovere.addAll(carteNegative(carteDaControllare));
 						}else{
 							carteDaRimuovere.addAll(cartePositive(carteDaControllare));

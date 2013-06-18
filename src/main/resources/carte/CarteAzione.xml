@@ -128,7 +128,7 @@
 	</CartaAzione>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-15.jpg"
-		nome="Fritz Finden" positiva="FALSE" negativa="FALSE">
+		nome="Friz Finden" positiva="FALSE" negativa="FALSE">
 		<Effetto tipo="CARTE_AZIONE">
 			<Valore valore="-1" />
 		</Effetto>

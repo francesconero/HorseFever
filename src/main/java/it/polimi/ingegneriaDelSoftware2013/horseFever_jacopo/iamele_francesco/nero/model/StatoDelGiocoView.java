@@ -23,7 +23,6 @@ public class StatoDelGiocoView implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1906104705205607270L;
-	private final boolean inizio;
 	private final TipoFaseGiocoFamily tipoFaseGiocoFamily;
 	private final List<GiocatoreView> giocatoriView;
 	private final List<Scuderia> corsie;
@@ -40,7 +39,6 @@ public class StatoDelGiocoView implements Serializable {
 	public StatoDelGiocoView(StatoDelGioco statoDaFiltrare,
 			Giocatore clientReclamante,
 			Map<Giocatore, String> nomi, Map<Giocatore, Long> ids) {
-		this.inizio = statoDaFiltrare.isInizio();
 		this.tipoFaseGiocoFamily = statoDaFiltrare.getTipoFaseGiocoFamily();
 		this.corsie = filtraCorsie(statoDaFiltrare.getCorsie(), statoDaFiltrare.getTipoFaseGiocoFamily());
 		this.classifica = statoDaFiltrare.getClassifica();
@@ -97,10 +95,6 @@ public class StatoDelGiocoView implements Serializable {
 						.get(g), ids.get(g), true));
 			}
 		}
-	}
-
-	public boolean isInizio() {
-		return inizio;
 	}
 
 	public TipoFaseGiocoFamily getTipoFaseGiocoFamily() {

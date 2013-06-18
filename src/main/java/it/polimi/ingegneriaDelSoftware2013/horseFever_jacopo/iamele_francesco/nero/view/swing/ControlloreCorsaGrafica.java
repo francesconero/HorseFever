@@ -66,7 +66,11 @@ public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChang
 	}
 
 	public void visita(Sprint sprint) {
-		informazioniDiGioco.addInformazione(sprint.getCommento());
+		String commento = sprint.getCommento();
+		if(commento.isEmpty()){
+			commento = "Nessun cavallo ha sprintato!";
+		}
+		informazioniDiGioco.addInformazione(commento);
 		tabellonePanel.aggiornaPosizioni(sprint.getNuovePosizioni());
 	}
 

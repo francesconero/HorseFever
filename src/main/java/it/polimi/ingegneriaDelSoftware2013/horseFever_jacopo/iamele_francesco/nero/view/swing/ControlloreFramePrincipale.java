@@ -20,6 +20,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -102,6 +103,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		panel_4.setLayout(new BoxLayout(panel_4, BoxLayout.Y_AXIS));
 
 		panel_2 = new JPanel();
+		panel_2.setBackground(Color.ORANGE);
 		panel_4.add(panel_2);
 		panel_2.setBorder(new MatteBorder(1, 1, 0, 1, (Color) new Color(0, 0, 0)));
 
@@ -109,16 +111,16 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
-				gl_panel_2.createParallelGroup(Alignment.LEADING)
-				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
-				);
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+		);
 		gl_panel_2.setVerticalGroup(
-				gl_panel_2.createParallelGroup(Alignment.LEADING)
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(lblNewLabel)
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				);
+					.addContainerGap()
+					.addComponent(lblNewLabel)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
 		panel_2.setLayout(gl_panel_2);
 
 		JPanel panel_3 = new JPanel();
@@ -127,6 +129,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
 
 		spinner = new JSpinner();
+		spinner.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		spinner.setBorder(new LineBorder(new Color(0, 0, 0)));
 		spinner.setModel(informazioniDiGioco);
 		DefaultEditor ed = (DefaultEditor) spinner.getEditor();
@@ -153,7 +156,6 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		panel_1.add(giocatoriPanel, gbc_giocatoriPanel);
 
 		tabellonePanel = new TabellonePanel();
-		tabellonePanel.setBorder(new LineBorder(Color.RED, 2));
 		GridBagConstraints gbc_tabellonePanel = new GridBagConstraints();
 		gbc_tabellonePanel.fill = GridBagConstraints.BOTH;
 		gbc_tabellonePanel.insets = new Insets(0, 0, 0, 5);
@@ -245,7 +247,8 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 						prossimoAggiornamento();
 						break;
 					case VITTORIA:
-						if(ultimoAggiornamento.getGiocatoreDiTurno()==null){
+						System.out.println("giocatori size: "+ultimoAggiornamento.getGiocatori().size());
+						if(ultimoAggiornamento.getGiocatori().size()==0){
 							JOptionPane.showMessageDialog(frame, "You're all losers!");
 						} else {
 							if(ultimoAggiornamento.getMioGiocatore().equals(ultimoAggiornamento.getGiocatoreDiTurno())){

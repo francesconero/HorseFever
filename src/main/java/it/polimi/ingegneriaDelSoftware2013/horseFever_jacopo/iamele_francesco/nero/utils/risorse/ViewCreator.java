@@ -92,7 +92,6 @@ public class ViewCreator {
 
 	private static StatoDelGioco creaStatoDelGiocoPreparazione() {
 		StatoDelGioco statoDelGioco = creaStatoDelGiocoIniziale();
-		statoDelGioco.setInizio(true);
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.PREPARAZIONE);
 		statoDelGioco.getMazziere().mischiaCarteMovimento();
 		statoDelGioco.getMazziere().mischiaCarteAzione();

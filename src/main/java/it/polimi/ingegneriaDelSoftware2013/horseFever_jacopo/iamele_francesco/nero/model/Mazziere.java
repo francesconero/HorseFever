@@ -26,7 +26,7 @@ public class Mazziere {
 	protected Colore coloreDado1 = Colore.BIANCO;
 	protected Colore coloreDado2 = Colore.BIANCO;
 	
-	public Mazziere() throws  IOException{
+	public Mazziere() {
 		this.personaggi=Risorse.getInstance().getPersonaggi(); 
 		this.carteAzione=Risorse.getInstance().getCarteAzione();
 		this.carteMovimento=Risorse.getInstance().getCarteMovimento();		

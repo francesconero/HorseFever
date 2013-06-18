@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 public class StatoDelGioco  {
-	private boolean inizio=false;
 	private int numTurno=0;
 	private Giocatore giocatoreDiTurno=null;
 	private TipoFaseGiocoFamily tipoFaseGiocoFamily;
@@ -28,13 +27,6 @@ public class StatoDelGioco  {
 	public StatoDelGioco(int numTurniTotali, Mazziere mazziere){
 		this.numTurniTotali=numTurniTotali;
 		this.mazziere = mazziere;
-	}
-
-	public boolean isInizio() {
-		return inizio;
-	}
-	public void setInizio(boolean inizio) {
-		this.inizio = inizio;	
 	}
 
 	public TipoFaseGiocoFamily getTipoFaseGiocoFamily() {
@@ -113,7 +105,7 @@ public class StatoDelGioco  {
 			this.giocatoreDiTurno = giocatoreDiTurno;			
 		} else {
 			this.giocatoreDiTurno.setMioTurno(false);
-			this.giocatoreDiTurno = giocatoreDiTurno;			
+			this.giocatoreDiTurno = giocatoreDiTurno;
 			this.giocatoreDiTurno.setMioTurno(true);
 		}
 	}
@@ -151,7 +143,7 @@ public class StatoDelGioco  {
 		primoGiocatore = giocatori.get(1);
 		giocatori=MetodiDiSupporto.creaListaOrdinata(giocatori, giocatori.get(1));
 	}
-	
+
 	public Scuderia getScuderiaDalColore(Colore colore){
 		List<Scuderia> temp = new LinkedList<Scuderia>();
 		for(Scuderia s : corsie){

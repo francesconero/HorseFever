@@ -74,6 +74,7 @@ public class ScuderiePanel extends JPanel {
 		scuderiaPanel.add(scrollPane);
 
 		cartePanel = new JPanel();
+		cartePanel.setBackground(Color.ORANGE);
 		scrollPane.setViewportView(cartePanel);
 		cartePanel.setLayout(new BoxLayout(cartePanel, BoxLayout.Y_AXIS));
 
