@@ -32,6 +32,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class GiocatorePanel extends JPanel {
+	private static final Color LIGHT_GRAY = Color.LIGHT_GRAY;
+	private static final Color GREEN = Color.cyan;
+
 	private static class GiocatorePanelCreator implements Runnable {
 
 		private GiocatorePanel panel;
@@ -73,7 +76,7 @@ public class GiocatorePanel extends JPanel {
 		holder = new JPanel();
 		holder.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		holder.setMinimumSize(new Dimension(50, 50));
-		holder.setBackground(Color.LIGHT_GRAY);
+		holder.setBackground(LIGHT_GRAY);
 		holder.setForeground(Color.BLACK);
 		setBorder(new CompoundBorder(new LineBorder(new Color(0, 0, 0), 5), new EmptyBorder(15, 15, 15, 15)));
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -205,7 +208,16 @@ public class GiocatorePanel extends JPanel {
 	
 	private void aggiorna(){
 		GiocatoreView giocatore = giocatoreAssociato;
-		utenteLabel().setText(giocatore.getNomeUtente());
+		String titolo = giocatore.getNomeUtente();
+		if(giocatore.isPrimoGiocatore()){
+			titolo += " (primo giocatore)";
+		}
+		if(giocatore.isMioTurno()){
+			holder.setBackground(GREEN);
+		} else {
+			holder.setBackground(LIGHT_GRAY);
+		}
+		utenteLabel().setText(titolo);
 		personaggioLabel().setText(giocatore.getPersonaggio().getNome());
 		danariLabel().setText(giocatore.getDanari()+" $");
 		pVLabel.setText(giocatore.getPuntiVittoria()+"");

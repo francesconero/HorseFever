@@ -13,6 +13,7 @@ public class Giocatore implements Serializable {
 	private Personaggio personaggio;
 	private List<CartaAzione> carteAzione=new ArrayList<CartaAzione>();
 	private boolean primoGiocatore=false;
+	private boolean mioTurno=false;
 	private List<Scommessa> scommesseEffettuate=new ArrayList<Scommessa>();
 
 	public Giocatore(int danari, int puntiVittoria, List<Scuderia> scuderia,Personaggio personaggio) {
@@ -93,6 +94,14 @@ public class Giocatore implements Serializable {
 	
 	public void addScommessa(Scommessa scommessaDaAggiungere){
 		scommesseEffettuate.add(scommessaDaAggiungere);
+	}
+
+	public boolean isMioTurno() {
+		return mioTurno;
+	}
+
+	public void setMioTurno(boolean mioTurno) {
+		this.mioTurno = mioTurno;
 	}
 }
 

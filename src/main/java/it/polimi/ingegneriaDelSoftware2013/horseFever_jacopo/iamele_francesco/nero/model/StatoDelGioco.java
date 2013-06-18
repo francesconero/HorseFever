@@ -108,7 +108,13 @@ public class StatoDelGioco  {
 		return giocatoreDiTurno;
 	}
 	public void setGiocatoreDiTurno(Giocatore giocatoreDiTurno) {
-		this.giocatoreDiTurno = giocatoreDiTurno;
+		if(this.giocatoreDiTurno == null){
+			this.giocatoreDiTurno = giocatoreDiTurno;			
+		} else {
+			this.giocatoreDiTurno.setMioTurno(false);
+			this.giocatoreDiTurno = giocatoreDiTurno;			
+			this.giocatoreDiTurno.setMioTurno(true);
+		}
 	}
 	public int getNumTurniTotali(){
 		return numTurniTotali;

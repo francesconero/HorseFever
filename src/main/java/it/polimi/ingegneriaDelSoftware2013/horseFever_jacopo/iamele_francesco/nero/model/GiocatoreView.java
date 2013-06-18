@@ -16,7 +16,8 @@ public class GiocatoreView implements Serializable {
 	private final int puntiVittoria;
 	private final List<Scuderia> scuderie;
 	private final Personaggio personaggio;
-	private final boolean primoGiocatore;
+	private final boolean primoGiocatore; 
+	private final boolean mioTurno; 
 	private final List<CartaAzione> carteAzione;
 	private final String nomeUtente;
 	private final long ID;
@@ -25,6 +26,7 @@ public class GiocatoreView implements Serializable {
 	
 	public GiocatoreView(Giocatore giocatore, String nomeUtente,
 			long ID, boolean oscurato) {
+		this.mioTurno = giocatore.isMioTurno();
 		this.oscurato = oscurato;
 		this.danari = giocatore.getDanari();
 		this.puntiVittoria = giocatore.getPuntiVittoria();
@@ -127,6 +129,10 @@ public class GiocatoreView implements Serializable {
 
 	public List<Scommessa> getScommesseEffettuate() {
 		return scommesseEffettuate;
+	}
+
+	public boolean isMioTurno() {
+		return mioTurno;
 	}
 
 }
