@@ -1,6 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.grafica;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenteSingolo;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.Utente;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 public class ControlloreGrafica implements FramePrincipaleObserver {
 
 	private final ControlloreFramePrincipale framePrincipale;
-	private final ControlloreUtenteSingolo controlloreUtenteSingolo;
+	private final Utente controlloreUtenteSingolo;
 	private StatoDelGiocoView ultimoStatoRicevuto;
 
 	public ControlloreGrafica(){
@@ -80,7 +80,6 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 
 	public void risolviConflitto(List<Colore> soluzioneConflitto) {
 		controlloreUtenteSingolo.risolviConflitto(soluzioneConflitto);
-		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
-		framePrincipale.aggiorna(ultimoStatoRicevuto);
+		prossimoAggiornamento();
 	}
 }

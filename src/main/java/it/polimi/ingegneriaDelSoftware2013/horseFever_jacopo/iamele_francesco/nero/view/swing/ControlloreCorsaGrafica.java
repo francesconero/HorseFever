@@ -1,6 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.MossaCorsaVisitor;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Classifica;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Conflitto;
@@ -81,10 +82,20 @@ public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChang
 		if(ultimoAggiornamento.getPrimoGiocatore().equals(ultimoAggiornamento.getMioGiocatore())){
 			informazioniDiGioco.addInformazione("Sei il primo giocatore, quindi spetta a te l'ardua sentenza!");
 			ConflittoDialog cD = new ConflittoDialog(conflitto.getScuderieInConflitto());
-			osservatore.risolviConflitto(cD.showDialog());
+			final List<Colore> soluzione = cD.showDialog();
+			MetodiDiSupporto.nuovoThread(new Runnable() {
+				public void run() {
+					osservatore.risolviConflitto(soluzione);
+				}
+			});			
 		} else {
 			informazioniDiGioco.addInformazione("Attendi che : "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!");
 			JOptionPane.showMessageDialog(tabellonePanel, "Attendi che : "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!", "Attendi", JOptionPane.INFORMATION_MESSAGE);
+			MetodiDiSupporto.nuovoThread(new Runnable() {
+				public void run() {
+					osservatore.prossimoAggiornamento();
+				}
+			});
 		}
 		delayTimer.stop();		
 	}

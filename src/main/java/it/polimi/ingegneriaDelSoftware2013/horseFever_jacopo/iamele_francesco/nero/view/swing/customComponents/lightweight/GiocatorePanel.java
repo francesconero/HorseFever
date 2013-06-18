@@ -6,7 +6,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Personaggio;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.customLayouts.AspectRatioLayout;
 
@@ -238,7 +237,6 @@ public class GiocatorePanel extends JPanel {
 	public static void main(String[] args) throws FormatoFileErratoException, IOException{
 		List<Scuderia> scuderie = new LinkedList<Scuderia>();
 		scuderie.add(new Scuderia(Colore.BLU, 5));
-		List<CartaAzione> carte = new LinkedList<CartaAzione>();
 		Personaggio p = Risorse.getInstance().getPersonaggi().get(0);
 		GiocatoreView giocatore = new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 25, false);
 		GiocatorePanelCreator gPC = new GiocatorePanelCreator(giocatore);

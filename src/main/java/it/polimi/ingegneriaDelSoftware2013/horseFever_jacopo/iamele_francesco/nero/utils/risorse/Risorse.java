@@ -46,7 +46,7 @@ public class Risorse {
 		}
 	}
 
-	public static Risorse getInstance(){
+	public synchronized static Risorse getInstance(){
 		if(risorse == null){
 			try {
 				risorse = new Risorse();

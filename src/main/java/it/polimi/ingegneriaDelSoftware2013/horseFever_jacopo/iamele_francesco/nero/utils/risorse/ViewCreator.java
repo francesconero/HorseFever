@@ -80,14 +80,11 @@ public class ViewCreator {
 		try {
 			cFS = new ControlloreFasiGioco(2, new MazziereDeterministico(0));
 		} catch (NumErratoGiocatoriException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (CarteFiniteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return cFS.getStatoDelGioco();		
 	}	

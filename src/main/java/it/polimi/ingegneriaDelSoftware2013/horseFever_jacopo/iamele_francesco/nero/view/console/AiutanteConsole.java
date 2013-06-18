@@ -72,8 +72,7 @@ public class AiutanteConsole {
 			if (out != null) {
 				read = true;
 			} else {
-				System.out
-				.println("Non hai inserito nessuno dei valori possibili!");
+				System.out.println("Non hai inserito nessuno dei valori possibili!");
 			}
 		} while (!read);
 		return out;

@@ -163,7 +163,8 @@ public class ControlloreOperativo {
 				continue;
 			}
 		}
-		if (scuderieArrivate.size()>1)statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate, controlloreUtenti);
+		if (scuderieArrivate.size()>1)
+			statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate, controlloreUtenti);
 		else if(scuderieArrivate.size()==1){ 
 			statoDelGioco.addClassifica(scuderieArrivate.get(0));
 			scuderieArrivate.clear();
@@ -291,7 +292,7 @@ public class ControlloreOperativo {
 							}
 						}
 					}
-					System.out.println("la grandezza di scudStessaPos è "+scuderieStessaPosizione.size());
+					System.out.println("la grandezza di scudStessaPos ï¿½ "+scuderieStessaPosizione.size());
 					statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
 					mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 					scuderieArrivate.remove(scuderieStessaPosizione.get(0));

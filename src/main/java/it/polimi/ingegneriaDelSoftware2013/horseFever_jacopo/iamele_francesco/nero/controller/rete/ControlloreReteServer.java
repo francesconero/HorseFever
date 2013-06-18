@@ -1,7 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenti;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AggiornamentoUtentiFallitoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.DisconnessioneAnomalaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.RicezioneFallitaException;
@@ -96,14 +95,14 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			apriSocket(g);
 		}
 
-		if(counter.get()>0){
+		while(counter.get()>0){
 			lock.lock();
 			try{
 				if(counter.get()>0){
 					try {
 						threadsFinished.await();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					} catch (InterruptedException e) {						
+						throw new RuntimeException(e);
 					}
 				}
 			} finally {
@@ -214,14 +213,6 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	}
 
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco) {
-		if (!heartbeatThread.isAlive()) {
-			DisconnessioneAnomalaException disconnesso = heartbeatThread.eccezione;
-
-			if (disconnesso != null) {
-				throw new AggiornamentoUtentiFallitoException(disconnesso);
-			}
-		}
-
 		for (Giocatore g : clients.keySet()) {
 			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,
 					g, nomiClients, IDClients);
@@ -333,7 +324,6 @@ public class ControlloreReteServer implements ControlloreUtenti {
 
 	private class HeartbeatThread extends Thread {
 		private AtomicBoolean esegui = new AtomicBoolean(true);
-		private DisconnessioneAnomalaException eccezione = null;
 		private ExecutorService clientsExecutor = Executors
 				.newCachedThreadPool();
 		private LinkedList<Callable<String>> heartBeatThreads = new LinkedList<Callable<String>>();

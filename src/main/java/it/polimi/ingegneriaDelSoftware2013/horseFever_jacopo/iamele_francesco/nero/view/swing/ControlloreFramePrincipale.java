@@ -180,8 +180,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	public void aggiorna(final StatoDelGiocoView view) {	
 		ultimoAggiornamento = view;
 		faseGioco = view.getTipoFaseGiocoFamily();
-		SwingUtilities.invokeLater(new Runnable() {			
-			
+		SwingUtilities.invokeLater(new Runnable() {				
 			public void run() {
 				switch(faseGioco){
 					case PREPARAZIONE:

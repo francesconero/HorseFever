@@ -13,7 +13,7 @@ import java.util.List;
  * @author Francesco
  *
  */
-public interface ControlloreUtenteSingolo {
+public interface Utente {
 
 	/**
 	 * Inizia a giocare

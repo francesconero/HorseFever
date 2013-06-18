@@ -24,7 +24,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-public class GraphicalConsole implements Console {
+public final class GraphicalConsole implements Console {
 
 	private static final Color outColor = Color.black;
 	private static final Color errColor = Color.red;
