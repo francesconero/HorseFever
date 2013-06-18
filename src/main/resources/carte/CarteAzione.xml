@@ -3,7 +3,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-0.jpg"
 		nome="Magna Velocitas"
-		lettera="A">
+		lettera="A" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="PARTENZA">
 			<Valore valore="4"></Valore>
 		</Effetto>
@@ -11,7 +11,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-1.jpg"
 		nome="Fortuna Benevola"
-		lettera="B">
+		lettera="B" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="MODIFICATORE_PARTENZA">
 			<Valore valore="1" />
 		</Effetto>
@@ -19,7 +19,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-2.jpg"
 		nome="Flagellum Folgoris"
-		lettera="C">
+		lettera="C" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="MODIFICATORE_SPRINT">
 			<Valore valore="1" />
 		</Effetto>
@@ -27,7 +27,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-3.jpg"
 		nome="Herba Magica"
-		lettera="D">
+		lettera="D" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="SPRINT">
 			<Valore valore="2" />
 		</Effetto>
@@ -35,7 +35,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-4.jpg"
 		nome="In Igni Veritas"
-		lettera="F">
+		lettera="F" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="PHOTOFINISH">
 			<Valore valore="1" />
 		</Effetto>
@@ -43,7 +43,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-5.jpg"
 		nome="Fustis et Radix"
-		lettera="E">
+		lettera="E" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="TRAGUARDO">
 			<Valore valore="2" />
 		</Effetto>
@@ -51,7 +51,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniPositive/horseFever-6.jpg"
 		nome="Vigor Ferreum"
-		lettera="G">
+		lettera="G" positiva="TRUE" negativa="FALSE">
 		<Effetto tipo="PRIMO_ULTIMO">
 			<Valore valore="4" />
 		</Effetto>
@@ -59,7 +59,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-7.jpg"
 		nome="Globus Obscuros"
-		lettera="A">
+		lettera="A" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="PARTENZA">
 			<Valore valore="0" />
 		</Effetto>
@@ -67,7 +67,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-8.jpg"
 		nome="Aqua Putrida"
-		lettera="B">
+		lettera="B" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="MODIFICATORE_PARTENZA">
 			<Valore valore="-1" />
 		</Effetto>
@@ -75,7 +75,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-9.jpg"
 		nome="Serum Maleficum"
-		lettera="C">
+		lettera="C" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="SPRINT">
 			<Valore valore="0" />
 		</Effetto>
@@ -83,7 +83,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-10.jpg"
 		nome="Venenum Veneficum"
-		lettera="D">
+		lettera="D" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="MODIFICATORE_SPRINT">
 			<Valore valore="-1" />
 		</Effetto>
@@ -91,7 +91,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-11.jpg"
 		nome="Mala Tempora"
-		lettera="F">
+		lettera="F" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="PHOTOFINISH">
 			<Valore valore="0" />
 		</Effetto>
@@ -99,7 +99,7 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-12.jpg"
 		nome="XIII"
-		lettera="E">
+		lettera="E" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="TRAGUARDO">
 			<Valore valore="0" />
 		</Effetto>
@@ -107,35 +107,35 @@
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNegative/horseFever-13.jpg"
 		nome="Felix Infernalis"
-		lettera="G">
+		lettera="G" positiva="FALSE" negativa="TRUE">
 		<Effetto tipo="PRIMO_ULTIMO">
 			<Valore valore="0" />
 		</Effetto>
 	</CartaAzione>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-14.jpg"
-		nome="Alfio Allibratore">
+		nome="Alfio Allibratore" positiva="FALSE" negativa="FALSE">
 		<Effetto tipo="QUOTAZIONE">
 			<Valore valore="-2" />
 		</Effetto>
 	</CartaAzione>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-18.jpg"
-		nome="Steven Sting">
+		nome="Steven Sting" positiva="FALSE" negativa="FALSE">
 		<Effetto tipo="QUOTAZIONE">
 			<Valore valore="2" />
 		</Effetto>
 	</CartaAzione>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-15.jpg"
-		nome="Friz Finden">
+		nome="Fritz Finden" positiva="FALSE" negativa="FALSE">
 		<Effetto tipo="CARTE_AZIONE">
 			<Valore valore="-1" />
 		</Effetto>
 	</CartaAzione>
 	<CartaAzione
 		immagine="src/main/resources/immagini/FamilyGame/AzioniNeutre/horseFever-19.jpg"
-		nome="Rochelle Recherche">
+		nome="Rochelle Recherche" positiva="FALSE" negativa="FALSE">
 		<Effetto tipo="CARTE_AZIONE">
 			<Valore valore="1" />
 		</Effetto>

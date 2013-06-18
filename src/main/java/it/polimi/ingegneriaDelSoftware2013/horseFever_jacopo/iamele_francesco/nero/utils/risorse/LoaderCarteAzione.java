@@ -32,6 +32,10 @@ final class LoaderCarteAzione extends DefaultHandler {
 	private List<Integer> valori = new LinkedList<Integer>();
 	private boolean letteraPresente = false;
 	private String immagine;
+
+	private boolean positiva;
+
+	private boolean negativa;
 	
 	private static final LoaderCarteAzione LOADER = new LoaderCarteAzione();
 
@@ -69,10 +73,14 @@ final class LoaderCarteAzione extends DefaultHandler {
 			letteraPresente = false;
 			nome = null;
 			immagine = null;
+			positiva = false;
+			negativa = false;
 			
 			nome = attributes.getValue("nome");
 			immagine = attributes.getValue("immagine");
 			String temp = attributes.getValue("lettera");
+			positiva = Boolean.getBoolean(attributes.getValue("positiva"));
+			negativa =  Boolean.getBoolean(attributes.getValue("negativa"));
 			if (temp != null) {
 				letteraPresente = true;
 				lettera = temp.charAt(0);
@@ -96,9 +104,9 @@ final class LoaderCarteAzione extends DefaultHandler {
 			throws SAXException {
 		if (qName.equals("CartaAzione")) {
 			if (letteraPresente) {
-				out.put(new CartaAzione(nome, lettera, effettiTemp, false, false),immagine);
+				out.put(new CartaAzione(nome, lettera, effettiTemp, positiva, negativa),immagine);
 			} else {
-				out.put(new CartaAzione(nome, lettera, effettiTemp, false, false),immagine);
+				out.put(new CartaAzione(nome, lettera, effettiTemp, positiva, negativa),immagine);
 			}
 		} else if (qName.equals("Effetto")) {
 			effettiTemp.add(new EffettoAzione(tipoAzione, valori));

@@ -44,6 +44,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ControlloreReteServer implements ControlloreUtenti {
 
+	private static final String GIOCATORE_NON_ASSOCIATO_AD_ALCUN_SOCKET = "Giocatore non associato ad alcun socket";
 	private final Map<Giocatore, Socket> clients = new LinkedHashMap<Giocatore, Socket>();
 	private final Map<Giocatore, Socket> clientsHeartbeat = new LinkedHashMap<Giocatore, Socket>();
 	private final Map<Giocatore, String> nomiClients = new LinkedHashMap<Giocatore, String>();
@@ -204,6 +205,10 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		return nome;
 	}
 
+	private long getNewID() {
+		return currentID++;
+	}
+
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
 		for (Giocatore g : clients.keySet()) {
 			StatoDelGiocoView daInviare = new StatoDelGiocoView(statoDelGioco,g, nomiClients, IDClients, mosseCorsa);
@@ -225,7 +230,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		Socket temp = clients.get(giocatore);
 		if (temp == null) {
 			throw new IllegalArgumentException(
-					"Giocatore non associato ad alcun socket");
+					GIOCATORE_NON_ASSOCIATO_AD_ALCUN_SOCKET);
 		} else {
 			Object scommessaPossibile = ControlloreRete.riceviOggetto(temp);
 			if (scommessaPossibile instanceof Scommessa) {
@@ -236,15 +241,19 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 	}
 
+	
 	public List<Colore> riceviSoluzioneConflitto(Giocatore giocatore) {
 		Socket temp = clients.get(giocatore);
 		if (temp == null) {
 			throw new IllegalArgumentException(
-					"Giocatore non associato ad alcun socket");
+					GIOCATORE_NON_ASSOCIATO_AD_ALCUN_SOCKET);
 		} else {
 			Object soluzionePossibile = ControlloreRete.riceviOggetto(temp);
 			if (soluzionePossibile instanceof List<?>) {
-				return (List<Colore>) soluzionePossibile;
+				@SuppressWarnings("unchecked")
+				List<Colore> out =  (List<Colore>) soluzionePossibile;
+				for(@SuppressWarnings("unused") Colore c : out);
+				return out;
 			} else {
 				throw new RicezioneFallitaException();
 			}
@@ -255,7 +264,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		Socket temp = clients.get(giocatore);
 		if (temp == null) {
 			throw new IllegalArgumentException(
-					"Giocatore non associato ad alcun socket");
+					GIOCATORE_NON_ASSOCIATO_AD_ALCUN_SOCKET);
 		} else {
 			Object posizionaCartaPossibile = ControlloreRete
 					.riceviOggetto(temp);
@@ -271,7 +280,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		Socket temp = clients.get(giocatore);
 		if (temp == null) {
 			throw new IllegalArgumentException(
-					"Giocatore non associato ad alcun socket");
+					GIOCATORE_NON_ASSOCIATO_AD_ALCUN_SOCKET);
 		} else {
 			ControlloreRete.rispondiPositivamente(temp);
 		}
@@ -281,14 +290,14 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		Socket temp = clients.get(giocatore);
 		if (temp == null) {
 			throw new IllegalArgumentException(
-					"Giocatore non associato ad alcun socket");
+					GIOCATORE_NON_ASSOCIATO_AD_ALCUN_SOCKET);
 		} else {
 			ControlloreRete.rispondiNegativamente(temp);
 		}
 	}
 
-	private long getNewID() {
-		return currentID++;
+	public void stop() {
+		heartbeatThread.fermaHeartbeat();
 	}
 
 	private class SocketHolder {

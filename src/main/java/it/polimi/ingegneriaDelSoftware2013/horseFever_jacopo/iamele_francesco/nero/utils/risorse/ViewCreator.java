@@ -1,6 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
@@ -78,7 +79,7 @@ public class ViewCreator {
 	private static StatoDelGioco creaStatoDelGiocoIniziale() {
 		ControlloreFasiGioco cFS = null;		
 		try {
-			cFS = new ControlloreFasiGioco(2, new MazziereDeterministico(0));
+			cFS = new ControlloreFasiGioco(2, new MazziereDeterministico(0), new ControlloreReteServer());
 		} catch (NumErratoGiocatoriException e) {
 			throw new RuntimeException(e);
 		} catch (CarteFiniteException e) {

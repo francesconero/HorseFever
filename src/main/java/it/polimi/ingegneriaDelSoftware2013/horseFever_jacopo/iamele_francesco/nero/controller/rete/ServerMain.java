@@ -35,14 +35,17 @@ public class ServerMain
     	if(args.length>1){
     		String det = args[1];
     		if(det.equals("-d")){
-    			controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0));    			
+    			controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), new ControlloreReteServer());    			
     		}
     	}
+    	
+    	ControlloreReteServer server = new ControlloreReteServer();
     	if(controlloreGioco==null){
-    		controlloreGioco=new ControlloreFasiGioco(numGiocatori, new Mazziere());    			    		
+    		controlloreGioco=new ControlloreFasiGioco(numGiocatori, new Mazziere(), server);    			    		
     	}
     	
     	controlloreGioco.inizia();
+    	server.stop();
     	} catch (AttesaUtentiFallitaException e) {
 			throw new RuntimeException(e);
 		} catch (CarteFiniteException e) {

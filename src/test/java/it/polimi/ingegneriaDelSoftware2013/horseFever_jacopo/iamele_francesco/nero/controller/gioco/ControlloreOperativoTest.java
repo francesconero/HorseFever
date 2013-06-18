@@ -2,6 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
@@ -43,7 +44,7 @@ public class ControlloreOperativoTest {
 	private long randomSeed = 27;
 	
 	private void inizializzaVariabili()throws NumErratoGiocatoriException, CarteFiniteException, IOException{
-		controlloreFasiGiocoTest=new ControlloreFasiGioco(5, new MazziereDeterministico(randomSeed));
+		controlloreFasiGiocoTest=new ControlloreFasiGioco(5, new MazziereDeterministico(randomSeed), new ControlloreReteServer());
 		statoDelGiocoTest=controlloreFasiGiocoTest.getStatoDelGioco();
 		mazziere=controlloreFasiGiocoTest.getMazziere();
 		mazziere.mischiaCarteMovimento();
@@ -121,7 +122,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testPartenzaECorsa() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {		
-		System.out.println("####°°testPartenzaECorsa°°####");
+		System.out.println("####ï¿½ï¿½testPartenzaECorsaï¿½ï¿½####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
 		statoDelGiocoTest.getCorsie().get(1).addCartaAzione(carteAzionePartenza.get(1));
@@ -152,7 +153,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testSprint(){
-		System.out.println("####°°testSprint°°####");
+		System.out.println("####ï¿½ï¿½testSprintï¿½ï¿½####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneSprint.get(0));
 		for(int i=0;i<statoDelGiocoTest.getCorsie().size();i++){
 			assertEquals("la posizione della scuderia"+i+"deve essere 0",0,statoDelGiocoTest.getCorsie().get(i).getPosizione());
@@ -171,7 +172,7 @@ public class ControlloreOperativoTest {
 	
 	@Test 
 	public void testApplicaEffettiCARTE_AZIONEPreCorsa(){
-		System.out.println("####°°testApplicaEffettiCARTE_AZIONEPreCorsa°°####");
+		System.out.println("####ï¿½ï¿½testApplicaEffettiCARTE_AZIONEPreCorsaï¿½ï¿½####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(1));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
@@ -184,7 +185,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testApplicaEffettiQUOTAZIONEPreCorsa(){
-		System.out.println("####°°testApplicaEffettiQUOTAZIONEPreCorsa°°####");
+		System.out.println("####ï¿½ï¿½testApplicaEffettiQUOTAZIONEPreCorsaï¿½ï¿½####");
 		statoDelGiocoTest.getCorsie().get(5).addCartaAzione(carteAzioneQuotazione.get(0));
 		int quotazioneOriginale=statoDelGiocoTest.getCorsie().get(5).getQuotazione();
 		statoDelGiocoTest=ControlloreOperativo.applicaEffettiQUOTAZIONEPreCorsa(statoDelGiocoTest);
@@ -194,7 +195,7 @@ public class ControlloreOperativoTest {
 
 	@Test
 	public void testNuoveQuotazioni(){
-		System.out.println("####°°testNuoveQuotazioni°°####");
+		System.out.println("####ï¿½ï¿½testNuoveQuotazioniï¿½ï¿½####");
 		List<Integer> valoriQuotazioni= new ArrayList<Integer>();
 		for(int i=0;i<statoDelGiocoTest.getCorsie().size();i++){
 			statoDelGiocoTest.addClassifica(statoDelGiocoTest.getCorsie().get(i));
@@ -224,7 +225,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishSenzaCarteAzione(){
-		System.out.println("####°°testFotoFinishSenzaCarteAzione°°####");
+		System.out.println("####ï¿½ï¿½testFotoFinishSenzaCarteAzioneï¿½ï¿½####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			statoDelGiocoTest.getCorsie().get(i).setPosizione(12);
 			System.out.println("Scuderia: "+statoDelGiocoTest.getCorsie().get(i).getColore()+"");
@@ -240,7 +241,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishConCarteAzioniScuderieSprintate(){
-		System.out.println("####°°testFotoFinishConCarteAzioniScuderieSprintate°°####");
+		System.out.println("####ï¿½ï¿½testFotoFinishConCarteAzioniScuderieSprintateï¿½ï¿½####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.BLU){
 				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(0));
@@ -263,7 +264,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishConCarteAzioniAltreScuderie(){
-		System.out.println("####°°testFotoFinishConCarteAzioniAltreScuderie°°####");
+		System.out.println("####ï¿½ï¿½testFotoFinishConCarteAzioniAltreScuderieï¿½ï¿½####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.NERO){
 				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(0));
@@ -287,7 +288,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishConCartaAzionePositiva(){
-		System.out.println("####°°testFotoFinishConCartaAzionePositiva°°####");
+		System.out.println("####ï¿½ï¿½testFotoFinishConCartaAzionePositivaï¿½ï¿½####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
 				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(1)); 
@@ -308,7 +309,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testEliminaCarte(){
-		System.out.println("####°°testEliminaCarte°°####");
+		System.out.println("####ï¿½ï¿½testEliminaCarteï¿½ï¿½####");
 		int posizione=0;
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
@@ -323,7 +324,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testCarteAzioneTraguardo(){
-		System.out.println("####°°testCarteAzioneTraguardo°°####");
+		System.out.println("####ï¿½ï¿½testCarteAzioneTraguardoï¿½ï¿½####");
 		int posizioneGiallo=0;
 		int posizioneNero=0;
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){

@@ -188,8 +188,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 						prossimoAggiornamento();
 						break;
 					case DISTRIBUZIONE_CARTE:
-						informazioniDiGioco.addInformazione("Abbiamo appena distribuito le carte!");
-						resetTabellone();
+						informazioniDiGioco.addInformazione("Abbiamo appena distribuito le carte!");						
 						aggiornaViewGenerica();		
 						prossimoAggiornamento();
 						break;
@@ -231,6 +230,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 						break;
 					case F_C_SCOPRICARTAAZIONE:
 						informazioniDiGioco.addInformazione("Scopriamo cosa è stato giocato sulle scuderie!");
+						resetTabellone();
 						aggiornaViewGenerica();
 						prossimoAggiornamento();
 						break;
@@ -245,10 +245,14 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 						prossimoAggiornamento();
 						break;
 					case VITTORIA:
-						if(ultimoAggiornamento.getMioGiocatore().equals(ultimoAggiornamento.getGiocatoreDiTurno())){
-							JOptionPane.showMessageDialog(frame, "Complimenti, hai vinto!!");
+						if(ultimoAggiornamento.getGiocatoreDiTurno()==null){
+							JOptionPane.showMessageDialog(frame, "You're all losers!");
 						} else {
-							JOptionPane.showMessageDialog(frame, "E' risultato vincitore: " + ultimoAggiornamento.getGiocatoreDiTurno().getNomeUtente());
+							if(ultimoAggiornamento.getMioGiocatore().equals(ultimoAggiornamento.getGiocatoreDiTurno())){
+								JOptionPane.showMessageDialog(frame, "Complimenti, hai vinto!!");
+							} else {
+								JOptionPane.showMessageDialog(frame, "E' risultato vincitore: " + ultimoAggiornamento.getGiocatoreDiTurno().getNomeUtente());
+							}							
 						}
 						break;
 					default:

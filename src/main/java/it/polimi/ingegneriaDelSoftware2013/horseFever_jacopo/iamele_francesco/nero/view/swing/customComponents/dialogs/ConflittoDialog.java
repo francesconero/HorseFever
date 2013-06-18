@@ -40,10 +40,7 @@ public class ConflittoDialog extends JDialog {
 			coloriConflittualiTest.add(Colore.VERDE);
 			coloriConflittualiTest.add(Colore.BLU);			
 			ConflittoDialog dialog = new ConflittoDialog(coloriConflittualiTest);
-			dialog.pack();
-			dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-			dialog.setVisible(true);
-			System.out.println(dialog.getSoluzioneConflitto());
+			System.out.println(dialog.showDialog());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -56,6 +53,7 @@ public class ConflittoDialog extends JDialog {
 	public List<Colore> showDialog(){
 		pack();
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setLocationRelativeTo(null);
 		setVisible(true);
 		return getSoluzioneConflitto();
 	}
