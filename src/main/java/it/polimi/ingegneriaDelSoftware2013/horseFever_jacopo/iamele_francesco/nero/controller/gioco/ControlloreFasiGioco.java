@@ -332,10 +332,6 @@ public class ControlloreFasiGioco {
 		int puntiVittoriaMassimi=ControlloreOperativo.puntiVittoriaMassimi(statoDelGioco);
 		List<Giocatore> giocatoriStessiPV =new ArrayList<Giocatore>();
 		List<Giocatore> giocatoriAncheStessiDanari=new ArrayList<Giocatore>();
-		if(statoDelGioco.getGiocatori()==null){
-			vittoria(null);
-			return;
-		}
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()==puntiVittoriaMassimi){
 				giocatoriStessiPV.add(statoDelGioco.getGiocatori().get(i));
@@ -379,6 +375,7 @@ public class ControlloreFasiGioco {
 	 * e setta a null il giocatoreDiTurno 
 	 */
 	private void sconfitta() {
+		statoDelGioco.setGiocatoreDiTurno(null);
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);	
 		
 	}
