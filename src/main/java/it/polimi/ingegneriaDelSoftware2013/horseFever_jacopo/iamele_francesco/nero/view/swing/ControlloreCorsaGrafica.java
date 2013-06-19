@@ -93,7 +93,7 @@ public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChang
 				}
 			});			
 		} else {
-			informazioniDiGioco.addInformazione("Attendi che : "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!");
+			informazioniDiGioco.addInformazione("Attendi che "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!");
 			JOptionPane.showMessageDialog(tabellonePanel, "Attendi che : "+ ultimoAggiornamento.getPrimoGiocatore().getNomeUtente()+" stabilisca l'ordine di arrivo!", "Attendi", JOptionPane.INFORMATION_MESSAGE);
 			MetodiDiSupporto.nuovoThread(new Runnable() {
 				public void run() {

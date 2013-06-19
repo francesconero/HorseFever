@@ -21,6 +21,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -46,7 +48,9 @@ public class ScuderiePanel extends JPanel {
 	private JButton btnPassa;
 	private JScrollPane scrollPane;
 	private JPanel cartePanel;
-
+	private final Action action = new SwingAction();
+	private final Action action_1 = new SwingAction_1();
+	
 	/**
 	 * Create the panel.
 	 */
@@ -115,6 +119,7 @@ public class ScuderiePanel extends JPanel {
 		panel_2.add(lblInserisciQuantitDi, gbc_lblInserisciQuantitDi);
 
 		textField = new JFormattedTextField(NumberFormat.getIntegerInstance(Locale.getDefault()));
+		textField.setAction(action_1);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setEnabled(false);
 		textField.setColumns(10);
@@ -147,6 +152,7 @@ public class ScuderiePanel extends JPanel {
 		panel_2.add(comboBox, gbc_comboBox);
 
 		btnScommetti = new JButton("SCOMMETTI");
+		btnScommetti.setAction(action_1);
 		btnScommetti.setPreferredSize(new Dimension(0, 23));
 		btnScommetti.setMinimumSize(new Dimension(20, 23));
 		btnScommetti.setEnabled(false);
@@ -156,22 +162,6 @@ public class ScuderiePanel extends JPanel {
 		gbc_btnScommetti.gridx = 0;
 		gbc_btnScommetti.gridy = 4;
 		panel_2.add(btnScommetti, gbc_btnScommetti);
-		btnScommetti.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					textField.commitEdit();
-					int danari = ((Long)textField.getValue()).intValue();
-					TipoScommessa tipoScommessa = comboBox.getItemAt(comboBox.getSelectedIndex());
-					Colore c = scuderia.getColore();
-					firePropertyChange("SCOMMESSA", null, new Scommessa(tipoScommessa, danari, c));
-				} catch (ParseException e) {
-					JOptionPane.showMessageDialog(null, "Non hai inserito un numero!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
-				} catch (ClassCastException e) {
-					JOptionPane.showMessageDialog(null, "Non hai inserito un numero!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
 
 		btnPassa = new JButton("PASSA");
 		btnPassa.setPreferredSize(new Dimension(0, 23));
@@ -203,17 +193,13 @@ public class ScuderiePanel extends JPanel {
 		panel.setLayout(gbl_panel);
 
 		btnTruccaQuestaScuderia = new JButton("TRUCCA");
+		btnTruccaQuestaScuderia.setAction(action);
 		btnTruccaQuestaScuderia.setEnabled(false);
 		GridBagConstraints gbc_btnTruccaQuestaScuderia = new GridBagConstraints();
 		gbc_btnTruccaQuestaScuderia.fill = GridBagConstraints.BOTH;
 		gbc_btnTruccaQuestaScuderia.gridx = 0;
 		gbc_btnTruccaQuestaScuderia.gridy = 0;
 		panel.add(btnTruccaQuestaScuderia, gbc_btnTruccaQuestaScuderia);
-		btnTruccaQuestaScuderia.addActionListener(new ActionListener() {			
-			public void actionPerformed(ActionEvent arg0) {
-				firePropertyChange("TRUCCAMENTO", null, scuderia.getColore());
-			}
-		});
 	}
 
 	public static void main(String[] args) throws InvocationTargetException, InterruptedException{
@@ -255,4 +241,33 @@ public class ScuderiePanel extends JPanel {
 		btnTruccaQuestaScuderia.setEnabled(enabled);
 	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "TRUCCA");
+			putValue(SHORT_DESCRIPTION, "Aggiungi una carta azione alla scuderia selezionata");
+		}
+		public void actionPerformed(ActionEvent e) {
+			ScuderiePanel.this.firePropertyChange("TRUCCAMENTO", null, scuderia.getColore());
+		}
+	}
+	private class SwingAction_1 extends AbstractAction {
+		public SwingAction_1() {
+			putValue(NAME, "SCOMMETTI");
+			putValue(SHORT_DESCRIPTION, "Scommetti sulla scuderia selezionata");
+		}
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("swingAction_1");
+			try {
+				textField.commitEdit();
+				int danari = ((Long)textField.getValue()).intValue();
+				TipoScommessa tipoScommessa = comboBox.getItemAt(comboBox.getSelectedIndex());
+				Colore c = scuderia.getColore();
+				ScuderiePanel.this.firePropertyChange("SCOMMESSA", null, new Scommessa(tipoScommessa, danari, c));
+			} catch (ParseException ex) {
+				JOptionPane.showMessageDialog(null, "Non hai inserito un numero!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
+			} catch (ClassCastException ex) {
+				JOptionPane.showMessageDialog(null, "Non hai inserito un numero!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
+			}
+		}
+	}
 }

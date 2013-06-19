@@ -384,7 +384,7 @@ public class ControlloreOperativo {
 	private static List<CartaAzione> carteNegative(List<CartaAzione> carteDaControllare) {
 		List<CartaAzione> carteNegative= new ArrayList<CartaAzione>();
 		for(int i=0;i<carteDaControllare.size();i++){
-			if(carteDaControllare.get(i).isNegativa())carteNegative.add(carteDaControllare.get(i));
+			if(carteDaControllare.get(i).isNegativa())				carteNegative.add(carteDaControllare.get(i));
 		}
 		return carteNegative;
 	}
@@ -662,10 +662,12 @@ public class ControlloreOperativo {
 			List<CartaAzione> carteDaEliminare = new ArrayList<CartaAzione>(); 
 			for (int j=0;j<carteDaControllare.size();j++){
 				CartaAzione cartaTemp = carteDaControllare.get(j);
-				for (int k=j+1;k<carteDaControllare.size();k++){
-					if (cartaTemp.getLettera()==carteDaControllare.get(k).getLettera()){
-						carteDaEliminare.add(carteDaControllare.get(j));
-						carteDaEliminare.add(carteDaControllare.get(k));
+				if(cartaTemp.getLettera()!=0){
+					for (int k=j+1;k<carteDaControllare.size();k++){
+						if (cartaTemp.getLettera()==carteDaControllare.get(k).getLettera()){
+							carteDaEliminare.add(carteDaControllare.get(j));
+							carteDaEliminare.add(carteDaControllare.get(k));
+						}
 					}
 				}
 			}

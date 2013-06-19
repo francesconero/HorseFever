@@ -6,6 +6,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Personaggio;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight.GiocatorePanel;
 
@@ -86,7 +87,8 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		newMaximumSize.width = panel.getMaximumSize().width;
 	}
 
-	public void aggiorna(final List<GiocatoreView> giocatori) {		
+	public void aggiorna(List<GiocatoreView> giocatori, GiocatoreView mioGiocatore) {	
+		giocatori = MetodiDiSupporto.creaListaOrdinata(giocatori, mioGiocatore);
 		List<GiocatoreView> toDelete = new LinkedList<GiocatoreView>();
 		List<GiocatoreView> toAdd = new LinkedList<GiocatoreView>();
 		List<GiocatoreView> toUpdate = new LinkedList<GiocatoreView>();
@@ -110,9 +112,9 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 			panel_1.remove(panelGiocatori.remove(g).getParent());
 		}
 		for(GiocatoreView g: toAdd){
-			panelGiocatori.put(g, new GiocatorePanel(g));
+			boolean isMioGiocatore = mioGiocatore.equals(g);
+			panelGiocatori.put(g, new GiocatorePanel(g, isMioGiocatore));
 			JPanel holder = new JPanel();
-			holder.setBackground(Color.RED);
 			holder.setOpaque(false);
 			holder.add(panelGiocatori.get(g));
 			Dimension newSize = panelGiocatori.get(g).getPreferredSize();
@@ -143,36 +145,22 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		while(true){
 			long sleepTime = 1000;
 			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 251, true));
-			gPC.getGiocatorePanel().aggiorna(listGiocatori);
+			gPC.getGiocatorePanel().aggiorna(listGiocatori, giocatore);
 			Thread.sleep(sleepTime);
 			listGiocatori.add(new GiocatoreView(new Giocatore(2500, 2, scuderie, p), "Francesco", 252, true));
-			gPC.getGiocatorePanel().aggiorna(listGiocatori);
+			gPC.getGiocatorePanel().aggiorna(listGiocatori, giocatore);
 			Thread.sleep(sleepTime);
 			listGiocatori.remove(listGiocatori.size()-1);
-			gPC.getGiocatorePanel().aggiorna(listGiocatori);
+			gPC.getGiocatorePanel().aggiorna(listGiocatori, giocatore);
 			Thread.sleep(sleepTime);
 			listGiocatori.remove(listGiocatori.size()-1);
-			gPC.getGiocatorePanel().aggiorna(listGiocatori);
+			gPC.getGiocatorePanel().aggiorna(listGiocatori, giocatore);
 			Thread.sleep(sleepTime );
 		}
 	}
 
 	protected JPanel getPanel() {
 		return panel_1;
-	}
-
-	public void mouseClicked(MouseEvent arg0) {		
-		
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void mousePressed(MouseEvent arg0) {
@@ -192,8 +180,5 @@ public class GiocatoriPanel extends JPanel implements MouseListener {
 		}
 	}
 
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseClicked(MouseEvent arg0) { }	public void mouseEntered(MouseEvent arg0) {	}	public void mouseExited(MouseEvent arg0) {	}	public void mouseReleased(MouseEvent arg0) {	}
 }

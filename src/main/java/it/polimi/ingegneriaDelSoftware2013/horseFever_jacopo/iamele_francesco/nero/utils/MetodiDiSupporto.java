@@ -63,7 +63,6 @@ public class MetodiDiSupporto
 				runnable.run();
 			};
 		}.start();
-	}
-	
+	}	
 	
 }

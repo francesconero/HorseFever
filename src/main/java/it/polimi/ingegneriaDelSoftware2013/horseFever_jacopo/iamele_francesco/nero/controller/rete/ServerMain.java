@@ -5,7 +5,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.GestoreEccezioni;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterminato;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterministico;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class ServerMain
     	
     	ControlloreReteServer server = new ControlloreReteServer();
     	if(controlloreGioco==null){
-    		controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterminato(), server);    			    		
+    		controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), server);    			    		
     	}
     	
     	controlloreGioco.inizia();

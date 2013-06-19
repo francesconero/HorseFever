@@ -14,7 +14,7 @@ public class GestoreEccezioni implements UncaughtExceptionHandler {
 		System.exit(-1);
 	}
 
-	public static UncaughtExceptionHandler getInstance() {
+	public synchronized static UncaughtExceptionHandler getInstance() {
 		return instance==null ? new GestoreEccezioni() : instance;
 	}
 	

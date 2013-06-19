@@ -71,6 +71,7 @@ final class LoaderCarteAzione extends DefaultHandler {
 		if (qName.equals("CartaAzione")) {
 			effettiTemp.clear();
 			letteraPresente = false;
+			lettera = 0;
 			nome = null;
 			immagine = null;
 			positiva = false;
@@ -79,8 +80,9 @@ final class LoaderCarteAzione extends DefaultHandler {
 			nome = attributes.getValue("nome");
 			immagine = attributes.getValue("immagine");
 			String temp = attributes.getValue("lettera");
-			positiva = Boolean.getBoolean(attributes.getValue("positiva"));
-			negativa =  Boolean.getBoolean(attributes.getValue("negativa"));
+			positiva = Boolean.parseBoolean(attributes.getValue("positiva"));
+			negativa =  Boolean.parseBoolean(attributes.getValue("negativa"));
+			
 			if (temp != null) {
 				letteraPresente = true;
 				lettera = temp.charAt(0);

@@ -6,7 +6,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
  * @author Francesco
  *
  */
-public class ConnessioneServerFallitaException extends RuntimeException {
+public class ConnessioneServerFallitaException extends NetworkException {
 
 	/**
 	 * 

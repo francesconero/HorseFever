@@ -5,7 +5,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
  * 
  * @author Francesco
  */
-public class AttesaUtentiFallitaException extends RuntimeException {
+public class AttesaUtentiFallitaException extends NetworkException {
 
 	/**
 	 * 

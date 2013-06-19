@@ -79,8 +79,10 @@ public class CartaAzione implements Carta, Serializable{
 	public String toString() {
 		String out = "Carta Azione: " + nome;
 		out += "\n";
+		out += "Positiva: " + positiva;
+		out += "\n";
 		if (lettera != 0) {
-			out += "Lettera: " + lettera;
+			out += "Negativa: " + negativa;
 			out += "\n";
 		}
 		out += "Effetti: ";

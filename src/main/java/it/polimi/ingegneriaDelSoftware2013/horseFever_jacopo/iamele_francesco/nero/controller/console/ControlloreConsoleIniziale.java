@@ -71,7 +71,7 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 		System.exit(0);
 
 		for (ControlloreReteClient utente : utenti) {
-			utente.fine();
+			utente.scollegaGioco();
 		}
 	}
 

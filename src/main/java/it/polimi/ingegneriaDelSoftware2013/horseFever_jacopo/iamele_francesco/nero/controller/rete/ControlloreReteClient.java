@@ -221,4 +221,8 @@ public class ControlloreReteClient implements Utente {
 				serverSocket);
 	}
 
+	public void scollegaGioco() {
+		fine();
+	}
+
 }

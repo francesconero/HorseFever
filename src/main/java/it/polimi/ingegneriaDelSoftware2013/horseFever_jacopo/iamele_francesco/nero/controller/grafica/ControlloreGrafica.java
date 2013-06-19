@@ -7,6 +7,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.ControlloreFramePrincipale;
@@ -50,7 +51,9 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 		
 		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
 		framePrincipale.aggiorna(ultimoStatoRicevuto);
-
+		if(ultimoStatoRicevuto.getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.VITTORIA)){
+			controlloreUtenteSingolo.scollegaGioco();
+		}
 	}
 
 	public void scommessa(Scommessa scommessa) {

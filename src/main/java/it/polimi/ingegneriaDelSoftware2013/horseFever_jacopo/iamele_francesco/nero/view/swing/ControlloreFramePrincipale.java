@@ -111,16 +111,16 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
 		gl_panel_2.setHorizontalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		);
+				);
 		gl_panel_2.setVerticalGroup(
-			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				gl_panel_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_2.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
+						.addContainerGap()
+						.addComponent(lblNewLabel)
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+				);
 		panel_2.setLayout(gl_panel_2);
 
 		JPanel panel_3 = new JPanel();
@@ -182,22 +182,29 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	public void aggiorna(final StatoDelGiocoView view) {	
 		ultimoAggiornamento = view;
 		faseGioco = view.getTipoFaseGiocoFamily();
-		SwingUtilities.invokeLater(new Runnable() {				
-			public void run() {
-				switch(faseGioco){
-					case PREPARAZIONE:
+		switch(faseGioco){
+			case PREPARAZIONE:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						informazioniDiGioco.addInformazione("Siamo nella fase preparazione del turno: "+ultimoAggiornamento.getNumTurno());
 						prossimoAggiornamento();
-						break;
-					case DISTRIBUZIONE_CARTE:
+					}
+				});				
+				break;
+			case DISTRIBUZIONE_CARTE:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						informazioniDiGioco.addInformazione("Abbiamo appena distribuito le carte!");						
 						aggiornaViewGenerica();		
 						prossimoAggiornamento();
-						break;
-					case F_S_ORARIA:
+					}
+				});
+				break;
+			case F_S_ORARIA:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						informazioniDiGioco.addInformazione("Siamo nella prima fase scommesse del turno: "+ultimoAggiornamento.getNumTurno());
 						if(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA)){
-							MetodiDiSupporto.dormi(1000);
 							informazioniDiGioco.addInformazione("E' il tuo turno di scommettere! Seleziona una scuderia e scommetti dal pannello attività.");
 							aggiornaViewGenerica();		
 						} else {							
@@ -205,11 +212,14 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 							aggiornaViewGenerica();		
 							prossimoAggiornamento();
 						}
-						break;
-					case F_S_ALTERAZIONE_GARA:
+					}
+				});
+				break;
+			case F_S_ALTERAZIONE_GARA:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						informazioniDiGioco.addInformazione("E' ora di truccare la corsa!");
 						if(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA)){
-							MetodiDiSupporto.dormi(1000);
 							informazioniDiGioco.addInformazione("E' il tuo turno di truccare la corsa! Seleziona una scuderia e trucca la corsa dal pannello attività.");
 							aggiornaViewGenerica();		
 						} else {							
@@ -217,11 +227,14 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 							aggiornaViewGenerica();		
 							prossimoAggiornamento();
 						}
-						break;
-					case F_S_ANTIORARIA:
+					}
+				});
+				break;
+			case F_S_ANTIORARIA:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						informazioniDiGioco.addInformazione("Siamo nella seconda fase scommesse!");
 						if(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ANTIORARIA)){
-							MetodiDiSupporto.dormi(1000);
 							informazioniDiGioco.addInformazione("E' il tuo turno di scommettere! Seleziona una scuderia e scommetti oppure passa il turno.");
 							aggiornaViewGenerica();		
 						} else {							
@@ -229,25 +242,44 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 							aggiornaViewGenerica();		
 							prossimoAggiornamento();
 						}
-						break;
-					case F_C_SCOPRICARTAAZIONE:
+					}
+				});
+				break;
+			case F_C_SCOPRICARTAAZIONE:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						informazioniDiGioco.addInformazione("Scopriamo cosa è stato giocato sulle scuderie!");
 						resetTabellone();
 						aggiornaViewGenerica();
 						prossimoAggiornamento();
-						break;
-					case F_C_CORSA:
+					}
+				});
+				break;
+			case F_C_CORSA:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						ControlloreCorsaGrafica cCG = new ControlloreCorsaGrafica(ultimoAggiornamento, osservatore, tabellonePanel, informazioniDiGioco);
 						cCG.controlla();
-						break;
-					case FINETURNO:
+					}
+				});
+				break;
+			case FINETURNO:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						prossimoAggiornamento();
-						break;
-					case F_C_PAGAMENTI_NUOVE_QUOTAZIONI:
+					}
+				});
+				break;
+			case F_C_PAGAMENTI_NUOVE_QUOTAZIONI:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						prossimoAggiornamento();
-						break;
-					case VITTORIA:
-						System.out.println("giocatori size: "+ultimoAggiornamento.getGiocatori().size());
+					}
+				});
+				break;
+			case VITTORIA:
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
+					public void run() {
 						if(ultimoAggiornamento.getGiocatori().size()==0){
 							JOptionPane.showMessageDialog(frame, "You're all losers!");
 						} else {
@@ -257,12 +289,12 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 								JOptionPane.showMessageDialog(frame, "E' risultato vincitore: " + ultimoAggiornamento.getGiocatoreDiTurno().getNomeUtente());
 							}							
 						}
-						break;
-					default:
-						throw new IllegalStateException("Fase non gestibile: " + view.getTipoFaseGiocoFamily());			
-				}
-			}
-		});
+					}
+				});
+				break;
+			default:
+				throw new IllegalStateException("Fase non gestibile: " + view.getTipoFaseGiocoFamily());			
+		}
 	}
 
 	protected void resetTabellone() {
@@ -278,14 +310,14 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	}
 
 	private void aggiornaViewGenerica() {		
-				tabellonePanel.aggiornaQuotazioni(ricavaQuotazioni(ultimoAggiornamento.getCorsie()));
-				tabellonePanel.aggiornaTurno(ultimoAggiornamento.getNumTurno());
-				giocatoriPanel.aggiorna(ultimoAggiornamento.getGiocatori());
-				attivitaPanel.aggiorna(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA),
-						mioTurno(ultimoAggiornamento,TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA),
-						mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ANTIORARIA),
-						ultimoAggiornamento.getGiocatori());
-				attivitaPanel.showScuderiePanel(ultimoAggiornamento.getScuderiaDalColore(tabellonePanel.getScuderiaSelezionata()));
+		tabellonePanel.aggiornaQuotazioni(ricavaQuotazioni(ultimoAggiornamento.getCorsie()));
+		tabellonePanel.aggiornaTurno(ultimoAggiornamento.getNumTurno());
+		giocatoriPanel.aggiorna(ultimoAggiornamento.getGiocatori(), ultimoAggiornamento.getMioGiocatore());
+		attivitaPanel.aggiorna(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA),
+				mioTurno(ultimoAggiornamento,TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA),
+				mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ANTIORARIA),
+				ultimoAggiornamento.getGiocatori());
+		attivitaPanel.showScuderiePanel(ultimoAggiornamento.getScuderiaDalColore(tabellonePanel.getScuderiaSelezionata()));
 	}
 
 	protected boolean mioTurno(StatoDelGiocoView ultimoAggiornamento,

@@ -32,8 +32,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class GiocatorePanel extends JPanel {
-	private static final Color LIGHT_GRAY = Color.LIGHT_GRAY;
-	private static final Color GREEN = Color.cyan;
+	private final Color LIGHT_GRAY = Color.LIGHT_GRAY;
+	private final Color GREEN = Color.cyan;
+	private final Color colorePersonale;
 
 	private static class GiocatorePanelCreator implements Runnable {
 
@@ -47,32 +48,37 @@ public class GiocatorePanel extends JPanel {
 		public void run() {
 			JFrame temp = new JFrame();
 			temp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			panel  = new GiocatorePanel(giocatore);
+			panel  = new GiocatorePanel(giocatore, true);
 			temp.getContentPane().add(panel);
 			temp.pack();
 			temp.setVisible(true);
 		}
-		
+
 		public GiocatorePanel getGiocatorePanel(){
 			return panel;
 		}
 
 	}
-	
+
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
 	private JLabel lblNewLabel_4;
 	private ImagePanel imagePanel;
 	private JPanel holder;
-	
+
 	private GiocatoreView giocatoreAssociato;
 	private JPanel panel_1;
 	private JLabel label;
 	private JLabel pVLabel;
-	
-	public GiocatorePanel(GiocatoreView giocatore) {
-		setBackground(Color.WHITE);
+
+	public GiocatorePanel(GiocatoreView giocatore, boolean isMioGiocatore) {
+		if(isMioGiocatore){
+			colorePersonale = Color.WHITE;
+		} else {
+			colorePersonale = Color.DARK_GRAY;
+		}
+		setBackground(colorePersonale);
 		holder = new JPanel();
 		holder.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		holder.setMinimumSize(new Dimension(50, 50));
@@ -87,7 +93,7 @@ public class GiocatorePanel extends JPanel {
 		gbl_holder.columnWidths = new int[]{100, 0};
 		gbl_holder.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		holder.setLayout(gbl_holder);
-		
+
 		lblNewLabel = new JLabel("Nome Giocatore");
 		lblNewLabel.setFont(new Font("Kalinga", Font.PLAIN, 18));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -98,7 +104,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 1;
 		holder.add(lblNewLabel, gbc_lblNewLabel);
-		
+
 		JPanel imageHolder = new JPanel();
 		imageHolder.setBorder(new EmptyBorder(10, 10, 10, 10));
 		imageHolder.setOpaque(false);
@@ -114,7 +120,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_imageHolder.gridy = 2;
 		gbc_imageHolder.weighty = 1;
 		holder.add(imageHolder, gbc_imageHolder);
-		
+
 		panel_1 = new JPanel();
 		panel_1.setOpaque(false);
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
@@ -129,7 +135,7 @@ public class GiocatorePanel extends JPanel {
 		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("Personaggio:");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.LEFT);
@@ -139,7 +145,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel_1.gridx = 1;
 		gbc_lblNewLabel_1.gridy = 0;
 		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
-		
+
 		lblNewLabel_2 = new JLabel("New Label");
 		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
 		gbc_lblNewLabel_2.anchor = GridBagConstraints.NORTHWEST;
@@ -147,7 +153,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel_2.gridx = 2;
 		gbc_lblNewLabel_2.gridy = 0;
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
+
 		JLabel lblDanari = new JLabel("Danari:");
 		lblDanari.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDanari.setHorizontalAlignment(SwingConstants.LEFT);
@@ -157,7 +163,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblDanari.gridx = 1;
 		gbc_lblDanari.gridy = 1;
 		panel_1.add(lblDanari, gbc_lblDanari);
-		
+
 		lblNewLabel_3 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.NORTHWEST;
@@ -165,7 +171,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel_3.gridx = 2;
 		gbc_lblNewLabel_3.gridy = 1;
 		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		
+
 		JLabel lblScuderia = new JLabel("Scuderia:");
 		lblScuderia.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblScuderia.setHorizontalAlignment(SwingConstants.LEFT);
@@ -175,7 +181,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblScuderia.gridx = 1;
 		gbc_lblScuderia.gridy = 2;
 		panel_1.add(lblScuderia, gbc_lblScuderia);
-		
+
 		lblNewLabel_4 = new JLabel("New label");
 		GridBagConstraints gbc_lblNewLabel_4 = new GridBagConstraints();
 		gbc_lblNewLabel_4.insets = new Insets(0, 0, 5, 5);
@@ -184,7 +190,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_lblNewLabel_4.gridx = 2;
 		gbc_lblNewLabel_4.gridy = 2;
 		panel_1.add(lblNewLabel_4, gbc_lblNewLabel_4);
-		
+
 		label = new JLabel("Punti Vittoria:");
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -194,7 +200,7 @@ public class GiocatorePanel extends JPanel {
 		gbc_label.gridx = 1;
 		gbc_label.gridy = 3;
 		panel_1.add(label, gbc_label);
-		
+
 		pVLabel = new JLabel(giocatore.getPuntiVittoria()+"");
 		GridBagConstraints gbc_pVLabel = new GridBagConstraints();
 		gbc_pVLabel.fill = GridBagConstraints.BOTH;
@@ -205,7 +211,7 @@ public class GiocatorePanel extends JPanel {
 		this.giocatoreAssociato = giocatore;
 		aggiorna();
 	}
-	
+
 	private void aggiorna(){
 		GiocatoreView giocatore = giocatoreAssociato;
 		String titolo = giocatore.getNomeUtente();
@@ -221,7 +227,7 @@ public class GiocatorePanel extends JPanel {
 		personaggioLabel().setText(giocatore.getPersonaggio().getNome());
 		danariLabel().setText(giocatore.getDanari()+" $");
 		pVLabel.setText(giocatore.getPuntiVittoria()+"");
-		
+
 		String l = "";
 		int i = 0;
 		for(Scuderia s : giocatore.getScuderie()){
@@ -232,7 +238,7 @@ public class GiocatorePanel extends JPanel {
 		}
 		scuderiaLabel().setText(l);
 	}
-	
+
 	protected JLabel utenteLabel() {
 		return lblNewLabel;
 	}
@@ -245,7 +251,7 @@ public class GiocatorePanel extends JPanel {
 	protected JLabel scuderiaLabel() {
 		return lblNewLabel_4;
 	}
-	
+
 	public static void main(String[] args) throws FormatoFileErratoException, IOException{
 		List<Scuderia> scuderie = new LinkedList<Scuderia>();
 		scuderie.add(new Scuderia(Colore.BLU, 5));
@@ -276,7 +282,7 @@ public class GiocatorePanel extends JPanel {
 			Color c = Color.getHSBColor(0.8f, 1f, 0.8f);
 			setBackground(c);
 		} else {
-			setBackground(Color.WHITE);
+			setBackground(colorePersonale);
 		}
 	}
 

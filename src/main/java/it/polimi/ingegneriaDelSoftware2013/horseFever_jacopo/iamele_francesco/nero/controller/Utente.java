@@ -43,4 +43,6 @@ public interface Utente {
 
 	public boolean risolviConflitto(List<Colore> conflittoRisolto);
 
+	public void scollegaGioco();
+
 }

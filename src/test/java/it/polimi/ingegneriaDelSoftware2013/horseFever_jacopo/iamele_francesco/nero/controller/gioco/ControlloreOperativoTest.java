@@ -108,8 +108,13 @@ public class ControlloreOperativoTest {
 		valori.add(-1);
 		effettoAzioneCARTE_AZIONE.remove(0);
 		effettoAzioneCARTE_AZIONE.add(new EffettoAzione(TipoAzione.CARTE_AZIONE,valori));
-		carteAzioneEliminaCarte.add(new CartaAzione("carta prova6", effettoAzioneCARTE_AZIONE, false, false));
 		
+		carteAzioneEliminaCarte.add(new CartaAzione("carta prova6", effettoAzioneCARTE_AZIONE, false, false));
+		for(CartaAzione a : carteAzione){
+			if(a.getEffetti().get(0).getTipo().equals(TipoAzione.CARTE_AZIONE)){
+				carteAzioneEliminaCarte.add(a);
+			}
+		}
 		
 	}
 
@@ -119,6 +124,16 @@ public class ControlloreOperativoTest {
 		
 	}
 
+	@Test
+	public void testCARTE_AZIONE_caricateDaFile(){
+		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(2));
+		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(3));
+		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
+		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(1));
+		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(2));
+		statoDelGiocoTest=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGiocoTest);
+		assertEquals("le carte azione della Scuderia "+statoDelGiocoTest.getCorsie().get(0).getColore()+ "devono essere "+statoDelGiocoTest.getCorsie().get(0).getCarteAzione(),2,statoDelGiocoTest.getCorsie().get(0).getCarteAzione().size());
+	}
 	
 	@Test
 	public void testPartenzaECorsa() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {		
