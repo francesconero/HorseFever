@@ -169,9 +169,19 @@ public class ControlloreFasiGioco {
 			while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore()){
 				count++;
 			}
-			while (!controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), true)){
+			boolean valida=false;
+			String messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+			if(messaggioErrore.equals("ok")){
+				valida=true;
+			}
+			while (!valida){
 				controlloreUtenti.nega(statoDelGioco.getGiocatoreDiTurno());
+				controlloreUtenti.avverti(statoDelGioco.getGiocatoreDiTurno(), messaggioErrore);
 				scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
+				messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+				if(messaggioErrore.equals("ok")){
+					valida=true;
+				}
 				count=0;
 				while(scommessa.getScuderia()!=statoDelGioco.getCorsie().get(count).getColore()){
 					count++;
@@ -218,13 +228,20 @@ public class ControlloreFasiGioco {
 			scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 			
 			boolean passato = scommessa.getDanariScommessi()==0;
-			boolean valida = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
-			
+			boolean valida=false;
+			String messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+			if(messaggioErrore.equals("ok")){
+				valida=true;
+			}
 			while(!(valida||passato)){
 				controlloreUtenti.nega(statoDelGioco.getGiocatoreDiTurno());
+				controlloreUtenti.avverti(statoDelGioco.getGiocatoreDiTurno(), messaggioErrore);
 				scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
 				passato = scommessa.getDanariScommessi()==0;
-				valida = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+				messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+				if(messaggioErrore.equals("ok")){
+					valida=true;
+				}
 			}
 			
 			if(passato){
@@ -239,33 +256,33 @@ public class ControlloreFasiGioco {
 		}
 	}
 
-	private boolean controllaScommessa(Scommessa scommessa, Giocatore giocatore, boolean prima){
+	private String controllaScommessa(Scommessa scommessa, Giocatore giocatore, boolean prima){
 		if(prima){
 			if(scommessa.getDanariScommessi()==0){
-				return false;
+				return "Non puoi Scommettere 0 Danari!!!";
 			}
 		}
 		
 		if(scommessa.getDanariScommessi()<giocatore.getPuntiVittoria()*100){
-			return false;
+			return ("La tua scommessa non rispetta la scommessa minima:"+giocatore.getPuntiVittoria()*100);
 		}
 		if(scommessa.getDanariScommessi()>giocatore.getDanari()){
-			return false;
+			return ("Non hai tutti quei soldi!!!");
 		}
 		if(statoDelGioco.getScuderiaDalColore(scommessa.getScuderia()).getScommesseDisponibili()<1){
-			return false;
+			return "Spiacente, scommesse esaurite su quella scuderia!";
 		}
 		
 		if(!prima){
 			for(Scommessa sE : giocatore.getScommesseEffettuate()){
 				if(sE.getScuderia().equals(scommessa.getScuderia())){
 					if(sE.getTipoScommessa().equals(scommessa.getTipoScommessa())){
-						return false;
+						return ("Hai già scommesso "+scommessa.getTipoScommessa()+" su quella scuderia!");
 					}
 				}
 			}
 		}
-		return true;		
+		return "ok";		
 	}
 
 	/**
