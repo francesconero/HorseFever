@@ -18,7 +18,7 @@ public class MetodiDiSupporto
 		if(indice == -1)
 			throw new NoSuchElementException();
 		
-		if (indice == 0) return (listaOriginale);  //lista gi� ordinata
+		if (indice == 0) return (listaOriginale);  //lista gia' ordinata
 		
 		for (int i = indice; i<listaOriginale.size(); i++){
 			listaOrdinata.add(listaOriginale.get(i));
@@ -31,7 +31,7 @@ public class MetodiDiSupporto
 	}
 
 	/**
-	 * Wrapper per l'utilità invokeAndWait delle SwingUtilities. Per evitare deadlock è VIETATO chiamare questo metodo dall'EDT.
+	 * Wrapper per l'utilita'� invokeAndWait delle SwingUtilities. Per evitare deadlock e' VIETATO chiamare questo metodo dall'EDT.
 	 * 
 	 * @param runnable la classe runnable da  eseguire sull'EDT.
 	 */

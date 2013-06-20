@@ -211,12 +211,9 @@ public class ControlloreFasiGioco {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ANTIORARIA);
 		for (int i=statoDelGioco.getGiocatori().size()-1;i>=0;i--){
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
-			System.out.println("Aggiorno client");
 			aggiornaTuttiIClient();
 			Scommessa scommessa=null;
-			System.out.println("Attendo seconde scommesse.");
 			scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
-			System.out.println("Ricevuta scommessa: "+scommessa);
 			
 			boolean passato = scommessa.getDanariScommessi()==0;
 			boolean valida = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
@@ -224,14 +221,12 @@ public class ControlloreFasiGioco {
 			while(!(valida||passato)){
 				controlloreUtenti.nega(statoDelGioco.getGiocatoreDiTurno());
 				scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
-				System.out.println("Ricevuta scommessa: "+scommessa);
 				passato = scommessa.getDanariScommessi()==0;
 				valida = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
 			}
 			
 			if(passato){
-				System.out.println("Giocatore non vuole scommettere.");
-				
+				;
 			} else {
 				statoDelGioco.getGiocatoreDiTurno().removeDanari(scommessa.getDanariScommessi());
 				statoDelGioco.getGiocatoreDiTurno().addScommessa(scommessa);
@@ -353,7 +348,7 @@ public class ControlloreFasiGioco {
 				vittoria(giocatoriAncheStessiDanari);
 			}
 			else{
-				Collections.shuffle(giocatoriAncheStessiDanari);//a questo punto assegno casualmente la vittoria
+				Collections.shuffle(giocatoriAncheStessiDanari);//a questo punto assegno casualmente la vittoria 
 				vittoria(giocatoriAncheStessiDanari);
 			}
 		}	
@@ -389,10 +384,12 @@ public class ControlloreFasiGioco {
 			aggiornaTuttiIClient();
 			faseEliminazioneGiocatore();
 			if(statoDelGioco.getGiocatori().size()==0){
-				break;
+				break;   //se non e' rimasto alcun giocatore salta alla sconfitta
 			}
 			aggiornaTuttiIClient();
-			if(statoDelGioco.getGiocatori().size()==1)break;//se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
+			if(statoDelGioco.getGiocatori().size()==1){
+				break;  //se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
+			}
 			primaFaseScommesse();
 			truccaCorsa();
 			secondaFaseScommesse();
@@ -420,6 +417,7 @@ public class ControlloreFasiGioco {
 	public Mazziere getMazziere(){
 		return mazziere;
 	}
+	
 }
 
 

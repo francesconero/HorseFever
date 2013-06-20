@@ -131,10 +131,10 @@ public class ControlloreOperativo {
 				for (int k=0;k<scuderie.get(i).getCarteAzione().get(j).getEffetti().size();k++){
 					if(scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getTipo()==TipoAzione.PHOTOFINISH){
 						if (scuderie.get(i).getCarteAzione().get(j).getEffetti().get(k).getValori().get(0)==0){
-							if(i==scuderie.size()-1){ // se � l'ultimo elemento ritorna la lista
+							if(i==scuderie.size()-1){ // se e' l'ultimo elemento ritorna la lista
 								return scuderie;
 							}else{
-								scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (l'interessato sar� ultimo) 
+								scuderie=MetodiDiSupporto.creaListaOrdinata(scuderie, scuderie.get(i+1)); //altrimenti ordina l'elemento successivo (l'interessato sara' ultimo) 
 								return scuderie;
 							}
 						}
@@ -222,9 +222,8 @@ public class ControlloreOperativo {
 	 * @return Lo stato del gioco modificato
 	 */
 	private static StatoDelGioco assegnaClassifica(StatoDelGioco statoDelGioco,List<Scuderia> scuderieArrivate,ControlloreUtenti controlloreUtenti){
-		System.out.println("assegno classifica a "+scuderieArrivate.size()+" scuderie");
 		boolean assegnatoArrayConFotoFinishNegativo=false;
-		while(scuderieArrivate.size()>0){
+		while(scuderieArrivate.size()>0){			//fino a quando ci sono scuderie arrivate...
 			int posizioneMassima=posizioneMassima(scuderieArrivate);
 			List<Scuderia> scuderieStessaPosizione=new ArrayList<Scuderia>();
 			for(int i=0; i<scuderieArrivate.size();i++){
@@ -232,30 +231,30 @@ public class ControlloreOperativo {
 					scuderieStessaPosizione.add(scuderieArrivate.get(i));
 				}
 			}
-			while(scuderieStessaPosizione.size()>0){
-				List<Scuderia> scuderiaTemp=scuderiaConCartaPhotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);
+			while(scuderieStessaPosizione.size()>0){ //fino a quando ci sono scuderie arrivate nella stessa posizione...
+				List<Scuderia> scuderiaConCartaPositiva=scuderiaConCartaPhotoFinishPositiva(statoDelGioco, scuderieStessaPosizione);  
 				List<Scuderia> scuderieConCartaNegativa=scuderiaConCartaPhotoFinishNegativa(statoDelGioco, scuderieStessaPosizione);
 				int quotazioneMassima=quotazioneMassima(scuderieStessaPosizione);
 				if(scuderieConCartaNegativa!=null){
 					while(scuderieStessaPosizione.size()>1){
-						if(scuderiaTemp!=null){
-							statoDelGioco.addClassifica(scuderiaTemp.get(0));
+						if(scuderiaConCartaPositiva!=null){
+							statoDelGioco.addClassifica(scuderiaConCartaPositiva.get(0));
 							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
-							scuderieArrivate.remove(scuderiaTemp.get(0));	
-							scuderieConCartaNegativa.remove(scuderiaTemp.get(0));
-							scuderieStessaPosizione.remove(scuderiaTemp.get(0));
-							scuderiaTemp=null;
+							scuderieArrivate.remove(scuderiaConCartaPositiva.get(0));	
+							scuderieConCartaNegativa.remove(scuderiaConCartaPositiva.get(0));
+							scuderieStessaPosizione.remove(scuderiaConCartaPositiva.get(0));
+							scuderiaConCartaPositiva=null; //...una volta che ho aggiunto la scuderia con la carta PhotoFinish positiva setto a null la lista
 						}
 						else{
 							if(!assegnatoArrayConFotoFinishNegativo){
-								scuderieStessaPosizione=scuderieConCartaNegativa;
+								scuderieStessaPosizione=scuderieConCartaNegativa; //scuderieStessaPosizione ora ha in ultima posizione la scuderia con la carta Photofinish negativa
 								assegnatoArrayConFotoFinishNegativo=true;
 							}
 							if(scuderieStessaPosizione.size()==1){// assegna la quotazione della scuderia con la carta negativa
 								quotazioneMassima=quotazioneMassima(scuderieStessaPosizione);
 							}
 							else{
-								List<Scuderia> scuderieSenzaQuellaNeg = new ArrayList<Scuderia>();
+								List<Scuderia> scuderieSenzaQuellaNeg=new ArrayList<Scuderia>();
 								for(int i=0;i<scuderieStessaPosizione.size()-1;i++){
 									scuderieSenzaQuellaNeg.add(scuderieStessaPosizione.get(i));
 								}
@@ -285,7 +284,7 @@ public class ControlloreOperativo {
 									coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
 									controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
 									dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
-								}else{
+								}else{  //necessario per Test con Junit
 									Collections.reverse(scuderieInConflitto);
 								}
 								mosseCorsa.clear();
@@ -303,19 +302,18 @@ public class ControlloreOperativo {
 							}
 						}
 					}
-					System.out.println("la grandezza di scudStessaPos � "+scuderieStessaPosizione.size());
 					statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
 					mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
 					scuderieArrivate.remove(scuderieStessaPosizione.get(0));
 					scuderieStessaPosizione.remove(0);
 				}
 				else{
-					if(scuderiaTemp!=null){
-						statoDelGioco.addClassifica(scuderiaTemp.get(0));
+					if(scuderiaConCartaPositiva!=null){
+						statoDelGioco.addClassifica(scuderiaConCartaPositiva.get(0));
 						mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
-						scuderieArrivate.remove(scuderiaTemp.get(0));
-						scuderieStessaPosizione.remove(scuderiaTemp.get(0));
-						scuderiaTemp=null;
+						scuderieArrivate.remove(scuderiaConCartaPositiva.get(0));
+						scuderieStessaPosizione.remove(scuderiaConCartaPositiva.get(0));
+						scuderiaConCartaPositiva=null;
 					}
 					else{
 						int count=0;
@@ -384,7 +382,9 @@ public class ControlloreOperativo {
 	private static List<CartaAzione> carteNegative(List<CartaAzione> carteDaControllare) {
 		List<CartaAzione> carteNegative= new ArrayList<CartaAzione>();
 		for(int i=0;i<carteDaControllare.size();i++){
-			if(carteDaControllare.get(i).isNegativa())				carteNegative.add(carteDaControllare.get(i));
+			if(carteDaControllare.get(i).isNegativa()){
+				carteNegative.add(carteDaControllare.get(i));
+			}
 		}
 		return carteNegative;
 	}
@@ -397,7 +397,9 @@ public class ControlloreOperativo {
 	private static List<CartaAzione> cartePositive(List<CartaAzione> carteDaControllare) {
 		List<CartaAzione> cartePositive=new ArrayList<CartaAzione>();
 		for(int i=0;i<carteDaControllare.size();i++){
-			if(carteDaControllare.get(i).isPositiva())cartePositive.add(carteDaControllare.get(i));
+			if(carteDaControllare.get(i).isPositiva()){
+				cartePositive.add(carteDaControllare.get(i));
+			}
 		}
 		return cartePositive;	
 	}
@@ -456,7 +458,7 @@ public class ControlloreOperativo {
 	 * e ne applica gli effetti
 	 * @param scuderia
 	 * @param sprint
-	 * @return La scuderia su cui si � chiesto il controllo
+	 * @return La scuderia su cui si e' chiesto il controllo
 	 * con l'attributo posizione modificato dalla carta o dal normale sprint
 	 */
 	private static Scuderia applicaEffettiSPRINT(Scuderia scuderia, int sprint) { 
@@ -493,7 +495,7 @@ public class ControlloreOperativo {
 			for (int j=0;j<cartaTemp.getEffetti().size();j++){
 				if(cartaTemp.getEffetti().get(j).getTipo()==TipoAzione.MODIFICATORE_SPRINT){
 					sprintTemp=sprintTemp+cartaTemp.getEffetti().get(j).getValori().get(0);
-					if (sprintTemp<0)sprintTemp=0;// un cavallo non pu� mai retrocedere
+					if (sprintTemp<0)sprintTemp=0;// un cavallo non puo' mai retrocedere
 				}
 
 			}
@@ -545,7 +547,7 @@ public class ControlloreOperativo {
 	 */
 	public static StatoDelGioco posizionaCartaAzione(StatoDelGioco statoDelGioco, PosizionaCarta posizionaCarta)throws IllegalArgumentException{
 		int count=0;
-		if(!(posizionaCarta.getCartaDaPosizionare() instanceof CartaAzione))throw new IllegalArgumentException("non � una carta azione"); 
+		if(!(posizionaCarta.getCartaDaPosizionare() instanceof CartaAzione))throw new IllegalArgumentException("non e' una carta azione"); 
 		while (posizionaCarta.getScuderiaAssociata().getColore()!=statoDelGioco.getCorsie().get(count).getColore())count++;
 		statoDelGioco.getCorsie().get(count).addCartaAzione((CartaAzione)posizionaCarta.getCartaDaPosizionare());
 		return statoDelGioco;
@@ -596,7 +598,6 @@ public class ControlloreOperativo {
 		else{
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
 			temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
-			System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
 			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 		}
@@ -612,7 +613,6 @@ public class ControlloreOperativo {
 			else{
 				Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
 				temp=temp+(new String("\nil cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
-				System.out.println("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
 				statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
 				mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 			}
@@ -647,7 +647,7 @@ public class ControlloreOperativo {
 			}
 			mappaMovimento.put(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
 		}
-		mosseCorsa.add(new Movimento("eppur si muovono!", mappaMovimento));
+		mosseCorsa.add(new Movimento("La corsa continua", mappaMovimento));
 		return statoDelGioco;
 	}
 
