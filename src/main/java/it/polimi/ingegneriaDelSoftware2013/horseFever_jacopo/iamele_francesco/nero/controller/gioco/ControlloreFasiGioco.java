@@ -170,7 +170,7 @@ public class ControlloreFasiGioco {
 				count++;
 			}
 			boolean valida=false;
-			String messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+			String messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), true);
 			if(messaggioErrore.equals("ok")){
 				valida=true;
 			}
@@ -178,7 +178,7 @@ public class ControlloreFasiGioco {
 				controlloreUtenti.nega(statoDelGioco.getGiocatoreDiTurno());
 				controlloreUtenti.avverti(statoDelGioco.getGiocatoreDiTurno(), messaggioErrore);
 				scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
-				messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
+				messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), true);
 				if(messaggioErrore.equals("ok")){
 					valida=true;
 				}
