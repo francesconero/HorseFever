@@ -489,7 +489,11 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
 				public void run() {
 					JOptionPane.showMessageDialog(frmHorseFever, avvertimento);
-					osservatore.stessoAggiornamento();
+					MetodiDiSupporto.nuovoThread(new Runnable() {			
+						public void run() {
+							osservatore.stessoAggiornamento();
+						}
+					});
 				}
 			});
 			
