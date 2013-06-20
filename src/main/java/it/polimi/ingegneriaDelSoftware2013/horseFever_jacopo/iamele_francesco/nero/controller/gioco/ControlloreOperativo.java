@@ -156,8 +156,11 @@ public class ControlloreOperativo {
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
 				System.out.println("e' arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
-				int posizioneModificata=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione(), statoDelGioco, mosseCorsa);
-				statoDelGioco.getCorsie().get(i).setPosizione(posizioneModificata);
+				boolean cartaTraguardoPresente=false;
+				cartaTraguardoPresente=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione(), statoDelGioco, mosseCorsa);
+				if(cartaTraguardoPresente){
+					mosseCorsa.add(new Movimento("Sono state applicate delle carte traguardo!", creaPosizioni(statoDelGioco.getCorsie())));
+				}
 				scuderieArrivate.add(statoDelGioco.getCorsie().get(i));
 			}
 			else{
@@ -185,7 +188,8 @@ public class ControlloreOperativo {
 	 * @return il valore modificato dalla carta azione oppure
 	 * il valore passato come parametro (nel caso non vi siano carte)
 	 */
-	private static int applicaEffettiTRAGUARDO(Scuderia scuderia, int posizioneEccessoTraguardo, StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
+	private static boolean applicaEffettiTRAGUARDO(Scuderia scuderia, int posizioneEccessoTraguardo, StatoDelGioco statoDelGioco, List<MossaCorsa> mosseCorsa){
+		boolean cartaPresente=false;
 		List<CartaAzione> carteDaControllare = scuderia.getCarteAzione();
 		int posizioneImposta=posizioneEccessoTraguardo;
 		for (int i=0; i<carteDaControllare.size();i++){
@@ -198,11 +202,13 @@ public class ControlloreOperativo {
 					else{
 						posizioneImposta=posizioneImposta+cartaTemp.getEffetti().get(j).getValori().get(0);
 					}
-					mosseCorsa.add(new Movimento("Sono state applicate delle carte traguardo!", creaPosizioni(statoDelGioco.getCorsie())));
+					cartaPresente=true;
+					scuderia.setPosizione(posizioneImposta);
+					
 				}
 			}
 		}
-		return posizioneImposta;
+		return cartaPresente;
 	}
 
 	private static Map<Scuderia, Integer> creaPosizioni(List<Scuderia> corsie) {
