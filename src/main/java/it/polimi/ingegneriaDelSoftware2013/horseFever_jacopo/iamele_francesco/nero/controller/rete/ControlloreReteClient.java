@@ -230,4 +230,24 @@ public class ControlloreReteClient implements Utente {
 		fine();
 	}
 
+	public String riceviAvvertimento() {
+		Object possibileAvvertimento = null;
+		possibileAvvertimento = ControlloreRete.riceviOggetto(serverSocket);
+
+		if (possibileAvvertimento != null) {
+			if (possibileAvvertimento instanceof String) {
+				ControlloreRete.rispondiPositivamente(serverSocket);
+				return (String) possibileAvvertimento;
+			} else {
+				ControlloreRete.rispondiNegativamente(serverSocket);
+				throw new RicezioneFallitaException(
+						"Fallita ricezione dell'avvertimento");
+			}
+		} else {
+			ControlloreRete.rispondiNegativamente(serverSocket);
+			throw new RicezioneFallitaException(
+					"Fallita ricezione dell'avvertimento");
+		}
+	}
+
 }

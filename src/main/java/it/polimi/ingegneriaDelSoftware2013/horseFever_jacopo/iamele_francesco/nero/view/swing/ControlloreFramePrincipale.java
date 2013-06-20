@@ -73,7 +73,6 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		MetodiDiSupporto.swingInvokeAndWait(new Runnable() {			
 			public void run() {
 				initialize();
-
 			}
 		});
 	}
@@ -193,8 +192,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		switch(faseGioco){
 			case PREPARAZIONE:
@@ -476,15 +474,24 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 								osservatore.prossimoAggiornamento();
 							}
 						});
-					} else {
-						JOptionPane.showMessageDialog(frmHorseFever, "Spiacente, la tua scommessa è stata rifiutata, riprova!!");
+					} else {						
 						MetodiDiSupporto.nuovoThread(new Runnable() {			
 							public void run() {
-								osservatore.stessoAggiornamento();
+								osservatore.riceviAvvertimento();
 							}
 						});
 					}
 				}
 			});
+		}
+
+		public void avverti(final String avvertimento) {
+			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
+				public void run() {
+					JOptionPane.showMessageDialog(frmHorseFever, avvertimento);
+					osservatore.stessoAggiornamento();
+				}
+			});
+			
 		}
 	}

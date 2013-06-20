@@ -121,5 +121,10 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 			controlloreUtenteSingolo.scollegaGioco();
 		}
 	}
+
+	public void riceviAvvertimento() {
+		String avvertimento = controlloreUtenteSingolo.riceviAvvertimento();
+		framePrincipale.avverti(avvertimento);
+	}
 	
 }

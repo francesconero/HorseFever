@@ -23,4 +23,6 @@ public interface FramePrincipaleObserver {
 
 	void finePartita();
 
+	void riceviAvvertimento();
+
 }

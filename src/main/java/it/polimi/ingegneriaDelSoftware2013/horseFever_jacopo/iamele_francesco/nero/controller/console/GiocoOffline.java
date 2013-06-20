@@ -255,4 +255,8 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void avverti(Giocatore giocatore, String string) {
+		view.scrivi(nomi.get(giocatore)+" "+string);
+	}
 }

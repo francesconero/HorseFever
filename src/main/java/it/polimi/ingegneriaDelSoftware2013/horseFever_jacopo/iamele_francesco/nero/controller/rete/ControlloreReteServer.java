@@ -434,4 +434,8 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 	}
 
+	public void avverti(Giocatore giocatore, String string) {
+		ControlloreRete.inviaOggettoConRisposta(string, clients.get(giocatore));
+	}
+
 }

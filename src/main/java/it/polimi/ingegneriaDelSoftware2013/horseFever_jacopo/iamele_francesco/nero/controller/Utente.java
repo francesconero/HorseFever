@@ -41,6 +41,8 @@ public interface Utente {
 	 */
 	StatoDelGiocoView riceviStatoDelGioco();
 
+	String riceviAvvertimento();
+	
 	boolean risolviConflitto(List<Colore> conflittoRisolto);
 
 	void scollegaGioco();

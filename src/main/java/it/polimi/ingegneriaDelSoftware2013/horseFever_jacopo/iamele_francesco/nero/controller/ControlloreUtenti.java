@@ -86,6 +86,8 @@ public interface ControlloreUtenti {
 	
 	void giocatoreEliminato(Giocatore giocatore);
 
+	void avverti(Giocatore giocatore, String string);
+	
 	void fine();
 
 }
