@@ -8,6 +8,8 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoScommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,15 +19,35 @@ import java.util.TreeSet;
 
 public class ConsoleView implements View{
 
+	private final AiutanteConsole aiutanteConsole;
+	private final InputStream in;
+	private final PrintWriter pW;
+
+	public ConsoleView(InputStream in, PrintWriter pW){
+		this.in = in;
+		this.pW = pW;
+		this.aiutanteConsole = new AiutanteConsole(in, pW);
+	}
+
 	public int chiediNumeroGiocatori() {
-		return AiutanteConsole.chiediIntero("In quanti giocate?");
+		boolean OK = false;
+		int risp;
+		do{
+			risp = aiutanteConsole.chiediIntero("In quanti giocate? [2-6]");
+			if(risp<=6&&risp>=2){
+				OK = true;
+			} else {
+				scrivi("Devi inserire un numero tra 2 e 6!");
+			}
+		}while(!OK);
+			return risp;
 	}
 
 	public List<String> chiediNomi(int numeroGiocatori) {
 		List<String> out = new LinkedList<String>();
 		for (int i = 0; i < numeroGiocatori; i++) {
-			out.add(AiutanteConsole
-					.chiediStringa("Inserisci il nome del giocatore" + i));
+			out.add(aiutanteConsole
+					.chiediStringa("Inserisci il nome del giocatore " + (i+1)));
 		}
 		return out;
 	}
@@ -33,15 +55,15 @@ public class ConsoleView implements View{
 	public Scommessa chiediScommessa(String nomeGiocatore) {
 		Scommessa scommessa;
 		do {
-			Colore col = AiutanteConsole.chiediEnum(
-					"Su quale scuderia vuoi puntare?", Colore.class);
-			int danariScommessi = AiutanteConsole
+			Colore col = aiutanteConsole.chiediEnum(nomeGiocatore +
+					" su quale scuderia vuoi puntare?", Colore.class);
+			int danariScommessi = aiutanteConsole
 					.chiediIntero("Quanti danari vuoi puntare?");
-			TipoScommessa tS = AiutanteConsole.chiediEnum(
+			TipoScommessa tS = aiutanteConsole.chiediEnum(
 					"Che tipo di scommessa vuoi fare?", TipoScommessa.class);
 
 			scommessa = new Scommessa(tS, danariScommessi, col);
-		} while (!AiutanteConsole
+		} while (!aiutanteConsole
 				.chiediConferma("Vuoi davvero puntare questa scommessa: "
 						+ scommessa + " ? "));
 
@@ -60,30 +82,30 @@ public class ConsoleView implements View{
 	}
 
 	public void eliminaGiocatore(String proprioNome, Long id) {
-		System.out
-				.println("Attenzione, il Giocatore "
-						+ id
-						+ " "
-						+ proprioNome
-						+ " non ha più denaro da scommettere, nè punti vittoria da barattare!\n");
+		pW
+		.println("Attenzione, il Giocatore "
+				+ id
+				+ " "
+				+ proprioNome
+				+ " non ha più denaro da scommettere, nè punti vittoria da barattare!\n");
 		scriviACapo("Mi dispiace " + proprioNome
 				+ ". Sei stato eliminato!");
 	}
 
 	public boolean chiediConferma(String domanda, String nomeGiocatore) {
-		return AiutanteConsole.chiediConferma(nomeGiocatore + " " + domanda);
+		return aiutanteConsole.chiediConferma(nomeGiocatore + " " + domanda);
 	}
 
 	public CartaAzione chiediCartaAzione(String nomeGiocatore,
 			List<CartaAzione> carteAzionePossedute) {
 		scriviACapo(nomeGiocatore
 				+ " e' il tuo turno di giocare una carta azione!");
-		return AiutanteConsole.chiediValoreLista("Quale vuoi giocare?",
+		return aiutanteConsole.chiediValoreLista("Quale vuoi giocare?",
 				carteAzionePossedute);
 	}
 
 	public Colore chiediScuderia(String proprioNome) {
-		return AiutanteConsole.chiediEnum("Su quale scuderia la vuoi giocare?",
+		return aiutanteConsole.chiediEnum("Su quale scuderia la vuoi giocare?",
 				Colore.class);
 	}
 
@@ -104,14 +126,14 @@ public class ConsoleView implements View{
 			corsie.add(scuderie.get(scuderia));
 			colori.add(scuderia);
 		}
-		AiutanteConsole.aggiornaCorsie(corsie, colori);
+		aiutanteConsole.aggiornaCorsie(corsie, colori);
 	}
 
 	public List<Colore> risolviConflitto(
 			List<Colore> scuderieInConflitto, String nomeGiocatore) {
-		System.out
-				.println(nomeGiocatore
-						+ " è sorto un dilemma: sta a te decidere l'ordine di arrivo di questi cavalli!");
+		pW
+		.println(nomeGiocatore
+				+ " è sorto un dilemma: sta a te decidere l'ordine di arrivo di questi cavalli!");
 		scriviACapo(scuderieInConflitto);
 
 		List<Colore> ancoraDaDecidere;
@@ -120,7 +142,7 @@ public class ConsoleView implements View{
 			ancoraDaDecidere = new LinkedList<Colore>(scuderieInConflitto);
 			giaDecisi.clear();
 			for (Colore scuderia : scuderieInConflitto) {
-				Colore daAggiungere = AiutanteConsole.chiediValoreLista(
+				Colore daAggiungere = aiutanteConsole.chiediValoreLista(
 						"Inserisci il prossimo cavallo tra quelli rimasti: ",
 						ancoraDaDecidere);
 				ancoraDaDecidere.remove(daAggiungere);
@@ -129,12 +151,12 @@ public class ConsoleView implements View{
 
 			scriviACapo("Ok questo è il nuovo ordine da te inserito: ");
 			scriviACapo(giaDecisi);
-		} while (!AiutanteConsole.chiediConferma("Va bene?"));
+		} while (!aiutanteConsole.chiediConferma("Va bene?"));
 		return giaDecisi;
 	}
 
 	public static void main(String[] args) {
-		View cV= new ConsoleView();
+		View cV= new ConsoleView(System.in, new PrintWriter(System.out));
 		List<Colore> scuderieCasuali = new LinkedList<Colore>();
 		scuderieCasuali.add(Colore.BIANCO);
 		scuderieCasuali.add(Colore.NERO);
@@ -147,17 +169,23 @@ public class ConsoleView implements View{
 		for(int i = 0; i < classifica.size(); i++){
 			scriviACapo(".::"+(i+1)+"::.");
 			scriviACapo(classifica.get(i));
-		}
-		
+		}		
 	}
 
 	public void scrivi(String daScrivere) {
-		System.out.print("[ CONSOLE ] : ");
 		scriviACapo(daScrivere);
 	}
-	
+
 	private void scriviACapo(Object daScrivere) {
-		System.out.println(daScrivere);
+		pW.println(daScrivere);
+	}
+
+	public void mostraGiocatore(GiocatoreView gV) {
+		pW.println(gV.getInformazioniGenerali());
+	}
+
+	public void aCapo() {
+		pW.println("");
 	}
 
 }

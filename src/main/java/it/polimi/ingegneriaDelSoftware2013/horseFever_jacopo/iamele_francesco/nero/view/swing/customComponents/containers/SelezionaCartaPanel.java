@@ -26,6 +26,7 @@ public class SelezionaCartaPanel extends JPanel implements MouseListener {
 	private JPanel cartePanel;
 	private HashMap<CartaAzione, CartaAzionePanel> cartePannelli = new HashMap<CartaAzione, CartaAzionePanel>();
 	private CartaAzione selezionata;
+	private JButton btnGiocaQuestaCarta;
 
 	/**
 	 * Create the panel.
@@ -58,10 +59,11 @@ public class SelezionaCartaPanel extends JPanel implements MouseListener {
 
 		setPreferredSize(new Dimension(299, 303));
 		
-		JButton btnGiocaQuestaCarta = new JButton("GIOCA QUESTA CARTA");
+		btnGiocaQuestaCarta = new JButton("GIOCA QUESTA CARTA");
 		btnGiocaQuestaCarta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(selezionata!=null){
+					btnGiocaQuestaCarta.setEnabled(false);
 					firePropertyChange("TRUCCAMENTO", null, selezionata);
 				} else {
 					JOptionPane.showMessageDialog(SelezionaCartaPanel.this, "Non hai selezionato una carta!", "Attenzione!", JOptionPane.WARNING_MESSAGE);
@@ -90,6 +92,7 @@ public class SelezionaCartaPanel extends JPanel implements MouseListener {
 			cAP.addMouseListener(this);
 			cartePanel.add(holder);
 		}
+		btnGiocaQuestaCarta.setEnabled(true);
 		revalidate();
 		repaint();
 	}

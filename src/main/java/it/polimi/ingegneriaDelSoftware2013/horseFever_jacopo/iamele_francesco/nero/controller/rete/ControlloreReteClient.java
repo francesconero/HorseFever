@@ -15,7 +15,9 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.AbstractMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -195,7 +197,8 @@ public class ControlloreReteClient implements Utente {
 		public void run() {
 			while (esegui.get()) {
 				try{
-					if (!ControlloreRete.inviaOggettoConRisposta("Ci sono ancora!",
+					Map.Entry<Long, String> daInviare = new AbstractMap.SimpleEntry<Long, String>(ID, "Ci sono ancora!");
+					if (!ControlloreRete.inviaOggettoConRisposta(daInviare,
 							heartbeatSocket)) {
 						throw new DisconnessioneAnomalaException(serverSocket);
 					} else {
@@ -209,6 +212,8 @@ public class ControlloreReteClient implements Utente {
 					throw new DisconnessioneAnomalaException(e, serverSocket);
 				}
 			}
+			Map.Entry<Long, String> daInviare = new AbstractMap.SimpleEntry<Long, String>(ID, "BYE!");
+			ControlloreRete.inviaOggettoConRisposta(daInviare, heartbeatSocket);
 		}
 	}
 

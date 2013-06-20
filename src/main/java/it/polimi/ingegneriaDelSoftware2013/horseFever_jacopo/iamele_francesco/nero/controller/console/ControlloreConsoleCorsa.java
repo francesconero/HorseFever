@@ -1,46 +1,29 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.console;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.MossaCorsaVisitor;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Classifica;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Conflitto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.FineGara;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Movimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Partenza;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Photofinish;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Sprint;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.View;
 
-import java.util.List;
+import java.util.Map;
 
-public class ControlloreConsoleCorsa extends ControlloreConsole implements MossaCorsaVisitor{
+public class ControlloreConsoleCorsa implements MossaCorsaVisitor {
+	
+	private final View view;
+	private final Map<Giocatore, String> nomi;
+	private final StatoDelGioco statoDelGioco;
 
-	private ControlloreReteClient primoGiocatore;
-
-	public ControlloreConsoleCorsa(ControlloreConsole controlloreConsoleIniziale) {
-		super(controlloreConsoleIniziale);		
-	}
-
-	@Override
-	protected void controlla() {
-		System.out.println("Inizia il controllore corsa!");
-		switch (getViewGenerica().getTipoFaseGiocoFamily()) {
-			case F_C_SCOPRICARTAAZIONE:
-				view.scrivi("Ecco i cavalli pronti alla partenza!");
-				view.mostraCorsa(getViewGenerica().getCorsie());
-				aggiornaViste();
-			case F_C_CORSA:
-				primoGiocatore = getClientPrimoGiocatore();
-				List<MossaCorsa> lista = getViewGenerica().getMosseCorsa();
-				System.out.println("Ci sono: "+lista.size()+" mosse corsa");
-				for(MossaCorsa mossaCorsa : lista){
-					mossaCorsa.accept(this);
-				}		
-				break;
-			default:
-				throw new IllegalStateException("Fase non gestibile: " + getViewGenerica().getTipoFaseGiocoFamily());
-		}
+	public ControlloreConsoleCorsa(StatoDelGioco statoDelGioco, View view, Map<Giocatore, String> nomi) {
+		this.statoDelGioco = statoDelGioco;
+		this.view = view;
+		this.nomi = nomi;
 	}
 
 	public void visita(Movimento movimento) {
@@ -50,8 +33,12 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 	}
 
 	public void visita(Sprint sprint) {
-		view.scrivi(sprint.getCommento());
-		view.mostraCorsa(sprint.getNuovePosizioni());
+		if(sprint.getNuovePosizioni().size()!=0){
+			view.scrivi(sprint.getCommento());
+			view.mostraCorsa(sprint.getNuovePosizioni());
+		} else {
+			view.scrivi("Nessun cavallo ha sprintato!");
+		}
 	}
 
 	public void visita(Photofinish photofinish) {
@@ -60,11 +47,6 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 
 	public void visita(Conflitto conflitto) {
 		view.scrivi(conflitto.getCommento());
-		List<Colore> conflittoRisolto = view.risolviConflitto(conflitto.getScuderieInConflitto(), primoGiocatore.getProprioNome());
-		primoGiocatore.risolviConflitto(conflittoRisolto);
-		aggiornaViste();
-		ControlloreConsoleCorsa cCC = new ControlloreConsoleCorsa(this);
-		cCC.controlla();
 	}
 
 	public void visita(Classifica classifica) {
@@ -73,9 +55,7 @@ public class ControlloreConsoleCorsa extends ControlloreConsole implements Mossa
 	}
 
 	public void visita(FineGara fineGara) {
-		System.out.println("Fine gara!");
 		view.scrivi(fineGara.getCommento());
-		aggiornaViste();	
 	}
 
 	public void visita(Partenza partenza) {

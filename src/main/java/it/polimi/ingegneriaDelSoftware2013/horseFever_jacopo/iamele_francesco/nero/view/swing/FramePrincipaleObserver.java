@@ -9,16 +9,18 @@ import java.util.List;
 
 public interface FramePrincipaleObserver {
 	
-	public void pronto();
+	void pronto();
 	
-	public void scommessa(Scommessa scommessa);
+	void scommessa(Scommessa scommessa);
 	
-	public void giocaCartaAzione(CartaAzione carta, Scuderia scuderia);
+	void giocaCartaAzione(CartaAzione carta, Scuderia scuderia);
 
-	public void prossimoAggiornamento();
+	void prossimoAggiornamento();
 
-	public void stessoAggiornamento();
+	void stessoAggiornamento();
 
-	public void risolviConflitto(List<Colore> soluzioneConflitto);
+	void risolviConflitto(List<Colore> soluzioneConflitto);
+
+	void finePartita();
 
 }

@@ -8,6 +8,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
@@ -49,6 +50,8 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	private final Map<Giocatore, Socket> clientsHeartbeat = new LinkedHashMap<Giocatore, Socket>();
 	private final Map<Giocatore, String> nomiClients = new LinkedHashMap<Giocatore, String>();
 	private final Map<Giocatore, Long> IDClients = new LinkedHashMap<Giocatore, Long>();
+	private final Map<Long, Giocatore> reverseIDClients = new  LinkedHashMap<Long, Giocatore>();
+	private List<Giocatore> clientsDaRimuovere = new LinkedList<Giocatore>();
 
 	private final int portaServer;
 	private final int portaHeartbeat;
@@ -135,6 +138,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			clients.put(g, s);
 			nomiClients.put(g, nome);
 			IDClients.put(g, ID);
+			reverseIDClients.put(ID,g);
 		}
 
 		ControlloreRete.inviaOggettoConRisposta(ID, s); // assegna ID al client
@@ -215,6 +219,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			Socket temp = clients.get(g);
 			ControlloreRete.inviaOggettoConRisposta(daInviare, temp);
 		}
+		for(Giocatore g : clientsDaRimuovere){
+			clients.remove(g);
+		}
 	}
 
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco) {
@@ -223,6 +230,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 					g, nomiClients, IDClients);
 			Socket temp = clients.get(g);
 			ControlloreRete.inviaOggettoConRisposta(daInviare, temp);
+		}
+		for(Giocatore g : clientsDaRimuovere){
+			clients.remove(g);
 		}
 	}
 
@@ -241,8 +251,8 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 	}
 
-	
-	public List<Colore> riceviSoluzioneConflitto(Giocatore giocatore) {
+
+	public List<Colore> riceviSoluzioneConflitto(Giocatore giocatore, List<Scuderia> conflitto) {
 		Socket temp = clients.get(giocatore);
 		if (temp == null) {
 			throw new IllegalArgumentException(
@@ -335,18 +345,18 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		private AtomicBoolean esegui = new AtomicBoolean(true);
 		private ExecutorService clientsExecutor = Executors
 				.newCachedThreadPool();
-		private LinkedList<Callable<String>> heartBeatThreads = new LinkedList<Callable<String>>();
+		private LinkedList<Callable<Map.Entry<Integer, String>>> heartBeatThreads = new LinkedList<Callable<Map.Entry<Integer, String>>>();
 
-		private class SingleHeartBeat implements Callable<String> {
+		private class SingleHeartBeat implements Callable<Map.Entry<Integer, String>> {
 			private Socket socket;
 
 			public SingleHeartBeat(Socket socket) {
 				this.socket = socket;
 			}
 
-			public String call() throws Exception {
+			public Map.Entry<Integer, String> call() throws Exception {
 				try {
-					String out = (String) ControlloreRete.riceviOggetto(socket);
+					Map.Entry<Integer, String> out = (Map.Entry<Integer, String>) ControlloreRete.riceviOggetto(socket);
 					ControlloreRete.rispondiPositivamente(socket);
 					return out;
 				} catch (RicezioneFallitaException e) {
@@ -356,7 +366,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 
 		}
 
-		public void fermaHeartbeat() {
+		public synchronized void fermaHeartbeat() {
 			esegui.set(false);
 		}
 
@@ -370,16 +380,26 @@ public class ControlloreReteServer implements ControlloreUtenti {
 						heartBeatThreads.add(new SingleHeartBeat(heartbeatSocket));
 					}
 				}
-				List<Future<String>> results;
+				List<Future<Map.Entry<Integer, String>>> results;
 				try {
 					results = clientsExecutor.invokeAll(heartBeatThreads);
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
 
-				for (Future<String> result : results) {
+				for (Future<Map.Entry<Integer, String>> result : results) {
 					try {
-						result.get();
+						Map.Entry<Integer, String> risposta = result.get();
+						if(risposta.getValue().equals("BYE!")){
+							System.out.println(nomiClients.get(reverseIDClients.get(risposta.getKey()))+" si è scollegato");
+							synchronized (clientsHeartbeat) {
+								System.out.println("Rimuovo heartbeat");
+								clientsHeartbeat.remove(reverseIDClients.get(risposta.getKey()));
+								if(clientsHeartbeat.size()==0){
+									esegui.set(false);
+								}
+							}
+						}
 					} catch (InterruptedException e) {
 						clientsExecutor.shutdownNow();
 						throw new RuntimeException(e);
@@ -388,12 +408,28 @@ public class ControlloreReteServer implements ControlloreUtenti {
 						throw new RuntimeException(e);
 					}
 				}
-				
+
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+			}
+			System.out.println("Heartbeat responder chiuso");
+		}
+	}
+
+	public void giocatoreEliminato(Giocatore giocatore) {
+		clientsDaRimuovere.add(giocatore);
+	}
+
+	public void fine() {
+		heartbeatThread.esegui.set(false);
+		for(Giocatore g : clients.keySet()){
+			try {
+				clients.get(g).close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}

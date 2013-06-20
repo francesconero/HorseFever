@@ -50,7 +50,7 @@ final class LoaderPersonaggi extends DefaultHandler{
 	
 	public Map<Personaggio, String> caricaCarte() throws IOException, SAXException {
 		if(out.isEmpty()){
-			saxParser.parse(new File("src/main/resources/carte/PersonaggiFamily.xml"),
+			saxParser.parse(new File("resources/carte/PersonaggiFamily.xml"),
 					this);
 		}
 		return out;

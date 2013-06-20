@@ -15,7 +15,6 @@ public class ControlloreConsoleAlterazione extends ControlloreConsole {
 
 	@Override
 	protected void controlla() {
-		System.out.println("Inizia il controllore alterazione!");
 		chiediCarteAzione();
 	}
 

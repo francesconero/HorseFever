@@ -174,6 +174,8 @@ public class ScuderiePanel extends JPanel {
 		panel_2.add(btnPassa, gbc_btnPassa);
 		btnPassa.addActionListener(new ActionListener() {			
 			public void actionPerformed(ActionEvent arg0) {
+				enableScommessa(false);
+				enableSalta(false);
 				firePropertyChange("SCOMMESSA", null, new Scommessa(null, 0, null));
 			}
 		});
@@ -247,6 +249,7 @@ public class ScuderiePanel extends JPanel {
 			putValue(SHORT_DESCRIPTION, "Aggiungi una carta azione alla scuderia selezionata");
 		}
 		public void actionPerformed(ActionEvent e) {
+			enableTruccamento(false);
 			ScuderiePanel.this.firePropertyChange("TRUCCAMENTO", null, scuderia.getColore());
 		}
 	}
@@ -256,12 +259,12 @@ public class ScuderiePanel extends JPanel {
 			putValue(SHORT_DESCRIPTION, "Scommetti sulla scuderia selezionata");
 		}
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("swingAction_1");
-			try {
+			try {				
 				textField.commitEdit();
 				int danari = ((Long)textField.getValue()).intValue();
 				TipoScommessa tipoScommessa = comboBox.getItemAt(comboBox.getSelectedIndex());
 				Colore c = scuderia.getColore();
+				enableScommessa(false);
 				ScuderiePanel.this.firePropertyChange("SCOMMESSA", null, new Scommessa(tipoScommessa, danari, c));
 			} catch (ParseException ex) {
 				JOptionPane.showMessageDialog(null, "Non hai inserito un numero!", "Attenzione!", JOptionPane.WARNING_MESSAGE);

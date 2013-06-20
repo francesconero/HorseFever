@@ -4,7 +4,9 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,30 +17,36 @@ import java.util.TreeSet;
 
 public class AiutanteConsole {
 
-	private static BufferedReader in = new BufferedReader(
-			new InputStreamReader(System.in));
+	private final BufferedReader in;
+	private final PrintWriter out;
+	
+	public AiutanteConsole(InputStream in, PrintWriter gC){
+		this.in = new BufferedReader(
+				new InputStreamReader(in));
+		this.out = gC;
+	}
 
-	public static String chiediStringa(String domanda) {
-		System.out.println(domanda);
+	public String chiediStringa(String domanda) {
+		out.println(domanda);
 		return leggiStringa();
 	}
 
-	public static int chiediIntero(String domanda) {
+	public int chiediIntero(String domanda) {
 		boolean read = false;
-		int out = 0;
+		int risultato = 0;
 		do {
-			System.out.println(domanda);
+			out.println(domanda);
 			try {
-				out = leggiIntero();
+				risultato = leggiIntero();
 				read = true;
 			} catch (NumberFormatException e) {
-				System.out.println("Devi inserire un intero!");
+				out.println("Devi inserire un intero!");
 			}
 		} while (!read);
-		return out;
+		return risultato;
 	}
 
-	private static int leggiIntero() throws NumberFormatException {
+	private int leggiIntero() throws NumberFormatException {
 		try {
 			return Integer.parseInt(in.readLine());
 		} catch (IOException e) {
@@ -46,7 +54,7 @@ public class AiutanteConsole {
 		}
 	}
 
-	private static String leggiStringa() {
+	private String leggiStringa() {
 		try {
 			return in.readLine();
 		} catch (IOException e) {
@@ -54,7 +62,7 @@ public class AiutanteConsole {
 		}
 	}
 
-	public static <T extends Enum<T>> T chiediEnum(String domanda,
+	public <T extends Enum<T>> T chiediEnum(String domanda,
 			Class<T> enumClass) {
 		List<T> enums = Arrays.asList(enumClass.getEnumConstants());
 		Map<String, T> enumMap = new TreeMap<String, T>(
@@ -65,20 +73,20 @@ public class AiutanteConsole {
 		}
 
 		boolean read = false;
-		T out = null;
+		T risultato = null;
 		do {
-			out = enumMap.get(chiediStringa(domanda + "\nPossibili valori: "
+			risultato = enumMap.get(chiediStringa(domanda + "\nPossibili valori: "
 					+ enums));
-			if (out != null) {
+			if (risultato != null) {
 				read = true;
 			} else {
-				System.out.println("Non hai inserito nessuno dei valori possibili!");
+				out.println("Non hai inserito nessuno dei valori possibili!");
 			}
 		} while (!read);
-		return out;
+		return risultato;
 	}
 
-	public static boolean chiediConferma(String domanda) {
+	public boolean chiediConferma(String domanda) {
 		String risp;
 		Set<String> rispPositive = new TreeSet<String>(
 				String.CASE_INSENSITIVE_ORDER);
@@ -100,13 +108,13 @@ public class AiutanteConsole {
 		return out;
 	}
 
-	public static <T> T chiediValoreLista(String domanda,
+	public <T> T chiediValoreLista(String domanda,
 			List<T> lista) {
-		System.out.println(domanda);
+		out.println(domanda);
 		Set<Integer> valoriPossibili = new TreeSet<Integer>();
 		for(int i = 0; i < lista.size(); i++ ){
-			System.out.println(".:::"+i+":::.");
-			System.out.println(lista.get(i));
+			out.println(".:::"+i+":::.");
+			out.println(lista.get(i));
 			valoriPossibili.add(i);
 		}
 		
@@ -117,14 +125,14 @@ public class AiutanteConsole {
 			if(valoriPossibili.contains(risp)){
 				OK = true;
 			} else {
-				System.out.println("Non hai inserito un numero valido!");
+				out.println("Non hai inserito un numero valido!");
 			}
 		}while(!OK);
 		
 		return lista.get(risp);
 	}
 	
-	public static void main(String[] args){
+	public void main(String[] args){
 		List<Integer> posizioni = new LinkedList<Integer>();
 		for(int i = 0; i < Math.random()*10+5; i ++){
 			posizioni.add((int) (Math.random()*19));
@@ -132,18 +140,18 @@ public class AiutanteConsole {
 		//aggiornaCorsie(posizioni);
 	}
 	
-	public static void aggiornaCorsie(List<Integer> corsie, List<Colore> colori) {
-		System.out.print("|");
+	public void aggiornaCorsie(List<Integer> corsie, List<Colore> colori) {
+		out.print("|");
 		int j = 0;
 		for(Integer posizioneScuderia : corsie){
 			String abbrScud = colori.get(j).name().substring(0,3); 
-			System.out.print("="+abbrScud+"=");
+			out.print("="+abbrScud+"=");
 			j++;
 		};
-		System.out.print("|");
-		System.out.println();
+		out.print("|");
+		out.println();
 		for(int i = 0; i < 19; i++){
-			System.out.print("|");
+			out.print("|");
 			for(Integer posizioneScuderia : corsie){
 				String cavalloPresente = "___";
 				if(i==0){
@@ -156,22 +164,22 @@ public class AiutanteConsole {
 					cavalloPresente = ":H:";
 				}
 				if(i==12){
-					System.out.print("#"+cavalloPresente+"#");
+					out.print("#"+cavalloPresente+"#");
 				} else if(i==0){					
-					System.out.print("*"+cavalloPresente+"*");
+					out.print("*"+cavalloPresente+"*");
 				} else {
-					System.out.print("|"+cavalloPresente+"|");
+					out.print("|"+cavalloPresente+"|");
 				}
 			}
-			System.out.print("|");
-			System.out.println();
+			out.print("|");
+			out.println();
 		}
-		System.out.print("|");
+		out.print("|");
 		for(Integer posizioneScuderia : corsie){
-			System.out.print("=====");
+			out.print("=====");
 		};
-		System.out.print("|");
-		System.out.println();
+		out.print("|");
+		out.println();
 		
 	}
 	

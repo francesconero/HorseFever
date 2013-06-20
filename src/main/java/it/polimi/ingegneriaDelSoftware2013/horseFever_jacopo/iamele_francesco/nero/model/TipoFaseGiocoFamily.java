@@ -2,6 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 public enum TipoFaseGiocoFamily {
 	PREPARAZIONE,
+	ELIMINAZIONE_GIOCATORI,
 	DISTRIBUZIONE_CARTE,
 	F_S_ORARIA,
 	F_S_ALTERAZIONE_GARA,

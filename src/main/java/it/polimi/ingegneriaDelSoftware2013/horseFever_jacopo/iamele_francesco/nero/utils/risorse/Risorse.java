@@ -60,7 +60,7 @@ public class Risorse {
 	}
 	
 	/**
-	 * Ottieni la lista di {@link CartaAzione carte azione} definite nel file "/src/main/resources/carte/CarteAzione.xml"
+	 * Ottieni la lista di {@link CartaAzione carte azione} definite nel file "resources/carte/CarteAzione.xml"
 	 * 
 	 * @return	List<CartaAzione>	carteAzione  la lista di carte azione
 	 * @throws FormatoFileErratoException	lanciato in caso di errori nel parsing XML (ad esempio non viene rispettato CartaAzione.dtd)
@@ -76,7 +76,7 @@ public class Risorse {
 	}
 	
 	/**
-	 * Ottieni la lista di {@link String personaggi} definiti nel file "/src/main/resources/carte/Personaggi.xml"
+	 * Ottieni la lista di {@link String personaggi} definiti nel file "resources/carte/Personaggi.xml"
 	 * 
 	 * @return	List<Personaggio>	personaggi  la lista di personaggi
 	 * @throws FormatoFileErratoException	lanciato in caso di errori nel parsing XML (ad esempio non viene rispettato Personaggio.dtd)
@@ -92,7 +92,7 @@ public class Risorse {
 	}
 	
 	/**
-	 * Ottieni la lista di {@link   CartaMovimento carte movimento} definite nel file "/src/main/resources/carte/CarteMovimento.xml"
+	 * Ottieni la lista di {@link   CartaMovimento carte movimento} definite nel file "resources/carte/CarteMovimento.xml"
 	 * 
 	 * @return	List<CartaMovimento>	carteMovimento  la lista di carte azione
 	 * @throws FormatoFileErratoException	lanciato in caso di errori nel parsing XML (ad esempio non viene rispettato CartaMovimento.dtd)

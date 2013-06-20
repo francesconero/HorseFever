@@ -46,7 +46,7 @@ final class LoaderRisorseGUI extends DefaultHandler{
 	
 	public Map<String, String> caricaRisorse() throws IOException, SAXException {
 		if(out.isEmpty()){
-			saxParser.parse(new File("src/main/resources/GUI/RisorseGUI.xml"),
+			saxParser.parse(new File("resources/GUI/RisorseGUI.xml"),
 					this);
 		}
 		return out;

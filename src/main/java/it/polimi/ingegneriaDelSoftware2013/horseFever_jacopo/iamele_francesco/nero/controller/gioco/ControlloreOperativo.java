@@ -168,7 +168,7 @@ public class ControlloreOperativo {
 			}
 		}
 		if (scuderieArrivate.size()>1)
-			statoDelGioco=assegnaClassifica(statoDelGioco,scuderieArrivate, controlloreUtenti);
+			assegnaClassifica(statoDelGioco,scuderieArrivate, controlloreUtenti);
 		else if(scuderieArrivate.size()==1){ 
 			statoDelGioco.addClassifica(scuderieArrivate.get(0));
 			scuderieArrivate.clear();			
@@ -287,7 +287,7 @@ public class ControlloreOperativo {
 								if(controlloreUtenti!=null){
 									controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
 									List<Colore> coloriRicevuti=null;
-									coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
+									coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore(), scuderieInConflitto);
 									controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
 									dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
 								}else{  //necessario per Test con Junit
@@ -340,7 +340,7 @@ public class ControlloreOperativo {
 							if(controlloreUtenti!=null){
 								controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
 								List<Colore> coloriRicevuti=null;
-								coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore());
+								coloriRicevuti = controlloreUtenti.riceviSoluzioneConflitto(statoDelGioco.getPrimoGiocatore(), scuderieInConflitto);
 								controlloreUtenti.conferma(statoDelGioco.getPrimoGiocatore());
 								dalColoreAScuderia(scuderieInConflitto,coloriRicevuti);
 							}else{

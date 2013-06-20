@@ -7,6 +7,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.View;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 			next.controlla();
 			next = new ControlloreConsoleScommessa(next);
 			next.controlla();
-			next = new ControlloreConsoleCorsa(next);
+			//next = new ControlloreConsoleCorsa(next);
 			next.controlla();
 			next = new ControlloreConsoleFineTurno(next);
 			next.controlla();
@@ -108,7 +109,7 @@ public class ControlloreConsoleIniziale extends ControlloreConsole {
 
 	public static void main(String[] args) {
 		final ControlloreConsole cc;
-		cc = new ControlloreConsoleIniziale(new ConsoleView());
+		cc = new ControlloreConsoleIniziale(new ConsoleView(System.in, new PrintWriter(System.out)));
 		new Thread("Server") {
 			public void run() {
 				ServerMain.main(new String[] { Integer

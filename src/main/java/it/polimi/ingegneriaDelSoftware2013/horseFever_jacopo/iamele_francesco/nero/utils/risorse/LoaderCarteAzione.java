@@ -58,7 +58,7 @@ final class LoaderCarteAzione extends DefaultHandler {
 
 	public Map<CartaAzione, String> caricaCarte() throws IOException, SAXException {
 		if(out.isEmpty()){
-			saxParser.parse(new File("src/main/resources/carte/CarteAzione.xml"),
+			saxParser.parse(new File("resources/carte/CarteAzione.xml"),
 					this);
 		}
 		return out;

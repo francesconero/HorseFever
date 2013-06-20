@@ -89,6 +89,7 @@ public class GiocatorePanel extends JPanel {
 		holder.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 		add(holder);
 		GridBagLayout gbl_holder = new GridBagLayout();
+		gbl_holder.rowHeights = new int[]{10, 0, 0, 0};
 		gbl_holder.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0};
 		gbl_holder.columnWidths = new int[]{100, 0};
 		gbl_holder.columnWeights = new double[]{1.0, Double.MIN_VALUE};

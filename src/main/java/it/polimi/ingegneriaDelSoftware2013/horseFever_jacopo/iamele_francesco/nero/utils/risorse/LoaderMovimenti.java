@@ -46,7 +46,7 @@ final class LoaderMovimenti extends DefaultHandler{
 	
 	public List<CartaMovimento> caricaCarte() throws IOException, SAXException {
 		if(out.isEmpty()){
-			saxParser.parse(new File("src/main/resources/carte/Movimenti.xml"),
+			saxParser.parse(new File("resources/carte/Movimenti.xml"),
 					this);
 		}
 		return out;

@@ -18,14 +18,14 @@ public interface Utente {
 	/**
 	 * Inizia a giocare
 	 */
-	public void collegaGioco();
+	void collegaGioco();
 
 	/**
 	 * Fai una scommessa
 	 * @param scommessaDaFare la scommessa che si vuol fare
 	 * @return boolean true, se la scommessa è stato accettata, false altrimenti
 	 */
-	public boolean scommetti(Scommessa scommessaDaFare);
+	boolean scommetti(Scommessa scommessaDaFare);
 
 
 	/**
@@ -33,16 +33,16 @@ public interface Utente {
 	 * @param posizionaCarta l'oggetto di tipo PosizionaCarta costruito in modo da rappresentare il posizionamento voluto
 	 * @return boolean true, se il posizionamento era valido, false altrimenti
 	 */
-	public boolean posizionaCarta(PosizionaCarta posizionaCarta);
+	boolean posizionaCarta(PosizionaCarta posizionaCarta);
 
 	/**
 	 * Ricevi un update con il nuovo stato del gioco
 	 * @return StatoDelGiocoView il nuvo stato del gioco
 	 */
-	public StatoDelGiocoView riceviStatoDelGioco();
+	StatoDelGiocoView riceviStatoDelGioco();
 
-	public boolean risolviConflitto(List<Colore> conflittoRisolto);
+	boolean risolviConflitto(List<Colore> conflittoRisolto);
 
-	public void scollegaGioco();
+	void scollegaGioco();
 
 }

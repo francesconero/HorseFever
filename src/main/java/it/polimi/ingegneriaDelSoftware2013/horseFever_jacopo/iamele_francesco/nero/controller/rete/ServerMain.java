@@ -17,35 +17,35 @@ import java.io.IOException;
  */
 public class ServerMain 
 {
-    public static void main( String[] args ) 
-    {
-    	Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioni.getInstance());
-    	
-    	ControlloreFasiGioco controlloreGioco = null;
-    	try{
-    	int numGiocatori;
-		
-    	if(args.length>0){
-    	numGiocatori=Integer.parseInt(args[0]);
-    	} else {
-    	numGiocatori = 2;
-    	}
-		
-    	if(args.length>1){
-    		String det = args[1];
-    		if(det.equals("-d")){
-    			controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), new ControlloreReteServer());    			
-    		}
-    	}
-    	
-    	ControlloreReteServer server = new ControlloreReteServer();
-    	if(controlloreGioco==null){
-    		controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), server);    			    		
-    	}
-    	
-    	controlloreGioco.inizia();
-    	server.stop();
-    	} catch (AttesaUtentiFallitaException e) {
+	private ControlloreFasiGioco controlloreGioco;
+	
+	public void start(String[] args){
+		Thread.currentThread().setUncaughtExceptionHandler(GestoreEccezioni.getInstance());    	
+		controlloreGioco = null;
+		try{
+			int numGiocatori;
+
+			if(args.length>0){
+				numGiocatori=Integer.parseInt(args[0]);
+			} else {
+				numGiocatori = 2;
+			}
+
+			if(args.length>1){
+				String det = args[1];
+				if(det.equals("-d")){
+					controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), new ControlloreReteServer());    			
+				}
+			}
+
+			ControlloreReteServer server = new ControlloreReteServer();
+			if(controlloreGioco==null){
+				controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), server);    			    		
+			}
+
+			controlloreGioco.inizia();
+
+		} catch (AttesaUtentiFallitaException e) {
 			throw new RuntimeException(e);
 		} catch (CarteFiniteException e) {
 			throw new RuntimeException(e);
@@ -54,6 +54,50 @@ public class ServerMain
 		} catch (NumErratoGiocatoriException e) {
 			throw new RuntimeException(e);
 		}
-    	
-    }
+
+		System.out.println("Server chiuso");
+	}
+	public static void main( String[] args ) 
+	{
+		Thread.currentThread().setUncaughtExceptionHandler(GestoreEccezioni.getInstance());
+
+		ControlloreFasiGioco controlloreGioco = null;
+		try{
+			int numGiocatori;
+
+			if(args.length>0){
+				numGiocatori=Integer.parseInt(args[0]);
+			} else {
+				numGiocatori = 2;
+			}
+
+			if(args.length>1){
+				String det = args[1];
+				if(det.equals("-d")){
+					controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), new ControlloreReteServer());    			
+				}
+			}
+
+			ControlloreReteServer server = new ControlloreReteServer();
+			if(controlloreGioco==null){
+				controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterministico(0), server);    			    		
+			}
+
+			controlloreGioco.inizia();
+
+		} catch (AttesaUtentiFallitaException e) {
+			throw new RuntimeException(e);
+		} catch (CarteFiniteException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} catch (NumErratoGiocatoriException e) {
+			throw new RuntimeException(e);
+		}
+
+		System.out.println("Server chiuso");
+	}
+	public void close() {
+		controlloreGioco.chiudi();
+	}
 }

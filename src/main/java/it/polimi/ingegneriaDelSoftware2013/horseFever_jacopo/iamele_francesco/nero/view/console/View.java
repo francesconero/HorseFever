@@ -11,32 +11,32 @@ import java.util.Map;
 
 public interface View {
 
-	public int chiediNumeroGiocatori();
+	int chiediNumeroGiocatori();
 
-	public List<String> chiediNomi(int numeroGiocatori);
+	List<String> chiediNomi(int numeroGiocatori);
 
-	public Scommessa chiediScommessa(String nomeGiocatore);
+	Scommessa chiediScommessa(String nomeGiocatore);
 
-	public void mostraSituazioneGenerale(StatoDelGiocoView current);
+	void mostraSituazioneGenerale(StatoDelGiocoView current);
 
-	public  void eliminaGiocatore(String proprioNome, Long id);
+	void eliminaGiocatore(String proprioNome, Long id);
 
-	public boolean chiediConferma(String domanda, String nomeGiocatore);
+	boolean chiediConferma(String domanda, String nomeGiocatore);
 
-	public CartaAzione chiediCartaAzione(String nomeGiocatore,
+	CartaAzione chiediCartaAzione(String nomeGiocatore,
 			List<CartaAzione> carteAzionePossedute);
 
-	public Colore chiediScuderia(String proprioNome);
+	Colore chiediScuderia(String proprioNome);
 
-	public void mostraCorsa(List<Scuderia> scuderie);
+	void mostraCorsa(List<Scuderia> scuderie);
 
-	public void mostraCorsa(Map<Colore, Integer> scuderie);
+	void mostraCorsa(Map<Colore, Integer> scuderie);
 
-	public List<Colore> risolviConflitto(
+	List<Colore> risolviConflitto(
 			List<Colore> scuderieInConflitto, String nomeGiocatore);
 
-	public void mostraClassifica(List<Colore> classifica);
+	void mostraClassifica(List<Colore> classifica);
 	
-	public void scrivi(String daScrivere);
+	void scrivi(String daScrivere);
 
 }

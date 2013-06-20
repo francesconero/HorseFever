@@ -15,45 +15,20 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.ConnettendoFrame;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.InfoDialog;
 
+import java.net.InetAddress;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
 public class ControlloreGrafica implements FramePrincipaleObserver {
 
-	private final ControlloreFramePrincipale framePrincipale;
-	private final Utente controlloreUtenteSingolo;
+	private ControlloreFramePrincipale framePrincipale;
+	private Utente controlloreUtenteSingolo;
 	private StatoDelGiocoView ultimoStatoRicevuto;
 
 	public ControlloreGrafica(){
 		Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioniGrafico.getInstance());
 		System.setProperty("sun.awt.exception.handler", GestoreEccezioniGrafico.class.getName());
-		
-		InfoDialog d = new InfoDialog();
-		final ConnettendoFrame connettendo = new ConnettendoFrame(d.getIndirizzoIP());
-
-		try {
-			this.controlloreUtenteSingolo = new ControlloreReteClient(d.getNome(), d.getIndirizzoIP());
-			controlloreUtenteSingolo.collegaGioco();
-		} catch (Exception e) {
-			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {				
-				public void run() {
-					connettendo.chiudi();
-					JOptionPane.showMessageDialog(null, "Errore durante la connessione al server!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
-				}
-			});			
-			throw new RuntimeException(e);
-		}		
-		connettendo.chiudi();
-
-		this.framePrincipale = new ControlloreFramePrincipale();
-		framePrincipale.settaObserver(this);
-		
-		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
-		framePrincipale.aggiorna(ultimoStatoRicevuto);
-		if(ultimoStatoRicevuto.getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.VITTORIA)){
-			controlloreUtenteSingolo.scollegaGioco();
-		}
 	}
 
 	public void scommessa(Scommessa scommessa) {
@@ -85,4 +60,66 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 		controlloreUtenteSingolo.risolviConflitto(soluzioneConflitto);
 		prossimoAggiornamento();
 	}
+
+	public void finePartita() {
+		framePrincipale.chiudi();
+		controlloreUtenteSingolo.scollegaGioco();
+		System.exit(0);
+	}
+	
+	public void show(InetAddress localHost){
+		String nome = JOptionPane.showInputDialog("Inserisci il tuo nome:");
+		final ConnettendoFrame connettendo = new ConnettendoFrame(localHost.getHostAddress());
+
+		try {
+			this.controlloreUtenteSingolo = new ControlloreReteClient(nome, localHost.getHostAddress());
+			controlloreUtenteSingolo.collegaGioco();
+		} catch (Exception e) {
+			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {				
+				public void run() {
+					connettendo.chiudi();
+					JOptionPane.showMessageDialog(null, "Errore durante la connessione al server!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
+				}
+			});			
+			throw new RuntimeException(e);
+		}		
+		connettendo.chiudi();
+
+		this.framePrincipale = new ControlloreFramePrincipale();
+		framePrincipale.settaObserver(this);
+		framePrincipale.show();
+		
+		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
+		framePrincipale.aggiorna(ultimoStatoRicevuto);
+	}
+
+	public void show() {
+		InfoDialog d = new InfoDialog();
+		final ConnettendoFrame connettendo = new ConnettendoFrame(d.getIndirizzoIP());
+
+		try {
+			this.controlloreUtenteSingolo = new ControlloreReteClient(d.getNome(), d.getIndirizzoIP());
+			controlloreUtenteSingolo.collegaGioco();
+		} catch (Exception e) {
+			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {				
+				public void run() {
+					connettendo.chiudi();
+					JOptionPane.showMessageDialog(null, "Errore durante la connessione al server!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
+				}
+			});			
+			throw new RuntimeException(e);
+		}		
+		connettendo.chiudi();
+
+		this.framePrincipale = new ControlloreFramePrincipale();
+		framePrincipale.settaObserver(this);
+		framePrincipale.show();
+		
+		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
+		framePrincipale.aggiorna(ultimoStatoRicevuto);
+		if(ultimoStatoRicevuto.getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.VITTORIA)){
+			controlloreUtenteSingolo.scollegaGioco();
+		}
+	}
+	
 }

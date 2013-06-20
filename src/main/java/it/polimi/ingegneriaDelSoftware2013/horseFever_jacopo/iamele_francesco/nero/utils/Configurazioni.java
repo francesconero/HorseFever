@@ -21,10 +21,10 @@ public final class Configurazioni {
 	private Properties giocoProperties = new Properties();
 
 	private Configurazioni() {
-		loadProperties("src/main/resources/config/net-config.xml", netProperties);
-		loadProperties("src/main/resources/config/server-config.xml", serverProperties);
-		loadProperties("src/main/resources/config/client-config.xml", clientProperties);
-		loadProperties("src/main/resources/config/gioco-config.xml", giocoProperties);
+		loadProperties("resources/config/net-config.xml", netProperties);
+		loadProperties("resources/config/server-config.xml", serverProperties);
+		loadProperties("resources/config/client-config.xml", clientProperties);
+		loadProperties("resources/config/gioco-config.xml", giocoProperties);
 	}
 
 	private void loadProperties(String file, Properties properties) {

@@ -112,6 +112,7 @@ public class ControlloreFasiGioco {
 	 * Se i suoi punti vittoria finiscono, viene eliminato.
 	 */
 	private void faseEliminazioneGiocatore(){
+		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.ELIMINAZIONE_GIOCATORI);
 		List<Giocatore>giocatoriDaEliminare=new ArrayList<Giocatore>();
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
 			if(statoDelGioco.getGiocatori().get(i).getDanari()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100){
@@ -123,6 +124,7 @@ public class ControlloreFasiGioco {
 				}while ((statoDelGioco.getGiocatori().get(i).getDanari()<statoDelGioco.getGiocatori().get(i).getPuntiVittoria()*100)&&(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()>0));
 				if(statoDelGioco.getGiocatori().get(i).getPuntiVittoria()<=0){
 					giocatoriDaEliminare.add(statoDelGioco.getGiocatori().get(i));
+					controlloreUtenti.giocatoreEliminato(statoDelGioco.getGiocatori().get(i));
 				}
 			}
 		}
@@ -256,7 +258,7 @@ public class ControlloreFasiGioco {
 		
 		if(!prima){
 			for(Scommessa sE : giocatore.getScommesseEffettuate()){
-				if(sE.getScuderia().equals(scommessa)){
+				if(sE.getScuderia().equals(scommessa.getScuderia())){
 					if(sE.getTipoScommessa().equals(scommessa.getTipoScommessa())){
 						return false;
 					}
@@ -348,7 +350,7 @@ public class ControlloreFasiGioco {
 				vittoria(giocatoriAncheStessiDanari);
 			}
 			else{
-				Collections.shuffle(giocatoriAncheStessiDanari);//a questo punto assegno casualmente la vittoria 
+				Collections.shuffle(giocatoriAncheStessiDanari);//a questo punto assegno casualmente la vittoria
 				vittoria(giocatoriAncheStessiDanari);
 			}
 		}	
@@ -377,19 +379,17 @@ public class ControlloreFasiGioco {
 	public void inizia() throws CarteFiniteException, AttesaUtentiFallitaException, IOException {
 		controlloreUtenti.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
+		aggiornaTuttiIClient();
 		statoDelGioco.addNumTurno();
 		while(statoDelGioco.getNumTurno()<=statoDelGioco.getNumTurniTotali()){
+			faseEliminazioneGiocatore();
 			aggiornaTuttiIClient();
+			if(statoDelGioco.getGiocatori().size()==0){
+				break;
+			}
+			if(statoDelGioco.getGiocatori().size()==1)break;//se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
 			faseDistribuzioneCarte();
 			aggiornaTuttiIClient();
-			faseEliminazioneGiocatore();
-			if(statoDelGioco.getGiocatori().size()==0){
-				break;   //se non e' rimasto alcun giocatore salta alla sconfitta
-			}
-			aggiornaTuttiIClient();
-			if(statoDelGioco.getGiocatori().size()==1){
-				break;  //se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
-			}
 			primaFaseScommesse();
 			truccaCorsa();
 			secondaFaseScommesse();
@@ -417,7 +417,10 @@ public class ControlloreFasiGioco {
 	public Mazziere getMazziere(){
 		return mazziere;
 	}
-	
+
+	public void chiudi() {
+		controlloreUtenti.fine();
+	}
 }
 
 

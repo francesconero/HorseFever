@@ -52,7 +52,7 @@ import javax.swing.border.MatteBorder;
 
 public class ControlloreFramePrincipale extends WindowAdapter implements FamilyView, PropertyChangeListener {
 
-	private JFrame frame;
+	private JFrame frmHorseFever;
 	private FramePrincipaleObserver osservatore;
 	private GiocatoriPanel giocatoriPanel;
 	private TabellonePanel tabellonePanel;
@@ -67,13 +67,20 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	private StatoDelGiocoView ultimoAggiornamento;
 	private JPanel panel_4;
 	private JPanel panel_1;
+	private boolean inGioco = true;
+
 	public ControlloreFramePrincipale() {
 		MetodiDiSupporto.swingInvokeAndWait(new Runnable() {			
 			public void run() {
 				initialize();
-				frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+
 			}
 		});
+	}
+
+	public void show(){
+		frmHorseFever.setVisible(true);
+		frmHorseFever.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
 	/**
@@ -85,16 +92,18 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 
 		informazioniDiGioco.addInformazione("Attesa altri giocatori...");
 
-		frame = new JFrame();
-		frame.setBounds(100, 100, 714, 471);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.addWindowStateListener(this);
+		frmHorseFever = new JFrame();
+		frmHorseFever.setTitle("Horse Fever");
+		frmHorseFever.setBounds(100, 100, 714, 471);
+		frmHorseFever.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmHorseFever.getContentPane().setLayout(new BorderLayout());
+		frmHorseFever.addWindowStateListener(this);
+		frmHorseFever.addWindowListener(this);
 
 		panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		frame.getContentPane().add(panel);
+		frmHorseFever.getContentPane().add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 
 		panel_4 = new JPanel();
@@ -175,21 +184,36 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		ed.getTextField().setHorizontalAlignment(JTextField.CENTER);
 		ed.getTextField().setBorder(new EmptyBorder(0, 10, 2, 10));
 		ed.getTextField().setEditable(false);
-		frame.pack();
-		frame.setVisible(true);
+		frmHorseFever.pack();
 	}
 
 	public void aggiorna(final StatoDelGiocoView view) {	
 		ultimoAggiornamento = view;
 		faseGioco = view.getTipoFaseGiocoFamily();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		switch(faseGioco){
 			case PREPARAZIONE:
 				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
 					public void run() {
-						informazioniDiGioco.addInformazione("Siamo nella fase preparazione del turno: "+ultimoAggiornamento.getNumTurno());
+						informazioniDiGioco.addInformazione("Benvenuto a HorseFever!");
 						prossimoAggiornamento();
 					}
 				});				
+				break;
+			case ELIMINAZIONE_GIOCATORI:
+				if(!ultimoAggiornamento.getGiocatori().contains(ultimoAggiornamento.getMioGiocatore())){
+					inGioco = false;
+					informazioniDiGioco.addInformazione("Mi dispiace, sei stato eliminato!");
+					JOptionPane.showMessageDialog(frmHorseFever, "Mi dispiace, sei stato eliminato!");
+					finePartita();
+				} else {
+					prossimoAggiornamento();
+				}
 				break;
 			case DISTRIBUZIONE_CARTE:
 				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
@@ -281,20 +305,29 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
 					public void run() {
 						if(ultimoAggiornamento.getGiocatori().size()==0){
-							JOptionPane.showMessageDialog(frame, "You're all losers!");
+							JOptionPane.showMessageDialog(frmHorseFever, "You're all losers!");
 						} else {
 							if(ultimoAggiornamento.getMioGiocatore().equals(ultimoAggiornamento.getGiocatoreDiTurno())){
-								JOptionPane.showMessageDialog(frame, "Complimenti, hai vinto!!");
+								JOptionPane.showMessageDialog(frmHorseFever, "Complimenti, hai vinto!!");
 							} else {
-								JOptionPane.showMessageDialog(frame, "E' risultato vincitore: " + ultimoAggiornamento.getGiocatoreDiTurno().getNomeUtente());
+								JOptionPane.showMessageDialog(frmHorseFever, "E' risultato vincitore: " + ultimoAggiornamento.getGiocatoreDiTurno().getNomeUtente());
 							}							
 						}
+						finePartita();
 					}
 				});
 				break;
 			default:
 				throw new IllegalStateException("Fase non gestibile: " + view.getTipoFaseGiocoFamily());			
 		}
+	}
+
+	protected void finePartita() {
+		MetodiDiSupporto.nuovoThread(new Runnable() {			
+			public void run() {
+				osservatore.finePartita();
+			}
+		});
 	}
 
 	protected void resetTabellone() {
@@ -312,7 +345,11 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	private void aggiornaViewGenerica() {		
 		tabellonePanel.aggiornaQuotazioni(ricavaQuotazioni(ultimoAggiornamento.getCorsie()));
 		tabellonePanel.aggiornaTurno(ultimoAggiornamento.getNumTurno());
-		giocatoriPanel.aggiorna(ultimoAggiornamento.getGiocatori(), ultimoAggiornamento.getMioGiocatore());
+		if(inGioco){
+			giocatoriPanel.aggiorna(ultimoAggiornamento.getGiocatori(), ultimoAggiornamento.getMioGiocatore());
+		} else {
+			giocatoriPanel.aggiorna(ultimoAggiornamento.getGiocatori(), ultimoAggiornamento.getGiocatoreDiTurno());
+		}
 		attivitaPanel.aggiorna(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA),
 				mioTurno(ultimoAggiornamento,TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA),
 				mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ANTIORARIA),
@@ -352,7 +389,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	public void chiudi() {
 		SwingUtilities.invokeLater(new Runnable() {			
 			public void run() {
-				frame.dispose();			
+				frmHorseFever.dispose();			
 			}
 		});
 	}
@@ -366,11 +403,19 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	public void propertyChange(PropertyChangeEvent evt) {
 		if(evt.getSource().equals(giocatoriPanel)){
 			if(evt.getPropertyName().equals("SELEZIONATO")){
+				attivitaPanel.aggiorna(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA),
+						mioTurno(ultimoAggiornamento,TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA),
+						mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ANTIORARIA),
+						ultimoAggiornamento.getGiocatori());
 				attivitaPanel.showManoPanel((GiocatoreView)evt.getNewValue());
 			}
 		}
 		if(evt.getSource().equals(tabellonePanel)){
 			if(evt.getPropertyName().equals("SELEZIONATO")){
+				attivitaPanel.aggiorna(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA),
+						mioTurno(ultimoAggiornamento,TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA),
+						mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ANTIORARIA),
+						ultimoAggiornamento.getGiocatori());
 				attivitaPanel.showScuderiePanel(ultimoAggiornamento.getScuderiaDalColore((Colore)evt.getNewValue()));
 			}
 		}
@@ -407,30 +452,39 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	@Override
 	public void windowStateChanged(WindowEvent e) {
 		if(e.getNewState()==JFrame.NORMAL){
-			frame.pack();
-			frame.setLocationRelativeTo(null);
+			frmHorseFever.pack();
+			frmHorseFever.setLocationRelativeTo(null);
 		}
 	}
 
-	public void risultatoScommessa(final boolean accettata) {
-		MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
+	@Override
+	public void windowClosing(WindowEvent e) {
+		MetodiDiSupporto.nuovoThread(new Runnable() {			
 			public void run() {
-				if(accettata){
-					JOptionPane.showMessageDialog(frame, "La tua scommessa è stata accettata!");
-					MetodiDiSupporto.nuovoThread(new Runnable() {			
-						public void run() {
-							osservatore.prossimoAggiornamento();
-						}
-					});
-				} else {
-					JOptionPane.showMessageDialog(frame, "Spiacente, la tua scommessa è stata rifiutata, riprova!!");
-					MetodiDiSupporto.nuovoThread(new Runnable() {			
-						public void run() {
-							osservatore.stessoAggiornamento();
-						}
-					});
-				}
+				osservatore.finePartita();
 			}
 		});
 	}
-}
+
+		public void risultatoScommessa(final boolean accettata) {
+			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
+				public void run() {
+					if(accettata){
+						JOptionPane.showMessageDialog(frmHorseFever, "La tua scommessa è stata accettata!");
+						MetodiDiSupporto.nuovoThread(new Runnable() {			
+							public void run() {
+								osservatore.prossimoAggiornamento();
+							}
+						});
+					} else {
+						JOptionPane.showMessageDialog(frmHorseFever, "Spiacente, la tua scommessa è stata rifiutata, riprova!!");
+						MetodiDiSupporto.nuovoThread(new Runnable() {			
+							public void run() {
+								osservatore.stessoAggiornamento();
+							}
+						});
+					}
+				}
+			});
+		}
+	}
