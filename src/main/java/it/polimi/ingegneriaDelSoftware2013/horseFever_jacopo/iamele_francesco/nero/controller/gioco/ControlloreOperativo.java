@@ -154,7 +154,7 @@ public class ControlloreOperativo {
 
 		for (int i=0; i<statoDelGioco.getCorsie().size(); i++){
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
-				System.out.println("e' arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
+				System.out.println("E' arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
 				boolean cartaTraguardoPresente=false;
 				cartaTraguardoPresente=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione(), statoDelGioco, mosseCorsa);
@@ -172,7 +172,7 @@ public class ControlloreOperativo {
 		else if(scuderieArrivate.size()==1){ 
 			statoDelGioco.addClassifica(scuderieArrivate.get(0));
 			scuderieArrivate.clear();			
-			mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
+			mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));
 		}
 		else{
 			;
@@ -245,7 +245,7 @@ public class ControlloreOperativo {
 					while(scuderieStessaPosizione.size()>1){
 						if(scuderiaConCartaPositiva!=null){
 							statoDelGioco.addClassifica(scuderiaConCartaPositiva.get(0));
-							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
+							mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));
 							scuderieArrivate.remove(scuderiaConCartaPositiva.get(0));	
 							scuderieConCartaNegativa.remove(scuderiaConCartaPositiva.get(0));
 							scuderieStessaPosizione.remove(scuderiaConCartaPositiva.get(0));
@@ -283,7 +283,7 @@ public class ControlloreOperativo {
 										scuderieInConflitto.add(scuderieStessaPosizione.get(i));
 									}
 								}
-								mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
+								mosseCorsa.add(new Conflitto("Ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
 								if(controlloreUtenti!=null){
 									controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
 									List<Colore> coloriRicevuti=null;
@@ -296,27 +296,27 @@ public class ControlloreOperativo {
 								mosseCorsa.clear();
 								for(int i=0;i<scuderieInConflitto.size();i++){
 									statoDelGioco.addClassifica(scuderieInConflitto.get(i));
-									mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));	
+									mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));	
 								}
 								scuderieArrivate.removeAll(scuderieInConflitto);
 								scuderieStessaPosizione.removeAll(scuderieInConflitto);
 							}else{
 								statoDelGioco.addClassifica(scuderieStessaPosizione.get(posizioneScuderia));
-								mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
+								mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));
 								scuderieArrivate.remove(scuderieStessaPosizione.get(posizioneScuderia));
 								scuderieStessaPosizione.remove(posizioneScuderia);
 							}
 						}
 					}
 					statoDelGioco.addClassifica(scuderieStessaPosizione.get(0));
-					mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
+					mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));
 					scuderieArrivate.remove(scuderieStessaPosizione.get(0));
 					scuderieStessaPosizione.remove(0);
 				}
 				else{
 					if(scuderiaConCartaPositiva!=null){
 						statoDelGioco.addClassifica(scuderiaConCartaPositiva.get(0));
-						mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
+						mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));
 						scuderieArrivate.remove(scuderiaConCartaPositiva.get(0));
 						scuderieStessaPosizione.remove(scuderiaConCartaPositiva.get(0));
 						scuderiaConCartaPositiva=null;
@@ -336,7 +336,7 @@ public class ControlloreOperativo {
 									scuderieInConflitto.add(scuderieStessaPosizione.get(i));
 								}
 							}
-							mosseCorsa.add(new Conflitto("ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
+							mosseCorsa.add(new Conflitto("Ci sono "+scuderieInConflitto.size()+" in conflitto ", scuderieInConflitto));
 							if(controlloreUtenti!=null){
 								controlloreUtenti.aggiornaUtenti(statoDelGioco, mosseCorsa);
 								List<Colore> coloriRicevuti=null;
@@ -349,13 +349,13 @@ public class ControlloreOperativo {
 							mosseCorsa.clear();
 							for(int i=0;i<scuderieInConflitto.size();i++){
 								statoDelGioco.addClassifica(scuderieInConflitto.get(i));
-								mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));	
+								mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));	
 							}
 							scuderieArrivate.removeAll(scuderieInConflitto);
 							scuderieStessaPosizione.removeAll(scuderieInConflitto);
 						}else{
 							statoDelGioco.addClassifica(scuderieStessaPosizione.get(posizioneScuderia));
-							mosseCorsa.add(new Classifica("classifica aggiornata", statoDelGioco.getClassifica()));
+							mosseCorsa.add(new Classifica("Classifica aggiornata", statoDelGioco.getClassifica()));
 							scuderieArrivate.remove(scuderieStessaPosizione.get(posizioneScuderia));
 							scuderieStessaPosizione.remove(posizioneScuderia);
 						}
@@ -578,7 +578,7 @@ public class ControlloreOperativo {
 			statoDelGioco.getCorsie().set(i, applicaEffettiPARTENZA(scuderiaTemp, applicaEffettiMODIFICATORE_PARTENZA(scuderiaTemp, movimento)));
 			mappaPartenza.put(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
 		}
-		mosseCorsa.add(new Partenza("partiti", mappaPartenza));
+		mosseCorsa.add(new Partenza("Partiti", mappaPartenza));
 		return statoDelGioco;
 	}
 
@@ -603,8 +603,13 @@ public class ControlloreOperativo {
 		}
 		else{
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
-			temp=new String("il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+			int controlloSprint=statoDelGioco.getCorsie().get(count).getPosizione();
 			statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp))); 
+			if(controlloSprint==statoDelGioco.getCorsie().get(count).getPosizione()){
+				temp=new String("Il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" sprintera'?...sicuramente non in questo round!");
+			}else{
+				temp=new String("Il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!");
+			}
 			mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 		}
 		mazziere.lanciaDado2();
@@ -618,8 +623,13 @@ public class ControlloreOperativo {
 			}
 			else{
 				Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(count);
-				temp=temp+(new String("\nil cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
+				int controlloSprint=statoDelGioco.getCorsie().get(count).getPosizione();
 				statoDelGioco.getCorsie().set(count, applicaEffettiSPRINT(scuderiaTemp, applicaEffettiMODIFICATORE_SPRINT(scuderiaTemp, sprintTemp)));
+				if(controlloSprint==statoDelGioco.getCorsie().get(count).getPosizione()){
+					temp=temp+(new String("Il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" sprintera'?...sicuramente non in questo round!"));
+				}else{
+					temp=temp+(new String("Il cavallo "+statoDelGioco.getCorsie().get(count).getColore()+" ha sprintato!"));
+				}
 				mappaSprint.put(statoDelGioco.getCorsie().get(count),statoDelGioco.getCorsie().get(count).getPosizione());
 			}
 		}
@@ -653,7 +663,7 @@ public class ControlloreOperativo {
 			}
 			mappaMovimento.put(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
 		}
-		mosseCorsa.add(new Movimento("La corsa continua", mappaMovimento));
+		mosseCorsa.add(new Movimento("La corsa continua!", mappaMovimento));
 		return statoDelGioco;
 	}
 
