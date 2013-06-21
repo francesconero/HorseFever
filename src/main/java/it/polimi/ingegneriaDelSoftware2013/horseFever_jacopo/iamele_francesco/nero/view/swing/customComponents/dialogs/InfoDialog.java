@@ -43,7 +43,7 @@ public class InfoDialog extends WindowAdapter {
 				main = new JFrame("Inserisci il tuo nome e l'indirizzo ip della macchina che hosta la partita");
 				main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				main.setResizable(false);
-				
+				main.addWindowListener(InfoDialog.this);
 				JLabel lblInserisciIlTuo = new JLabel("Nome giocatore:");
 				lblInserisciIlTuo.setHorizontalAlignment(SwingConstants.CENTER);
 				
@@ -143,7 +143,13 @@ public class InfoDialog extends WindowAdapter {
 	
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.exit(0);
+		lock.lock();
+		inputValid=true;
+		try{
+			acceptCondition.signalAll();
+		} finally {
+			lock.unlock();
+		}
 	}
 	
 	private class SwingAction extends AbstractAction {

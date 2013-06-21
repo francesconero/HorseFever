@@ -52,8 +52,12 @@ public class StatoDelGiocoView implements Serializable {
 		Giocatore giocatoreDiTurnoIntero = statoDaFiltrare.getGiocatoreDiTurno();
 		Giocatore primoGiocatoreIntero = statoDaFiltrare.getPrimoGiocatore();
 
-		this.giocatoreDiTurno = new GiocatoreView(giocatoreDiTurnoIntero,  nomi
-				.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero), true);
+		if(giocatoreDiTurnoIntero==null){
+			this.giocatoreDiTurno = null;
+		} else {
+			this.giocatoreDiTurno = new GiocatoreView(giocatoreDiTurnoIntero,  nomi
+					.get(giocatoreDiTurnoIntero), ids.get(giocatoreDiTurnoIntero), true);
+		}
 		this.primoGiocatore = new GiocatoreView(primoGiocatoreIntero,  nomi
 				.get(primoGiocatoreIntero), ids.get(primoGiocatoreIntero), true);
 		giocatoriView = new ArrayList<GiocatoreView>();

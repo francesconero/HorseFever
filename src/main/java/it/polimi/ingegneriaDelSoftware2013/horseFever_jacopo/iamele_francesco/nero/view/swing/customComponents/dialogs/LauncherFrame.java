@@ -122,35 +122,44 @@ public class LauncherFrame implements ActionListener, WindowListener {
 
 		if(e.getSource().equals(btnNewButton_1)){
 			int numeroGiocatori = 0;
-			boolean DONE = false;
+			boolean done = false;
+			boolean launch = false;
 			do{
-				try{
-					numeroGiocatori = Integer.parseInt(JOptionPane.showInputDialog("Inserisci il numero di giocatori!"));
-					if(numeroGiocatori>=2&&numeroGiocatori<=6)
-						DONE = true;
-					else 
-						JOptionPane.showMessageDialog(null, "Inserisci un intero da 2 a 6!");							
-				} catch (NumberFormatException ex){
-					JOptionPane.showMessageDialog(null, "Inserisci un intero da 2 a 6!");
+				String risposta = JOptionPane.showInputDialog("Inserisci il numero di giocatori!");
+				if(risposta!=null){
+					try{
+						numeroGiocatori = Integer.parseInt(risposta);
+						if(numeroGiocatori>=2&&numeroGiocatori<=6){
+							done = true;
+							launch = true;
+						} else { 
+							JOptionPane.showMessageDialog(null, "Inserisci un intero da 2 a 6!");
+						}
+					} catch (NumberFormatException ex){
+						JOptionPane.showMessageDialog(null, "Inserisci un intero da 2 a 6!");
+					}
+				} else {
+					done = true;
 				}
-			} while(!DONE );
+			} while(!done );
+			if(launch){
+				MetodiDiSupporto.nuovoThread(new Runnable() {
 
-			MetodiDiSupporto.nuovoThread(new Runnable() {
+					private int numeroGiocatori;
 
-				private int numeroGiocatori;
+					public void run() {
+						disposeFrame();
+						server = new ServerMain();
+						server.addListener(LauncherFrame.this);
+						server.start(new String[]{Integer.toString(numeroGiocatori)});
+					}
 
-				public void run() {
-					disposeFrame();
-					server = new ServerMain();
-					server.addListener(LauncherFrame.this);
-					server.start(new String[]{Integer.toString(numeroGiocatori)});
-				}
-
-				public Runnable initialize(int numeroGiocatori) {
-					this.numeroGiocatori = numeroGiocatori;
-					return this;
-				}
-			}.initialize(numeroGiocatori));
+					public Runnable initialize(int numeroGiocatori) {
+						this.numeroGiocatori = numeroGiocatori;
+						return this;
+					}
+				}.initialize(numeroGiocatori));
+			}
 
 		}
 
@@ -168,14 +177,14 @@ public class LauncherFrame implements ActionListener, WindowListener {
 
 	public void windowActivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void windowClosed(WindowEvent arg0) {
 		System.setOut(stdout);
 		System.setIn(stdin);
 		System.setErr(stderr);
-		LauncherFrame.main(null);
+		LauncherFrame.main(new String[0]);
 	}
 
 	public void windowClosing(WindowEvent arg0) {
@@ -186,28 +195,28 @@ public class LauncherFrame implements ActionListener, WindowListener {
 
 	public void windowDeactivated(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void windowDeiconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void windowIconified(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void avvertiChiusura() {
 		System.setOut(stdout);
 		System.setIn(stdin);
 		System.setErr(stderr);
-		LauncherFrame.main(null);
+		LauncherFrame.main(new String[0]);
 	}
 }

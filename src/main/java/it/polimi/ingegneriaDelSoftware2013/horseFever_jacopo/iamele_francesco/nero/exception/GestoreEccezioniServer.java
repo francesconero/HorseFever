@@ -12,6 +12,7 @@ public class GestoreEccezioniServer implements UncaughtExceptionHandler {
 	}
 	
 	public void uncaughtException(Thread arg0, Throwable arg1) {
+		System.err.println("[GESTORE ECCEZIONI SERVER]");
 		arg1.printStackTrace();
 		if(server.isChiuso().compareAndSet(false, true)){
 			server.chiudi();

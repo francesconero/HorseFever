@@ -54,7 +54,7 @@ public class ControlloreReteClient implements Utente {
 
 	/**
 	 * Inizializza un controllore per la rete a lato client, con un proprio nome
-	 * che sarà visualizzato dagli altri giocatori, e l'indirizzo ip del server
+	 * che sara' visualizzato dagli altri giocatori, e l'indirizzo ip del server
 	 * HorseFever al quale ci si vuole collegare
 	 * 
 	 * @param proprioNome
@@ -148,7 +148,7 @@ public class ControlloreReteClient implements Utente {
 			ID = iD;
 			IDSet = true;
 		} else {
-			throw new IllegalStateException("L'ID è già stato settato");
+			throw new IllegalStateException("L'ID è gia' stato settato");
 		}
 	}
 
@@ -246,10 +246,12 @@ public class ControlloreReteClient implements Utente {
 
 	public void scollegaGioco(boolean forza) {
 		if(heartbeatThread.esegui.compareAndSet(true, false)){
-			try {
-				serverSocket.close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+			if(serverSocket!=null){
+				try {
+					serverSocket.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 			heartbeatThread.setForzoso(forza);
 			if(!Thread.currentThread().equals(heartbeatThread)){

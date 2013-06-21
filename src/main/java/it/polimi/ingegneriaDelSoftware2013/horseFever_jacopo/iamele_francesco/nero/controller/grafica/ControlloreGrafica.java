@@ -3,6 +3,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.Utente;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.GestoreEccezioniClient;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NetworkException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
@@ -72,10 +73,14 @@ public class ControlloreGrafica {
 			listener.avvertiChiusura();
 		}
 	}
-	
-	public void finePartitaForzata(){
+
+	public void finePartitaForzata(Throwable arg1){
 		if(finita.compareAndSet(false, true)){
-			framePrincipale.chiudi();
+			if(arg1 instanceof NetworkException){
+				JOptionPane.showMessageDialog(null, "Errore network", "Errore", JOptionPane.ERROR_MESSAGE);
+			}
+			if(framePrincipale!=null)
+				framePrincipale.chiudi();
 			controlloreUtenteSingolo.scollegaGioco(true);
 			listener.avvertiChiusura();
 		}
@@ -84,7 +89,6 @@ public class ControlloreGrafica {
 	public void show(InetAddress localHost){
 		String nome = JOptionPane.showInputDialog("Inserisci il tuo nome:");
 		final ConnettendoFrame connettendo = new ConnettendoFrame(localHost.getHostAddress());
-
 		try {
 			this.controlloreUtenteSingolo = new ControlloreReteClient(nome, localHost.getHostAddress());
 			controlloreUtenteSingolo.collegaGioco();
@@ -109,28 +113,33 @@ public class ControlloreGrafica {
 
 	public void show() {
 		InfoDialog d = new InfoDialog();
-		final ConnettendoFrame connettendo = new ConnettendoFrame(d.getIndirizzoIP());
+		System.out.println("ip: "+d.getIndirizzoIP()+" nome: "+d.getNome());
+		if(!(d.getIndirizzoIP()==null||d.getNome()==null)){
+			final ConnettendoFrame connettendo = new ConnettendoFrame(d.getIndirizzoIP());
 
-		try {
-			this.controlloreUtenteSingolo = new ControlloreReteClient(d.getNome(), d.getIndirizzoIP());
-			controlloreUtenteSingolo.collegaGioco();
-		} catch (Exception e) {
-			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {				
-				public void run() {
-					connettendo.chiudi();
-					JOptionPane.showMessageDialog(null, "Errore durante la connessione al server!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
-				}
-			});			
-			throw new RuntimeException(e);
-		}		
-		connettendo.chiudi();
+			try {
+				this.controlloreUtenteSingolo = new ControlloreReteClient(d.getNome(), d.getIndirizzoIP());
+				controlloreUtenteSingolo.collegaGioco();
+			} catch (Exception e) {
+				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {				
+					public void run() {
+						connettendo.chiudi();
+						JOptionPane.showMessageDialog(null, "Errore durante la connessione al server!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
+					}
+				});			
+				throw new RuntimeException(e);
+			}		
+			connettendo.chiudi();
 
-		this.framePrincipale = new ControlloreFramePrincipale();
-		framePrincipale.settaObserver(this);
-		framePrincipale.show();
+			this.framePrincipale = new ControlloreFramePrincipale();
+			framePrincipale.settaObserver(this);
+			framePrincipale.show();
 
-		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
-		framePrincipale.aggiorna(ultimoStatoRicevuto);
+			ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
+			framePrincipale.aggiorna(ultimoStatoRicevuto);
+		} else {
+			listener.avvertiChiusura();
+		}
 	}
 
 	public void riceviAvvertimento() {

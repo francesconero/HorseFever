@@ -53,7 +53,6 @@ public class TextFieldStreamer extends InputStream implements ActionListener {
 				//according to the docs read() should block until new input is available
 				synchronized (this) {
 					if(str == null || pos >= str.length()){
-						System.out.println("Waiting");
 						this.wait();
 					}
 				}

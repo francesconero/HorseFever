@@ -317,7 +317,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 			case VITTORIA:
 				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
 					public void run() {
-						if(ultimoAggiornamento.getGiocatori().size()==0){
+						if(ultimoAggiornamento.getGiocatoreDiTurno()==null){
 							JOptionPane.showMessageDialog(frmHorseFever, "You're all losers!");
 						} else {
 							if(ultimoAggiornamento.getMioGiocatore().equals(ultimoAggiornamento.getGiocatoreDiTurno())){
@@ -468,7 +468,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	public void windowClosing(WindowEvent e) {
 		MetodiDiSupporto.nuovoThread(new Runnable() {			
 			public void run() {
-				osservatore.finePartitaForzata();
+				osservatore.finePartitaForzata(null);
 			}
 		});
 	}

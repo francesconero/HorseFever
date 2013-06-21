@@ -12,8 +12,9 @@ public class GestoreEccezioniClient implements UncaughtExceptionHandler {
 	}
 	
 	public void uncaughtException(Thread arg0, Throwable arg1) {
+		System.err.println("[GESTORE ECCEZIONI CLIENT]");
 		arg1.printStackTrace();
-		controlloreGrafica.finePartitaForzata();
+		controlloreGrafica.finePartitaForzata(arg1);
 	}
 
 	public synchronized static GestoreEccezioniClient getInstance() {

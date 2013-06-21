@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * Metodici statici che implementano le funzionalità più a basso livello richieste per la comunicazione in rete.
+ * Metodici statici che implementano le funzionalita' più a basso livello richieste per la comunicazione in rete.
  * Usata da {@link ControlloreReteClient} e {@link ControlloreReteServer}
  * @author Francesco
  *

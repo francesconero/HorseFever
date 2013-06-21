@@ -206,7 +206,7 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 	}
 
 	public void fine() {
-		((GestoreEccezioni)GestoreEccezioni.getInstance()).setChiusuraUtente(true);
+		((GestoreEccezioni)GestoreEccezioni.getInstance()).setChiusuraUtente();
 		gC.close();
 	}
 

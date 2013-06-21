@@ -10,18 +10,18 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 public interface MossaCorsaVisitor {
 	
-	public void visita(Movimento movimento);
+	void visita(Movimento movimento);
 	
-	public void visita(Sprint sprint);
+	void visita(Sprint sprint);
 	
-	public void visita(Photofinish photofinish);
+	void visita(Photofinish photofinish);
 	
-	public void visita(Conflitto conflitto);
+	void visita(Conflitto conflitto);
 
-	public void visita(Classifica classifica);
+	void visita(Classifica classifica);
 
-	public void visita(FineGara fineGara);
+	void visita(FineGara fineGara);
 
-	public void visita(Partenza partenza);
+	void visita(Partenza partenza);
 	
 }

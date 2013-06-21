@@ -397,13 +397,13 @@ public class ControlloreFasiGioco {
 		statoDelGioco.addNumTurno();
 		while(statoDelGioco.getNumTurno()<=statoDelGioco.getNumTurniTotali()){
 			faseEliminazioneGiocatore();
-			aggiornaTuttiIClient();
 			if(statoDelGioco.getGiocatori().size()==0){
 				break;
 			}
 			if(statoDelGioco.getGiocatori().size()==1){
 				break;//se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
 			}
+			aggiornaTuttiIClient();
 			faseDistribuzioneCarte();
 			aggiornaTuttiIClient();
 			primaFaseScommesse();

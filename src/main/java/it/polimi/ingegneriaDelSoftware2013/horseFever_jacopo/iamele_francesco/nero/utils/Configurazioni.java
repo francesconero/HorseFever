@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Singleton che racchiude tutte le proprietà caricate dai vari file di configurazione.
- * Si può accedere alle varie classi di proprietà ({@link Properties}) tramite dei getter pubblici.
+ * Singleton che racchiude tutte le proprieta' caricate dai vari file di configurazione.
+ * Si può accedere alle varie classi di proprieta' ({@link Properties}) tramite dei getter pubblici.
  * 
  * @author Francesco
  *
@@ -56,28 +56,28 @@ public final class Configurazioni {
 	}
 
 	/**
-	 * @return le proprietà riguardanti solo il server
+	 * @return le proprieta' riguardanti solo il server
 	 */
 	public Properties getServerProperties() {
 		return this.serverProperties;
 	}
 	
 	/**
-	 * @return le proprietà riguardanti solo il client
+	 * @return le proprieta' riguardanti solo il client
 	 */
 	public Properties getClientProperties() {
 		return this.clientProperties;
 	}
 	
 	/**
-	 * @return le proprietà generali riguardanti il networking del gioco
+	 * @return le proprieta' generali riguardanti il networking del gioco
 	 */
 	public Properties getNetProperties() {
 		return this.netProperties;
 	}
 	
 	/**
-	 * @return le proprietà dello svolgimento del gioco Horse Fever
+	 * @return le proprieta' dello svolgimento del gioco Horse Fever
 	 */
 	public Properties getGiocoProperties() {
 		return this.giocoProperties ;
