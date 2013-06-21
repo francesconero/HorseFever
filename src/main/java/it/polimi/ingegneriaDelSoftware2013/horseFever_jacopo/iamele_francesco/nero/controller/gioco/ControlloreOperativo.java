@@ -50,9 +50,7 @@ public class ControlloreOperativo {
 			if(quotazioneMassima>scuderie.get(i).getQuotazione()){
 				quotazioneMassima=scuderie.get(i).getQuotazione();
 			}
-			else{
-				continue;
-			}
+			
 		}
 		return quotazioneMassima;
 	}
@@ -69,9 +67,7 @@ public class ControlloreOperativo {
 			if(posizioneMassima<scuderie.get(i).getPosizione()){
 				posizioneMassima=scuderie.get(i).getPosizione();
 			}
-			else{
-				continue;
-			}
+			
 		}
 		return posizioneMassima;
 	}
@@ -88,9 +84,7 @@ public class ControlloreOperativo {
 			if(posizioneMinima>scuderie.get(i).getPosizione()){
 				posizioneMinima=scuderie.get(i).getPosizione();
 			}
-			else{
-				continue;
-			}
+			
 		}
 		return posizioneMinima;
 	}
@@ -648,20 +642,29 @@ public class ControlloreOperativo {
 	 */
 	public static StatoDelGioco movimento(StatoDelGioco statoDelGioco, Mazziere mazziere, ControlloreUtenti controlloreUtenti) {
 		Map <Scuderia, Integer> mappaMovimento= new HashMap<Scuderia, Integer>();
+		List<Integer> posizioniDaApplicare=new ArrayList<Integer>();
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
 		for(int i=0; i<statoDelGioco.getCorsie().size();i++){
 			if(statoDelGioco.getCorsie().get(i).isArrivato()){
-				;
+				movimento=0;
+				posizioniDaApplicare.add(movimento);
 			}
 			else{
 				movimento=cartaMovimento.getMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
 				Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
 				movimento=applicaEffettiPRIMO_ULTIMO(statoDelGioco, scuderiaTemp, movimento);
-				scuderiaTemp.addPosizione(movimento);
-				statoDelGioco.getCorsie().set(i, scuderiaTemp);
+				System.out.println("movimento cavallo in "+i+" posizione e' "+movimento);
+				posizioniDaApplicare.add(movimento);
 			}
+		}
+		
+		for(int i=0; i<statoDelGioco.getCorsie().size();i++){
+			
+			statoDelGioco.getCorsie().get(i).addPosizione(posizioniDaApplicare.get(i));
 			mappaMovimento.put(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
+			
+			
 		}
 		mosseCorsa.add(new Movimento("La corsa continua!", mappaMovimento));
 		return statoDelGioco;

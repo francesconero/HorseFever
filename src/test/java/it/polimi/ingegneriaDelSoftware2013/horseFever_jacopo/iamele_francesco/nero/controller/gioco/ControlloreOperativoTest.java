@@ -30,6 +30,7 @@ public class ControlloreOperativoTest {
 	private List<CartaAzione> carteAzioneQuotazione=new ArrayList<CartaAzione>();
 	private List<CartaAzione> carteAzioneFotoFinish=new ArrayList<CartaAzione>();
 	private List<CartaAzione> carteAzioneTraguardo=new ArrayList<CartaAzione>();
+	private List<CartaAzione> carteAzionePrimoUltimo=new ArrayList<CartaAzione>();
 	private List<EffettoAzione> effettoAzioneSprint=new ArrayList<EffettoAzione>();
 	private List<EffettoAzione> effettoAzionePartenza=new ArrayList<EffettoAzione>();
 	private List<EffettoAzione> effettoAzioneCARTE_AZIONE=new ArrayList<EffettoAzione>();
@@ -60,6 +61,10 @@ public class ControlloreOperativoTest {
 			if(carteAzione.get(i).getEffetti().get(0).getTipo()==TipoAzione.TRAGUARDO){
 				System.out.println("carta Traguardo in posizione "+i+" con valore "+carteAzione.get(i).getEffetti().get(0).getValori().get(0));
 				carteAzioneTraguardo.add(carteAzione.get(i));
+			}
+			if(carteAzione.get(i).getEffetti().get(0).getTipo()==TipoAzione.PRIMO_ULTIMO){
+				System.out.println("carta PRIMOULTIMO in posizione "+i+" con valore "+carteAzione.get(i).getEffetti().get(0).getValori().get(0));
+				carteAzionePrimoUltimo.add(carteAzione.get(i));
 			}
 		}
 		valori.add(2);
@@ -390,6 +395,39 @@ public class ControlloreOperativoTest {
 		assertTrue(true);
 	}
 	
+	@Test
+	public void testCarteAzionePRIMOULTIMO(){
+		System.out.println("####testCarteAzionePRIMOULTIMO####");
+		int posizioneGiallo=0;
+		int posizioneNero=0;
+		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
+			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
+				posizioneGiallo=i;
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneTraguardo.get(0)); 
+			}
+			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.NERO){
+				posizioneNero=i;
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneTraguardo.get(1));
+			}
+		}
+		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
+			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
+				posizioneGiallo=i;
+				statoDelGiocoTest.getCorsie().get(i).assegnaQuotazione(7);
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzionePrimoUltimo.get(0)); 
+			}
+			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.NERO){
+				posizioneNero=i;
+				statoDelGiocoTest.getCorsie().get(i).assegnaQuotazione(6);
+				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzionePrimoUltimo.get(1));
+			}
+		}
+		
+		statoDelGiocoTest=ControlloreOperativo.movimento(statoDelGiocoTest, mazziere, null);
+		assertEquals("la scuderia in posizione "+posizioneGiallo+" deve essere 0",0,statoDelGiocoTest.getCorsie().get(posizioneGiallo).getPosizione());
+		assertEquals("la scuderia in posizione "+posizioneNero+" deve essere 4",4,statoDelGiocoTest.getCorsie().get(posizioneNero).getPosizione());
+		
+	}
 	
 	@After
 	public void tearDownAfter(){
