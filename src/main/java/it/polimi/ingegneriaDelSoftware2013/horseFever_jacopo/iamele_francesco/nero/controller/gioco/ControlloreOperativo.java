@@ -421,9 +421,6 @@ public class ControlloreOperativo {
 				if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.PARTENZA){
 					movimentoTemp=cartaTemp.getEffetti().get(k).getValori().get(0);
 				}
-				else{
-					movimentoTemp=movimento;
-				}
 			}
 		}
 		scuderia.addPosizione(movimentoTemp);
@@ -470,9 +467,6 @@ public class ControlloreOperativo {
 			for (int k=0;k<cartaTemp.getEffetti().size();k++){
 				if (cartaTemp.getEffetti().get(k).getTipo()==TipoAzione.SPRINT){
 					sprintTemp=cartaTemp.getEffetti().get(k).getValori().get(0);
-				}
-				else{
-					sprintTemp=sprint;	
 				}
 			}
 		}
@@ -571,6 +565,7 @@ public class ControlloreOperativo {
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
 			statoDelGioco.getCorsie().set(i, applicaEffettiPARTENZA(scuderiaTemp, applicaEffettiMODIFICATORE_PARTENZA(scuderiaTemp, movimento)));
 			mappaPartenza.put(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
+			System.out.println("La nuova posizione della scuderia "+scuderiaTemp.getColore()+" e'"+scuderiaTemp.getPosizione());
 		}
 		mosseCorsa.add(new Partenza("Partiti", mappaPartenza));
 		return statoDelGioco;

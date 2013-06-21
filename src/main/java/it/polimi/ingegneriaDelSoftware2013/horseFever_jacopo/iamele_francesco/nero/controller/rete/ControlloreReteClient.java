@@ -148,7 +148,7 @@ public class ControlloreReteClient implements Utente {
 			ID = iD;
 			IDSet = true;
 		} else {
-			throw new IllegalStateException("L'ID è gia' stato settato");
+			throw new IllegalStateException("L'ID e' gia' stato settato");
 		}
 	}
 

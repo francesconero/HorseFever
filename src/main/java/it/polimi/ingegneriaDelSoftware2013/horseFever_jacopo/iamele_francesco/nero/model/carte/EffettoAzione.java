@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Questa classe rappresenta uno dei possibili effetti che una {@link CartaAzione} può avere. Il tipo di effetto è definito da {@link TipoAzione}.
+ * Questa classe rappresenta uno dei possibili effetti che una {@link CartaAzione} può avere. Il tipo di effetto e' definito da {@link TipoAzione}.
  * @author Francesco
  *
  */

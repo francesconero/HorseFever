@@ -112,7 +112,7 @@ public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChang
 
 	public void visita(FineGara fineGara) {
 		informazioniDiGioco.addInformazione(fineGara.getCommento());
-		JOptionPane.showMessageDialog(tabellonePanel, "La gara è finita, è il momento di pagare le scommesse!", "Termine gara", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(tabellonePanel, "La gara e' finita, e' il momento di pagare le scommesse!", "Termine gara", JOptionPane.INFORMATION_MESSAGE);
 		MetodiDiSupporto.nuovoThread(new Runnable() {			
 			public void run() {
 				osservatore.prossimoAggiornamento();

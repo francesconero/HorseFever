@@ -170,7 +170,7 @@ public class InfoDialog extends WindowAdapter {
 						ip = InetAddress.getByName(ip).getHostAddress();
 						inputValid = true;
 					} catch (UnknownHostException ex) {
-						JOptionPane.showMessageDialog(main, "L'indirizzo ip immesso non è valido!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(main, "L'indirizzo ip immesso non e' valido!", "Attenzione!", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}

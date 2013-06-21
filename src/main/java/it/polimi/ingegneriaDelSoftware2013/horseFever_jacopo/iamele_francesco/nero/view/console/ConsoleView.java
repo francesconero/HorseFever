@@ -87,7 +87,7 @@ public class ConsoleView {
 				+ id
 				+ " "
 				+ proprioNome
-				+ " non ha più denaro da scommettere, nè punti vittoria da barattare!\n");
+				+ " non ha più denaro da scommettere, ne' punti vittoria da barattare!\n");
 		scriviACapo("Mi dispiace " + proprioNome
 				+ ". Sei stato eliminato!");
 	}
@@ -133,7 +133,7 @@ public class ConsoleView {
 			List<Colore> scuderieInConflitto, String nomeGiocatore) {
 		pW
 		.println(nomeGiocatore
-				+ " è sorto un dilemma: sta a te decidere l'ordine di arrivo di questi cavalli!");
+				+ " e' sorto un dilemma: sta a te decidere l'ordine di arrivo di questi cavalli!");
 		scriviACapo(scuderieInConflitto);
 
 		List<Colore> ancoraDaDecidere;
@@ -149,7 +149,7 @@ public class ConsoleView {
 				giaDecisi.add(daAggiungere);
 			}
 
-			scriviACapo("Ok questo è il nuovo ordine da te inserito: ");
+			scriviACapo("Ok questo e' il nuovo ordine da te inserito: ");
 			scriviACapo(giaDecisi);
 		} while (!aiutanteConsole.chiediConferma("Va bene?"));
 		return giaDecisi;
@@ -165,7 +165,7 @@ public class ConsoleView {
 	}
 
 	public void mostraClassifica(List<Colore> classifica) {
-		scriviACapo("L'ordine di arrivo dei cavalli è il seguente: ");
+		scriviACapo("L'ordine di arrivo dei cavalli e' il seguente: ");
 		for(int i = 0; i < classifica.size(); i++){
 			scriviACapo(".::"+(i+1)+"::.");
 			scriviACapo(classifica.get(i));

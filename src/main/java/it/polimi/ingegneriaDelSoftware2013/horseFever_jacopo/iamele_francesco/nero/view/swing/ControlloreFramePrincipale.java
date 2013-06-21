@@ -284,7 +284,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements Propert
 			case F_C_SCOPRICARTAAZIONE:
 				MetodiDiSupporto.swingInvokeAndWait(new Runnable() {					
 					public void run() {
-						informazioniDiGioco.addInformazione("Scopriamo cosa è stato giocato sulle scuderie!");
+						informazioniDiGioco.addInformazione("Scopriamo cosa e' stato giocato sulle scuderie!");
 						resetTabellone();
 						aggiornaViewGenerica();
 						prossimoAggiornamento();

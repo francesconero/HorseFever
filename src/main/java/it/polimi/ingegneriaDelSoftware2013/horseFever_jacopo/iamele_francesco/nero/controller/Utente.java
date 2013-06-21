@@ -23,7 +23,7 @@ public interface Utente {
 	/**
 	 * Fai una scommessa
 	 * @param scommessaDaFare la scommessa che si vuol fare
-	 * @return boolean true, se la scommessa è stato accettata, false altrimenti
+	 * @return boolean true, se la scommessa e' stato accettata, false altrimenti
 	 */
 	boolean scommetti(Scommessa scommessaDaFare);
 

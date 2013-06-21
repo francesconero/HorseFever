@@ -386,7 +386,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 					try {
 						Map.Entry<Integer, String> risposta = result.get();
 						if(risposta.getValue().equals("BYE!")){
-							System.out.println(nomiClients.get(reverseIDClients.get(risposta.getKey()))+" si è scollegato");
+							System.out.println(nomiClients.get(reverseIDClients.get(risposta.getKey()))+" si e' scollegato");
 							synchronized (clientsHeartbeat) {
 								System.out.println("Rimuovo heartbeat");
 								clientsHeartbeat.remove(reverseIDClients.get(risposta.getKey()));
@@ -396,7 +396,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 							}
 						}
 						if(risposta.getValue().equals("ADIOS!")){
-							System.out.println(nomiClients.get(reverseIDClients.get(risposta.getKey()))+" si è scollegato forzatamente");
+							System.out.println(nomiClients.get(reverseIDClients.get(risposta.getKey()))+" si e' scollegato forzatamente");
 							synchronized (clientsHeartbeat) {
 								System.out.println("Rimuovo heartbeat");
 								clientsHeartbeat.remove(reverseIDClients.get(risposta.getKey()));
