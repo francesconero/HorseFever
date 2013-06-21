@@ -264,7 +264,7 @@ public class ControlloreFasiGioco {
 			return "Non puoi Scommettere 0 Danari!!!";
 		}
 		if(scommessa.getDanariScommessi()<giocatore.getPuntiVittoria()*100){
-			return ("La tua scommessa non rispetta la scommessa minima:"+giocatore.getPuntiVittoria()*100);
+			return ("La tua scommessa non rispetta la scommessa minima: "+giocatore.getPuntiVittoria()*100);
 		}
 		
 		

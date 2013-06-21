@@ -2,7 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.GestoreEccezioniServer;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterminato;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterministico;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.LauncherFrame;
@@ -57,7 +57,7 @@ public class ServerMain implements WindowListener {
 		ControlloreReteServer server = new ControlloreReteServer();
 		
 		if(controlloreGioco==null){
-			controlloreGioco=new ControlloreFasiGioco(numGiocatori, new MazziereDeterminato(), server);    			    		
+			controlloreGioco=new ControlloreFasiGioco(numGiocatori, new Mazziere(), server);    			    		
 		}
 
 		Thread.currentThread().setUncaughtExceptionHandler(GestoreEccezioniServer.getInstance());

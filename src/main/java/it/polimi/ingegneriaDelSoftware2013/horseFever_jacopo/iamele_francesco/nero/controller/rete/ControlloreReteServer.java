@@ -16,8 +16,10 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.Configurazioni;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -161,6 +163,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			accettore.setSoTimeout(serverTimeout);
 			heartbeatAccettore.setSoTimeout(serverTimeout);
 		} catch (IOException e) {
+			if(e instanceof BindException){
+				System.out.println("Porta non disponibile!");
+			}
 			throw new AttesaUtentiFallitaException(
 					"Fallita la creazione del socket server", e);
 		}
@@ -178,6 +183,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 			counter.incrementAndGet();
 			new Thread(new AssegnamentoThread(holder, g)).start();
 		} catch (IOException e) {
+			if(e instanceof SocketTimeoutException){
+				System.out.println("Timeout di ascolto!");
+			}
 			throw new AttesaUtentiFallitaException(
 					"Errore durante l'attesa dei client", e);
 		} finally {

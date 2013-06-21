@@ -210,7 +210,7 @@ public class ScuderiePanel extends JPanel {
 
 	public void aggiorna(Scuderia newValue) {
 		this.scuderia = newValue;
-		labelScuderia.setText("Carte azione giocate sulla scuderia: "+newValue.getColore().name());
+		labelScuderia.setText("Carte azione giocate sulla scuderia: "+newValue.getColore().name()+" Scommesse disponibili: "+newValue.getScommesseDisponibili());
 		cartePanel.removeAll();
 		for(CartaAzione cA: newValue.getCarteAzione()){
 			JPanel holder = new JPanel();

@@ -148,7 +148,6 @@ public class ControlloreOperativo {
 
 		for (int i=0; i<statoDelGioco.getCorsie().size(); i++){
 			if((statoDelGioco.getCorsie().get(i).getPosizione()>=posizioneDelTraguardo)&&(statoDelGioco.getCorsie().get(i).isArrivato()==false)){
-				System.out.println("E' arrivato il cavallo "+statoDelGioco.getCorsie().get(i).getColore());
 				statoDelGioco.getCorsie().get(i).setArrivato(true);
 				boolean cartaTraguardoPresente=false;
 				cartaTraguardoPresente=applicaEffettiTRAGUARDO(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione(), statoDelGioco, mosseCorsa);
@@ -565,7 +564,6 @@ public class ControlloreOperativo {
 			Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
 			statoDelGioco.getCorsie().set(i, applicaEffettiPARTENZA(scuderiaTemp, applicaEffettiMODIFICATORE_PARTENZA(scuderiaTemp, movimento)));
 			mappaPartenza.put(statoDelGioco.getCorsie().get(i),statoDelGioco.getCorsie().get(i).getPosizione());
-			System.out.println("La nuova posizione della scuderia "+scuderiaTemp.getColore()+" e'"+scuderiaTemp.getPosizione());
 		}
 		mosseCorsa.add(new Partenza("Partiti", mappaPartenza));
 		return statoDelGioco;
