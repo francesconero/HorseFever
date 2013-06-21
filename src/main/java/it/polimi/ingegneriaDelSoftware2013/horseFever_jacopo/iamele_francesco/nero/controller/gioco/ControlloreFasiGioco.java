@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Questa classe possiede la logica applicativa di HorseFever
  * Possiede metodi privati che rappresentano le fasi del gioco
@@ -255,16 +256,22 @@ public class ControlloreFasiGioco {
 	}
 
 	private String controllaScommessa(Scommessa scommessa, Giocatore giocatore, boolean prima){
-		if(prima){
-			if(scommessa.getDanariScommessi()==0){
-				return "Non puoi Scommettere 0 Danari!!!";
-			}
+		if(scommessa.getDanariScommessi()<0){
+			return "Danari negativi??? Vuoi scommettere i miei soldi??";
 		}
-
+		
+		if(scommessa.getDanariScommessi()==0){
+			return "Non puoi Scommettere 0 Danari!!!";
+		}
 		if(scommessa.getDanariScommessi()<giocatore.getPuntiVittoria()*100){
 			return ("La tua scommessa non rispetta la scommessa minima:"+giocatore.getPuntiVittoria()*100);
 		}
+		
+		
 		if(scommessa.getDanariScommessi()>giocatore.getDanari()){
+			if(scommessa.getDanariScommessi()>giocatore.getDanari()*100){
+				return("Hahahahahah!... NO!");
+			}
 			return ("Non hai tutti quei soldi!!!");
 		}
 		if(statoDelGioco.getScuderiaDalColore(scommessa.getScuderia()).getScommesseDisponibili()<1){
@@ -275,7 +282,7 @@ public class ControlloreFasiGioco {
 			for(Scommessa sE : giocatore.getScommesseEffettuate()){
 				if(sE.getScuderia().equals(scommessa.getScuderia())){
 					if(sE.getTipoScommessa().equals(scommessa.getTipoScommessa())){
-						return ("Hai gi� scommesso "+scommessa.getTipoScommessa()+" su quella scuderia!");
+						return ("Hai gia' scommesso "+scommessa.getTipoScommessa()+" su quella scuderia!");
 					}
 				}
 			}

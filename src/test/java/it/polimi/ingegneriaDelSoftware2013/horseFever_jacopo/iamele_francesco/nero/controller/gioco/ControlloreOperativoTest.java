@@ -135,7 +135,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testPartenzaECorsa()  {		
-		System.out.println("####��testPartenzaECorsa��####");
+		System.out.println("####testPartenzaECorsa####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
 		statoDelGiocoTest.getCorsie().get(1).addCartaAzione(carteAzionePartenza.get(1));
@@ -166,7 +166,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testSprint(){
-		System.out.println("####��testSprint��####");
+		System.out.println("####testSprint####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneSprint.get(0));
 		for(int i=0;i<statoDelGiocoTest.getCorsie().size();i++){
 			assertEquals("la posizione della scuderia"+i+"deve essere 0",0,statoDelGiocoTest.getCorsie().get(i).getPosizione());
@@ -185,7 +185,7 @@ public class ControlloreOperativoTest {
 	
 	@Test 
 	public void testApplicaEffettiCARTE_AZIONEPreCorsa(){
-		System.out.println("####��testApplicaEffettiCARTE_AZIONEPreCorsa��####");
+		System.out.println("####testApplicaEffettiCARTE_AZIONEPreCorsa####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(1));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));
@@ -198,7 +198,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testApplicaEffettiQUOTAZIONEPreCorsa(){
-		System.out.println("####��testApplicaEffettiQUOTAZIONEPreCorsa��####");
+		System.out.println("####testApplicaEffettiQUOTAZIONEPreCorsa####");
 		statoDelGiocoTest.getCorsie().get(5).addCartaAzione(carteAzioneQuotazione.get(0));
 		int quotazioneOriginale=statoDelGiocoTest.getCorsie().get(5).getQuotazione();
 		statoDelGiocoTest=ControlloreOperativo.applicaEffettiQUOTAZIONEPreCorsa(statoDelGiocoTest);
@@ -208,7 +208,7 @@ public class ControlloreOperativoTest {
 
 	@Test
 	public void testNuoveQuotazioni(){
-		System.out.println("####��testNuoveQuotazioni��####");
+		System.out.println("####testNuoveQuotazioni####");
 		List<Integer> valoriQuotazioni= new ArrayList<Integer>();
 		for(int i=0;i<statoDelGiocoTest.getCorsie().size();i++){
 			statoDelGiocoTest.addClassifica(statoDelGiocoTest.getCorsie().get(i));
@@ -238,7 +238,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishSenzaCarteAzione(){
-		System.out.println("####��testFotoFinishSenzaCarteAzione��####");
+		System.out.println("####testFotoFinishSenzaCarteAzione####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			statoDelGiocoTest.getCorsie().get(i).setPosizione(12);
 			System.out.println("Scuderia: "+statoDelGiocoTest.getCorsie().get(i).getColore()+"");
@@ -254,7 +254,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishConCarteAzioniScuderieSprintate(){
-		System.out.println("####��testFotoFinishConCarteAzioniScuderieSprintate��####");
+		System.out.println("####testFotoFinishConCarteAzioniScuderieSprintate####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.BLU){
 				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(0));
@@ -277,7 +277,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishConCarteAzioniAltreScuderie(){
-		System.out.println("####��testFotoFinishConCarteAzioniAltreScuderie��####");
+		System.out.println("####testFotoFinishConCarteAzioniAltreScuderie####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.NERO){
 				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(0));
@@ -301,7 +301,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testFotoFinishConCartaAzionePositiva(){
-		System.out.println("####��testFotoFinishConCartaAzionePositiva��####");
+		System.out.println("####testFotoFinishConCartaAzionePositiva####");
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
 				statoDelGiocoTest.getCorsie().get(i).addCartaAzione(carteAzioneFotoFinish.get(1)); 
@@ -322,7 +322,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testEliminaCarte(){
-		System.out.println("####��testEliminaCarte��####");
+		System.out.println("####testEliminaCarte####");
 		int posizione=0;
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
 			if(statoDelGiocoTest.getCorsie().get(i).getColore()==Colore.GIALLO){
@@ -337,7 +337,7 @@ public class ControlloreOperativoTest {
 	
 	@Test
 	public void testCarteAzioneTraguardo(){
-		System.out.println("####��testCarteAzioneTraguardo��####");
+		System.out.println("####testCarteAzioneTraguardo####");
 		int posizioneGiallo=0;
 		int posizioneNero=0;
 		for(int i=0; i<statoDelGiocoTest.getCorsie().size();i++){
