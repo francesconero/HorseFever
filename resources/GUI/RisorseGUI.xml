@@ -3,57 +3,83 @@
 <ROOT>
 	<Risorsa
 		percorso="resources/immagini/FamilyGame/Tabellone.jpg"
-		nome="Tabellone" /><Risorsa
+		nome="Tabellone" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaBianca.jpg"
-		nome="SegnalinoQuotazioneBianco" /><Risorsa
+		nome="SegnalinoQuotazioneBianco" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaBlu.jpg"
-		nome="SegnalinoQuotazioneBlu" /><Risorsa
+		nome="SegnalinoQuotazioneBlu" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaGialla.jpg"
-		nome="SegnalinoQuotazioneGiallo" /><Risorsa
+		nome="SegnalinoQuotazioneGiallo" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaNera.jpg"
-		nome="SegnalinoQuotazioneNero" /><Risorsa
+		nome="SegnalinoQuotazioneNero" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaRossa.jpg"
-		nome="SegnalinoQuotazioneRosso" /><Risorsa
+		nome="SegnalinoQuotazioneRosso" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniQuotazioniScuderie/SegnalinoQuotazioniScuderiaVerde.jpg"
-		nome="SegnalinoQuotazioneVerde" /><Risorsa
+		nome="SegnalinoQuotazioneVerde" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/AzioniNegative/retro.jpg"
-		nome="RetroCarteAzione" /><Risorsa
+		nome="RetroCarteAzione" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/PiazzataBianco.jpg"
-		nome="PiazzataBianco" /><Risorsa
+		nome="PiazzataBianco" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/PiazzataBlu.jpg"
-		nome="PiazzataBlu" /><Risorsa
+		nome="PiazzataBlu" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/PiazzataGiallo.jpg"
-		nome="PiazzataGiallo" /><Risorsa
+		nome="PiazzataGiallo" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/PiazzataNero.jpg"
-		nome="PiazzataNero" /><Risorsa
+		nome="PiazzataNero" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/PiazzataRosso.jpg"
-		nome="PiazzataRosso" /><Risorsa
+		nome="PiazzataRosso" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/PiazzataVerde.jpg"
-		nome="PiazzataVerde" /><Risorsa
+		nome="PiazzataVerde" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/VincenteBianco.jpg"
-		nome="VincenteBianco" /><Risorsa
+		nome="VincenteBianco" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/VincenteBlu.jpg"
-		nome="VincenteBlu" ></Risorsa>
+		nome="VincenteBlu"></Risorsa>
 	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/VincenteGiallo.jpg"
-		nome="VincenteGiallo" /><Risorsa
+		nome="VincenteGiallo" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/VincenteNero.jpg"
-		nome="VincenteNero" /><Risorsa
+		nome="VincenteNero" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/VincenteRosso.jpg"
 		nome="VincenteRosso" />
 	<Risorsa
 		percorso="resources/immagini/FamilyGame/SegnaliniScommessa/VincenteVerde.jpg"
-		nome="VincenteVerde" /><Risorsa
+		nome="VincenteVerde" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/IconeScuderie/horseFever-55.jpg"
-		nome="BIANCO" /><Risorsa
+		nome="BIANCO" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/IconeScuderie/horseFever-56.jpg"
-		nome="BLU" ></Risorsa>
+		nome="BLU"></Risorsa>
 	<Risorsa
 		percorso="resources/immagini/FamilyGame/IconeScuderie/horseFever-57.jpg"
-		nome="GIALLO" /><Risorsa
+		nome="GIALLO" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/IconeScuderie/horseFever-58.jpg"
-		nome="NERO" /><Risorsa
+		nome="NERO" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/IconeScuderie/horseFever-59.jpg"
-		nome="ROSSO" /><Risorsa
+		nome="ROSSO" />
+	<Risorsa
 		percorso="resources/immagini/FamilyGame/IconeScuderie/horseFever-60.jpg"
-		nome="VERDE" /></ROOT>
+		nome="VERDE" />
+	<Risorsa
+		percorso="resources/immagini/box_front_HF_640.jpg"
+		nome="Cover" />
+</ROOT>

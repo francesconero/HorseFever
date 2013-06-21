@@ -4,6 +4,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.grafica.ControlloreGrafica;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ServerMain;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight.ImagePanel;
 
 import java.awt.Component;
@@ -70,7 +71,7 @@ public class LauncherFrame implements ActionListener, WindowListener {
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel);
 
-		ImagePanel imagePanel = new ImagePanel("resources/immagini/box_front_HF_640.jpg");
+		ImagePanel imagePanel = new ImagePanel(Risorse.getInstance().getImmagine("Cover"));
 		panel.add(imagePanel);
 
 		JPanel panel_1 = new JPanel();
