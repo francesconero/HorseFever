@@ -1,6 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.MossaCorsaVisitor;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.grafica.ControlloreGrafica;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGiocoView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Classifica;
@@ -29,12 +30,12 @@ import javax.swing.Timer;
 public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChangeListener{
 	
 	private StatoDelGiocoView ultimoAggiornamento;
-	private FramePrincipaleObserver osservatore;
+	private ControlloreGrafica osservatore;
 	private TabellonePanel tabellonePanel;
 	private InformazioniDiGiocoModel informazioniDiGioco;
 	private Timer delayTimer;
 	
-	public ControlloreCorsaGrafica(StatoDelGiocoView ultimoAggiornamento, FramePrincipaleObserver observer, TabellonePanel tabellonePanel, InformazioniDiGiocoModel informazioniDiGioco){
+	public ControlloreCorsaGrafica(StatoDelGiocoView ultimoAggiornamento, ControlloreGrafica observer, TabellonePanel tabellonePanel, InformazioniDiGiocoModel informazioniDiGioco){
 		this.ultimoAggiornamento = ultimoAggiornamento;
 		this.osservatore = observer;
 		this.tabellonePanel = tabellonePanel;
@@ -43,7 +44,7 @@ public class ControlloreCorsaGrafica implements MossaCorsaVisitor, PropertyChang
 	}
 
 	public void controlla() {
-		delayTimer = new Timer(1500, new ActionListener() {			
+		delayTimer = new Timer(100, new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
 				prossimaMossa();
 			}

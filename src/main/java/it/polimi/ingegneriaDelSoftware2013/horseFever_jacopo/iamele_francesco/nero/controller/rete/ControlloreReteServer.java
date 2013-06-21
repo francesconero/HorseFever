@@ -3,6 +3,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenti;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.DisconnessioneAnomalaException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.GestoreEccezioniServer;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.RicezioneFallitaException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
@@ -17,7 +18,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,6 +65,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	private final AtomicInteger counter = new AtomicInteger(0);
 	private final ReentrantLock lock = new ReentrantLock();
 	private final Condition threadsFinished = lock.newCondition();
+	private final List<Socket> sockets = new LinkedList<Socket>();
+	private final List<ServerSocket> serverSockets = new LinkedList<ServerSocket>();
+	private AtomicBoolean serverRunning = new AtomicBoolean(true);
 	/**
 	 * Inizializza un controllore network lato server, caricando varie
 	 * impostazioni da file. NON mette in ascolto il server. Per quello vedi
@@ -93,6 +96,7 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	public void accettaUtenti(List<Giocatore> giocatori) {
 		System.out.println("Attendo " + giocatori.size() + " giocatori...");
 
+		heartbeatThread.setUncaughtExceptionHandler(GestoreEccezioniServer.getInstance());
 		heartbeatThread.start();
 
 		for (Giocatore g : giocatori) {
@@ -151,7 +155,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 
 		try {
 			accettore = new ServerSocket(portaServer);
+			serverSockets.add(accettore);
 			heartbeatAccettore = new ServerSocket(portaHeartbeat);
+			serverSockets.add(heartbeatAccettore);
 			accettore.setSoTimeout(serverTimeout);
 			heartbeatAccettore.setSoTimeout(serverTimeout);
 		} catch (IOException e) {
@@ -164,12 +170,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		try {
 			Socket accettato = accettore.accept();
 			Socket heartbeatAccettato = heartbeatAccettore.accept();
-			try {
-				heartbeatAccettato.setSoTimeout(heartbeatTimeout);
-			} catch (SocketException e) {
-				throw new AttesaUtentiFallitaException(
-						"Impossibile settare il timeout sul socket", e);
-			}
+			sockets.add(accettato);
+			sockets.add(heartbeatAccettato);
+			heartbeatAccettato.setSoTimeout(heartbeatTimeout);
 			holder.mainSocket = accettato;
 			holder.heartbeatSocket = heartbeatAccettato;
 			counter.incrementAndGet();
@@ -306,10 +309,6 @@ public class ControlloreReteServer implements ControlloreUtenti {
 		}
 	}
 
-	public void stop() {
-		heartbeatThread.fermaHeartbeat();
-	}
-
 	private class SocketHolder {
 		private Socket mainSocket;
 		private Socket heartbeatSocket;
@@ -366,10 +365,6 @@ public class ControlloreReteServer implements ControlloreUtenti {
 
 		}
 
-		public synchronized void fermaHeartbeat() {
-			esegui.set(false);
-		}
-
 		@Override
 		public void run() {
 
@@ -415,7 +410,9 @@ public class ControlloreReteServer implements ControlloreUtenti {
 					e.printStackTrace();
 				}
 			}
+			clientsExecutor.shutdownNow();
 			System.out.println("Heartbeat responder chiuso");
+			fine();
 		}
 	}
 
@@ -424,18 +421,42 @@ public class ControlloreReteServer implements ControlloreUtenti {
 	}
 
 	public void fine() {
-		heartbeatThread.esegui.set(false);
-		for(Giocatore g : clients.keySet()){
-			try {
-				clients.get(g).close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+		if(getServerRunning().compareAndSet(true, false)){
+			heartbeatThread.esegui.set(false);
+			for(ServerSocket s : serverSockets){
+				try {
+					s.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			for(Socket s : sockets){
+				try {
+					s.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			if(!Thread.currentThread().equals(heartbeatThread)){
+				System.out.println("Aspetto che termini l'heartbeat");
+				try {
+					heartbeatThread.join();
+					System.out.println("Heartbeat terminato");
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			} else {
+				System.out.println("L'heartbeat thread chiude il server");
 			}
 		}
 	}
 
 	public void avverti(Giocatore giocatore, String string) {
 		ControlloreRete.inviaOggettoConRisposta(string, clients.get(giocatore));
+	}
+
+	public AtomicBoolean getServerRunning() {
+		return serverRunning;
 	}
 
 }

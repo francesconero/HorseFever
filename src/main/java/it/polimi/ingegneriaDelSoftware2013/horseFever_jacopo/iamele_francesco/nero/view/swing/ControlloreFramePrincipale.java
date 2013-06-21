@@ -1,7 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing;
 
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.grafica.GestoreEccezioniGrafico;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.grafica.ControlloreGrafica;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
@@ -10,7 +10,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.ViewCreator;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.FamilyView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.containers.AttivitaPanel;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.containers.GiocatoriPanel;
@@ -53,7 +52,7 @@ import javax.swing.border.MatteBorder;
 public class ControlloreFramePrincipale extends WindowAdapter implements FamilyView, PropertyChangeListener {
 
 	private JFrame frmHorseFever;
-	private FramePrincipaleObserver osservatore;
+	private ControlloreGrafica osservatore;
 	private GiocatoriPanel giocatoriPanel;
 	private TabellonePanel tabellonePanel;
 	private AttivitaPanel attivitaPanel;
@@ -94,7 +93,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		frmHorseFever = new JFrame();
 		frmHorseFever.setTitle("Horse Fever");
 		frmHorseFever.setBounds(100, 100, 714, 471);
-		frmHorseFever.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frmHorseFever.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmHorseFever.getContentPane().setLayout(new BorderLayout());
 		frmHorseFever.addWindowStateListener(this);
 		frmHorseFever.addWindowListener(this);
@@ -185,7 +184,11 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		ed.getTextField().setEditable(false);
 		frmHorseFever.pack();
 	}
-
+	
+	/**
+	 * Aggiorna la view con un nuovo stato del gioco. Questo metodo blocca fintanto che la grafica ha fatto l'update. NON chiamare dall'EDT.
+	 * @param view il nuovo stato del gioco (view) con cui aggiornare la grafica.
+	 */
 	public void aggiorna(final StatoDelGiocoView view) {	
 		ultimoAggiornamento = view;
 		faseGioco = view.getTipoFaseGiocoFamily();
@@ -227,7 +230,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 					public void run() {
 						informazioniDiGioco.addInformazione("Siamo nella prima fase scommesse del turno: "+ultimoAggiornamento.getNumTurno());
 						if(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ORARIA)){
-							informazioniDiGioco.addInformazione("E' il tuo turno di scommettere! Seleziona una scuderia e scommetti dal pannello attività.");
+							informazioniDiGioco.addInformazione("E' il tuo turno di scommettere! Seleziona una scuderia e scommetti dal pannello attivita'.");
 							aggiornaViewGenerica();		
 						} else {							
 							informazioniDiGioco.addInformazione("Attendi che "+view.getGiocatoreDiTurno().getNomeUtente()+" scommetta!");
@@ -242,7 +245,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 					public void run() {
 						informazioniDiGioco.addInformazione("E' ora di truccare la corsa!");
 						if(mioTurno(ultimoAggiornamento, TipoFaseGiocoFamily.F_S_ALTERAZIONE_GARA)){
-							informazioniDiGioco.addInformazione("E' il tuo turno di truccare la corsa! Seleziona una scuderia e trucca la corsa dal pannello attività.");
+							informazioniDiGioco.addInformazione("E' il tuo turno di truccare la corsa! Seleziona una scuderia e trucca la corsa dal pannello attivita'.");
 							aggiornaViewGenerica();		
 						} else {							
 							informazioniDiGioco.addInformazione("Attendi che "+view.getGiocatoreDiTurno().getNomeUtente()+" trucchi la corsa!");
@@ -370,7 +373,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		return out;
 	}
 
-	public void settaObserver(FramePrincipaleObserver osservatore) {
+	public void settaObserver(ControlloreGrafica osservatore) {
 		this.osservatore = osservatore;
 	}
 
@@ -389,13 +392,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 			public void run() {
 				frmHorseFever.dispose();			
 			}
-		});
-	}
-
-	public static void main(String[] args){
-		Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioniGrafico.getInstance());
-		ControlloreFramePrincipale fP = new ControlloreFramePrincipale();
-		fP.aggiorna(ViewCreator.creaStatoDelGiocoViewTruccamento());
+		});		
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -468,7 +465,7 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
 				public void run() {
 					if(accettata){
-						JOptionPane.showMessageDialog(frmHorseFever, "La tua scommessa è stata accettata!");
+						JOptionPane.showMessageDialog(frmHorseFever, "La tua scommessa e' stata accettata!");
 						MetodiDiSupporto.nuovoThread(new Runnable() {			
 							public void run() {
 								osservatore.prossimoAggiornamento();

@@ -12,8 +12,10 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,12 +23,15 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class LauncherFrame implements ActionListener{
+public class LauncherFrame implements ActionListener, WindowListener {
 
 	private JFrame frame;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
+	private PrintStream stdout = System.out;
+	private PrintStream stderr = System.err;
+	private InputStream stdin = System.in;
 	protected ServerMain server;
 
 	/**
@@ -109,7 +114,7 @@ public class LauncherFrame implements ActionListener{
 			MetodiDiSupporto.nuovoThread(new Runnable() {					
 				public void run() {
 					disposeFrame();
-					GiocoOffline gO = new GiocoOffline();
+					GiocoOffline gO = new GiocoOffline(LauncherFrame.this);
 					gO.inizia();
 				}
 			});
@@ -135,7 +140,9 @@ public class LauncherFrame implements ActionListener{
 				private int numeroGiocatori;
 
 				public void run() {
+					disposeFrame();
 					server = new ServerMain();
+					server.addListener(LauncherFrame.this);
 					server.start(new String[]{Integer.toString(numeroGiocatori)});
 				}
 
@@ -145,18 +152,6 @@ public class LauncherFrame implements ActionListener{
 				}
 			}.initialize(numeroGiocatori));
 
-			MetodiDiSupporto.nuovoThread(new Runnable() {
-
-				public void run() {
-					disposeFrame();
-					try {
-						ControlloreGrafica cG = new ControlloreGrafica();
-						cG.show(InetAddress.getLocalHost());
-					} catch (UnknownHostException e) {
-						throw new RuntimeException(e);
-					}
-				}
-			});
 		}
 
 		if(e.getSource().equals(btnNewButton_2)){
@@ -164,9 +159,55 @@ public class LauncherFrame implements ActionListener{
 				public void run() {
 					disposeFrame();
 					ControlloreGrafica cG = new ControlloreGrafica();
+					cG.addListener(LauncherFrame.this);
 					cG.show();
 				}
 			});
 		}
+	}
+
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowClosed(WindowEvent arg0) {
+		System.setOut(stdout);
+		System.setIn(stdin);
+		System.setErr(stderr);
+		LauncherFrame.main(null);
+	}
+
+	public void windowClosing(WindowEvent arg0) {
+		System.setOut(stdout);
+		System.setIn(stdin);
+		System.setErr(stderr);
+	}
+
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void avvertiChiusura() {
+		System.setOut(stdout);
+		System.setIn(stdin);
+		System.setErr(stderr);
+		LauncherFrame.main(null);
 	}
 }

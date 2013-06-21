@@ -1,9 +1,7 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.lightweight;
 
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.FormatoFileErratoException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.EffettoAzione;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.JFrameTester;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.customLayouts.AspectRatioLayout;
 
@@ -13,7 +11,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,7 +21,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class CartaAzionePanel extends JPanel {
+public final class CartaAzionePanel extends JPanel {
 
 	private JLabel lblNewLabel;
 	private ImagePanel imagePanel;
@@ -136,11 +133,6 @@ public class CartaAzionePanel extends JPanel {
 		}
 		revalidate();
 		repaint();
-	}
-
-	public static void main(String[] args) throws FormatoFileErratoException, IOException{
-		CartaAzione cA = Risorse.getInstance().getCartaAzione("Globus Obscuros");
-		JFrameTester.test(new CartaAzionePanel(cA));
 	}
 
 	protected ImagePanel getImagePanel() {

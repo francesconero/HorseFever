@@ -13,7 +13,7 @@ import java.awt.geom.Point2D;
 
 import javax.swing.JPanel;
 
-public class SegnalinoCavallo extends JPanel implements AnimatableComponent{
+public final class SegnalinoCavallo extends JPanel implements AnimatableComponent{
 
 	private Animatable animatable = new Animatable();
 	private int border = 1;

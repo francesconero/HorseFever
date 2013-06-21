@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,16 +18,16 @@ import java.util.TreeSet;
 public class AiutanteConsole {
 
 	private final BufferedReader in;
-	private final PrintWriter out;
+	private final PrintStream outStream;
 	
-	public AiutanteConsole(InputStream in, PrintWriter gC){
+	public AiutanteConsole(InputStream in, PrintStream gC){
 		this.in = new BufferedReader(
 				new InputStreamReader(in));
-		this.out = gC;
+		this.outStream = gC;
 	}
 
 	public String chiediStringa(String domanda) {
-		out.println(domanda);
+		outStream.println(domanda);
 		return leggiStringa();
 	}
 
@@ -35,12 +35,12 @@ public class AiutanteConsole {
 		boolean read = false;
 		int risultato = 0;
 		do {
-			out.println(domanda);
+			outStream.println(domanda);
 			try {
 				risultato = leggiIntero();
 				read = true;
 			} catch (NumberFormatException e) {
-				out.println("Devi inserire un intero!");
+				outStream.println("Devi inserire un intero!");
 			}
 		} while (!read);
 		return risultato;
@@ -48,7 +48,9 @@ public class AiutanteConsole {
 
 	private int leggiIntero() throws NumberFormatException {
 		try {
-			return Integer.parseInt(in.readLine());
+			String read = in.readLine();
+			assert(read!=null);
+			return Integer.parseInt(read);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -80,7 +82,7 @@ public class AiutanteConsole {
 			if (risultato != null) {
 				read = true;
 			} else {
-				out.println("Non hai inserito nessuno dei valori possibili!");
+				outStream.println("Non hai inserito nessuno dei valori possibili!");
 			}
 		} while (!read);
 		return risultato;
@@ -110,24 +112,24 @@ public class AiutanteConsole {
 
 	public <T> T chiediValoreLista(String domanda,
 			List<T> lista) {
-		out.println(domanda);
+		outStream.println(domanda);
 		Set<Integer> valoriPossibili = new TreeSet<Integer>();
 		for(int i = 0; i < lista.size(); i++ ){
-			out.println(".:::"+i+":::.");
-			out.println(lista.get(i));
+			outStream.println(".:::"+i+":::.");
+			outStream.println(lista.get(i));
 			valoriPossibili.add(i);
 		}
 		
-		boolean OK = false;
+		boolean ok = false;
 		int risp;
 		do{
 			risp = chiediIntero("Inserisci numero corrispondente all'oggetto da selezionare:");
 			if(valoriPossibili.contains(risp)){
-				OK = true;
+				ok = true;
 			} else {
-				out.println("Non hai inserito un numero valido!");
+				outStream.println("Non hai inserito un numero valido!");
 			}
-		}while(!OK);
+		}while(!ok);
 		
 		return lista.get(risp);
 	}
@@ -141,17 +143,17 @@ public class AiutanteConsole {
 	}
 	
 	public void aggiornaCorsie(List<Integer> corsie, List<Colore> colori) {
-		out.print("|");
+		outStream.print("|");
 		int j = 0;
 		for(Integer posizioneScuderia : corsie){
 			String abbrScud = colori.get(j).name().substring(0,3); 
-			out.print("="+abbrScud+"=");
+			outStream.print("="+abbrScud+"=");
 			j++;
 		};
-		out.print("|");
-		out.println();
+		outStream.print("|");
+		outStream.println();
 		for(int i = 0; i < 19; i++){
-			out.print("|");
+			outStream.print("|");
 			for(Integer posizioneScuderia : corsie){
 				String cavalloPresente = "___";
 				if(i==0){
@@ -164,22 +166,22 @@ public class AiutanteConsole {
 					cavalloPresente = ":H:";
 				}
 				if(i==12){
-					out.print("#"+cavalloPresente+"#");
+					outStream.print("#"+cavalloPresente+"#");
 				} else if(i==0){					
-					out.print("*"+cavalloPresente+"*");
+					outStream.print("*"+cavalloPresente+"*");
 				} else {
-					out.print("|"+cavalloPresente+"|");
+					outStream.print("|"+cavalloPresente+"|");
 				}
 			}
-			out.print("|");
-			out.println();
+			outStream.print("|");
+			outStream.println();
 		}
-		out.print("|");
+		outStream.print("|");
 		for(Integer posizioneScuderia : corsie){
-			out.print("=====");
+			outStream.print("=====");
 		};
-		out.print("|");
-		out.println();
+		outStream.print("|");
+		outStream.println();
 		
 	}
 	

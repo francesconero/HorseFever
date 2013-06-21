@@ -1,6 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception;
 
-public class CarteFiniteException extends Exception {
+public class CarteFiniteException extends RuntimeException {
 
 	/**
 	 * 

@@ -19,12 +19,10 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -56,7 +54,7 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 	private int initialSize = 30;
 	private ScuderiaHighlighter scuderiaSelezionata; 
 	private SegnalinoTurno segnalinoTurno;
-	private MouseAdapter scuderiaMouseAdapter = new MouseAdapter() {
+	transient private MouseAdapter scuderiaMouseAdapter = new MouseAdapter() {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -67,7 +65,7 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 	};
 	private ImagePanel imagePanel;
 	private int animationDelay = 15;
-	public Map<ActionListener, Timer> timers = new HashMap<ActionListener, Timer>();
+	private Map<ActionListener, Timer> timers = new HashMap<ActionListener, Timer>();
 
 	/**
 	 * Create the panel.
@@ -234,45 +232,7 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 		}
 		firePropertyChange("SELEZIONATO", null, scuderiaSelezionata.getColore());
 	}
-
-
-
-	private static Map<Colore, Integer> creaArrivi() {
-		Map<Colore, Integer> out = new HashMap<Colore, Integer>();
-		List<Integer> poolPosition = new LinkedList<Integer>();
-		for(int i = 0; i<6; i++){
-			poolPosition.add(i+1);
-		}
-		Collections.shuffle(poolPosition);
-		for(Colore c : Colore.values()){
-			if(Math.random()>0.5d){
-				out.put(c, poolPosition.remove(0));
-			}
-		}
-		return out;
-	}
-
-	private static Map<Colore, Integer> creaQuotatzioni() {
-		Map<Colore, Integer> out = new HashMap<Colore, Integer>();
-		out.put(Colore.NERO, r(2,7));
-		out.put(Colore.BLU, r(2,7));
-		out.put(Colore.VERDE, r(2,7));
-		out.put(Colore.ROSSO, r(2,7));
-		out.put(Colore.GIALLO, r(2,7));
-		out.put(Colore.BIANCO, r(2,7));
-		return out;
-	}
-
-	private static Integer r(int min, int max) {
-		int out = new Random().nextInt(max-min+1);
-		out += min;
-		return out;
-	}
-
-	private static int r() {
-		return (int) (Math.random()*19);
-	}
-
+	
 	public void aggiornaClassifica(final List<Colore> classifica) {
 		for(int i = 0; i < classifica.size(); i++){
 			for(SegnalinoCavallo sC: segnalini){
@@ -329,9 +289,9 @@ public class TabellonePanel extends JPanel implements ComponentListener {
 		timer.start();
 	}
 
-	private class AnimationActionListener implements ActionListener {
-		final List<? extends AnimatableComponent> animatableComponents;
-		private final long stepTime = 16666666;
+	private final class AnimationActionListener implements ActionListener {
+		private final List<? extends AnimatableComponent> animatableComponents;
+		private final static long stepTime = 16666666;
 		private long lastStep = System.nanoTime() - stepTime;
 		private long timePool = 0;
 		private boolean finished = false;

@@ -2,9 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenti;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.GestoreEccezioni;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
@@ -18,15 +16,17 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.ConsoleView;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.LauncherFrame;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.other.GraphicalConsole;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JFrame;
 
 public class GiocoOffline implements ControlloreUtenti, WindowListener{
 
@@ -35,34 +35,20 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 	private final ConsoleView view;
 	private Map<Giocatore, String> nomi = new LinkedHashMap<Giocatore, String>();
 	private StatoDelGioco ultimoAggiornamento;
-	
-	public GiocoOffline(){
-		gC = new GraphicalConsole();
-		gC.show();
+
+	public GiocoOffline(LauncherFrame lF){
+		Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioni.getInstance());
+		gC = new GraphicalConsole(true);
 		gC.getFrame().addWindowListener(this);
+		gC.getFrame().addWindowListener(lF);
+		gC.show();
 		view = new ConsoleView(gC.getInputStream(), gC);
 		int numeroGiocatori = view.chiediNumeroGiocatori();
-		try {
-			gioco = new ControlloreFasiGioco(numeroGiocatori, new Mazziere(), this);
-		} catch (NumErratoGiocatoriException e) {
-			throw new RuntimeException(e);
-		} catch (CarteFiniteException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		gioco = new ControlloreFasiGioco(numeroGiocatori, new Mazziere(), this);
 	}
-	
+
 	public void inizia(){
-		try {
-			gioco.inizia();
-		} catch (AttesaUtentiFallitaException e) {
-			throw new RuntimeException(e);
-		} catch (CarteFiniteException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		gioco.inizia();
 	}
 
 	public void accettaUtenti(List<Giocatore> giocatori) {
@@ -140,7 +126,7 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 					}
 				}
 				MetodiDiSupporto.dormi(2000);
-				
+
 				break;
 			case F_S_ALTERAZIONE_GARA:
 				break;
@@ -160,7 +146,7 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 				break;
 			default:
 				break;
-			
+
 		}
 	}
 
@@ -180,7 +166,7 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco,
 			List<MossaCorsa> mosseCorsa) {
 		ControlloreConsoleCorsa cCC = new ControlloreConsoleCorsa(statoDelGioco, view, nomi);
-		
+
 		for(MossaCorsa mC: mosseCorsa){
 			mC.accept(cCC);
 			view.scrivi("");
@@ -190,7 +176,7 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 	}
 
 	public void conferma(Giocatore giocatore) {
@@ -213,50 +199,55 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 	public void giocatoreEliminato(Giocatore giocatore) {
 		view.scrivi("Mi dispiace "+nomi.get(giocatore)+", ma sei stato eliminato!");
 	}
-	
+
 	public static void main(String[] args){
-		GiocoOffline gO = new GiocoOffline();
+		GiocoOffline gO = new GiocoOffline(null);
 		gO.inizia();
 	}
 
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowClosed(WindowEvent arg0) {
-	}
-
-	public void windowClosing(WindowEvent arg0) {
-		System.exit(0);
-	}
-
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void fine() {
-		// TODO Auto-generated method stub
-		
+		((GestoreEccezioni)GestoreEccezioni.getInstance()).setChiusuraUtente(true);
+		gC.close();
 	}
 
 	public void avverti(Giocatore giocatore, String string) {
 		view.scrivi(nomi.get(giocatore)+" "+string);
+	}
+
+	public JFrame getFrame() {
+		return gC.getFrame();
+	}
+
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowClosed(WindowEvent e) {
+		fine();
+	}
+
+	public void windowClosing(WindowEvent e) {
+		
+	}
+
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

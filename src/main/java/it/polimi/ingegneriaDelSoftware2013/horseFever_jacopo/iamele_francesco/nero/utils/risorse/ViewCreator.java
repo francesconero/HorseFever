@@ -2,8 +2,6 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco.ControlloreFasiGioco;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
@@ -18,7 +16,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.Partenza;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterministico;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,6 +25,8 @@ import java.util.Map;
 
 public class ViewCreator {
 
+	private ViewCreator(){}
+	
 	public static StatoDelGiocoView creaStatoDelGiocoViewScommessa(){
 		StatoDelGioco statoDelGioco = creaStatoDelGiocoScommessa();		
 		return createView(statoDelGioco);
@@ -78,15 +77,7 @@ public class ViewCreator {
 
 	private static StatoDelGioco creaStatoDelGiocoIniziale() {
 		ControlloreFasiGioco cFS = null;		
-		try {
-			cFS = new ControlloreFasiGioco(2, new MazziereDeterministico(0), new ControlloreReteServer());
-		} catch (NumErratoGiocatoriException e) {
-			throw new RuntimeException(e);
-		} catch (CarteFiniteException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		cFS = new ControlloreFasiGioco(2, new MazziereDeterministico(0), new ControlloreReteServer());
 		return cFS.getStatoDelGioco();		
 	}	
 
@@ -103,16 +94,11 @@ public class ViewCreator {
 	private static StatoDelGioco creaStatoDelGiocoDistribuzioneCarte() {
 		StatoDelGioco statoDelGioco = creaStatoDelGiocoPreparazione();
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.DISTRIBUZIONE_CARTE);
-		try {
-			for (Giocatore g: statoDelGioco.getGiocatori()){
-				g.setCarteAzione(statoDelGioco.getMazziere().popCartaAzione());
-			}
-			for (Giocatore g: statoDelGioco.getGiocatori()){
-				g.setCarteAzione(statoDelGioco.getMazziere().popCartaAzione());
-			}
-		} catch (CarteFiniteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (Giocatore g: statoDelGioco.getGiocatori()){
+			g.setCarteAzione(statoDelGioco.getMazziere().popCartaAzione());
+		}
+		for (Giocatore g: statoDelGioco.getGiocatori()){
+			g.setCarteAzione(statoDelGioco.getMazziere().popCartaAzione());
 		}
 		return statoDelGioco;
 	}

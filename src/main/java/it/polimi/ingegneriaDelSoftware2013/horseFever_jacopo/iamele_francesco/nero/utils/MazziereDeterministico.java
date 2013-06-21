@@ -4,7 +4,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +13,7 @@ public class MazziereDeterministico extends Mazziere {
 
 	private Random random;
 
-	public MazziereDeterministico(long random) throws IOException {
+	public MazziereDeterministico(long random) {
 		super();
 		this.random = new Random(random);
 	}

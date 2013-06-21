@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteServer;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.StatoDelGioco;
@@ -14,7 +13,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.TipoAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterministico;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class ControlloreOperativoTest {
 	private List<CartaAzione> carteAzione= new ArrayList<CartaAzione>();
 	private long randomSeed = 27;
 	
-	private void inizializzaVariabili()throws NumErratoGiocatoriException, CarteFiniteException, IOException{
+	private void inizializzaVariabili() {
 		controlloreFasiGiocoTest=new ControlloreFasiGioco(5, new MazziereDeterministico(randomSeed), new ControlloreReteServer());
 		statoDelGiocoTest=controlloreFasiGiocoTest.getStatoDelGioco();
 		mazziere=controlloreFasiGiocoTest.getMazziere();
@@ -136,7 +134,7 @@ public class ControlloreOperativoTest {
 	}
 	
 	@Test
-	public void testPartenzaECorsa() throws NumErratoGiocatoriException, CarteFiniteException, IOException  {		
+	public void testPartenzaECorsa()  {		
 		System.out.println("####��testPartenzaECorsa��####");
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzioneEliminaCarte.get(0));
 		statoDelGiocoTest.getCorsie().get(0).addCartaAzione(carteAzionePartenza.get(0));

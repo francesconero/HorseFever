@@ -9,7 +9,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 
 import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,25 +21,25 @@ public class ConsoleView implements View{
 
 	private final AiutanteConsole aiutanteConsole;
 	private final InputStream in;
-	private final PrintWriter pW;
+	private final PrintStream pW;
 
-	public ConsoleView(InputStream in, PrintWriter pW){
+	public ConsoleView(InputStream in, PrintStream pW){
 		this.in = in;
 		this.pW = pW;
 		this.aiutanteConsole = new AiutanteConsole(in, pW);
 	}
 
 	public int chiediNumeroGiocatori() {
-		boolean OK = false;
+		boolean ok = false;
 		int risp;
 		do{
 			risp = aiutanteConsole.chiediIntero("In quanti giocate? [2-6]");
 			if(risp<=6&&risp>=2){
-				OK = true;
+				ok = true;
 			} else {
 				scrivi("Devi inserire un numero tra 2 e 6!");
 			}
-		}while(!OK);
+		}while(!ok);
 			return risp;
 	}
 
@@ -156,7 +156,7 @@ public class ConsoleView implements View{
 	}
 
 	public static void main(String[] args) {
-		View cV= new ConsoleView(System.in, new PrintWriter(System.out));
+		View cV= new ConsoleView(System.in, new PrintStream(System.out));
 		List<Colore> scuderieCasuali = new LinkedList<Colore>();
 		scuderieCasuali.add(Colore.BIANCO);
 		scuderieCasuali.add(Colore.NERO);

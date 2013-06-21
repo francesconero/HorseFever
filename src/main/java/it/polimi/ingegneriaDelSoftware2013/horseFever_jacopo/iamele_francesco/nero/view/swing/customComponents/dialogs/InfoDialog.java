@@ -41,7 +41,7 @@ public class InfoDialog extends WindowAdapter {
 			
 			public void run() {
 				main = new JFrame("Inserisci il tuo nome e l'indirizzo ip della macchina che hosta la partita");
-				main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				main.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				main.setResizable(false);
 				
 				JLabel lblInserisciIlTuo = new JLabel("Nome giocatore:");

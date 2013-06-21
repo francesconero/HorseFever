@@ -20,7 +20,6 @@ public class AspectRatioLayout implements LayoutManager {
 		y += insets.bottom;
 
 		Component onlyChild = parent.getComponent(0);
-		Dimension d = onlyChild.getPreferredSize();
 		x = (float) (parent.getSize().getWidth() - x);
 		y = (float) (parent.getSize().getHeight() - y);
 

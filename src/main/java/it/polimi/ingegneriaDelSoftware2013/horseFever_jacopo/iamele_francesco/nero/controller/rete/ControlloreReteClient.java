@@ -192,6 +192,11 @@ public class ControlloreReteClient implements Utente {
 
 		public void ferma() {
 			esegui.set(false);
+			try {
+				heartbeatThread.join();
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		
 		public void run() {
@@ -212,13 +217,15 @@ public class ControlloreReteClient implements Utente {
 					throw new DisconnessioneAnomalaException(e, serverSocket);
 				}
 			}
+			System.out.println("Chiusura heartbeat...");
 			Map.Entry<Long, String> daInviare = new AbstractMap.SimpleEntry<Long, String>(ID, "BYE!");
 			ControlloreRete.inviaOggettoConRisposta(daInviare, heartbeatSocket);
+			try {
+				heartbeatSocket.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
 		}
-	}
-
-	public void fine() {
-		heartbeatThread.ferma();
 	}
 
 	public boolean risolviConflitto(List<Colore> conflittoRisolto) {
@@ -227,7 +234,24 @@ public class ControlloreReteClient implements Utente {
 	}
 
 	public void scollegaGioco() {
-		fine();
+		if(heartbeatThread.esegui.compareAndSet(true, false)){
+			try {
+				serverSocket.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		if(!Thread.currentThread().equals(heartbeatThread)){
+			try {
+				System.out.println("Attendo che termini heartbeat");
+				heartbeatThread.join();
+				System.out.println("Heartbeat terminato");
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			System.out.println("Heartbeat thread ha chiuso il client");
+		}
 	}
 
 	public String riceviAvvertimento() {

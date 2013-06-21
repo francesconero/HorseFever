@@ -11,7 +11,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -110,7 +109,6 @@ public class GiocatorePanel extends JPanel {
 		imageHolder.setBorder(new EmptyBorder(10, 10, 10, 10));
 		imageHolder.setOpaque(false);
 		imagePanel = new ImagePanel(Risorse.getInstance().getImmagine(giocatore.getPersonaggio()));
-		FlowLayout flowLayout = (FlowLayout) imagePanel.getLayout();
 		imagePanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		imageHolder.setLayout(new AspectRatioLayout());
 		imageHolder.add(imagePanel);

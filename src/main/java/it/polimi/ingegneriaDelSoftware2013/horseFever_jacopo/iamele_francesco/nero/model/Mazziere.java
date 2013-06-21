@@ -5,7 +5,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaMovimento;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.risorse.Risorse;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -87,12 +86,12 @@ public class Mazziere {
 		this.carteMovimento.addAll(carteDaSettare);
 	}
 	
-	public void resetCarteMovimento() throws  IOException{
+	public void resetCarteMovimento() {
 		this.carteMovimento.clear();
 		this.carteMovimento.addAll(Risorse.getInstance().getCarteMovimento());		
 	}
 	
-	public void resetCarteAzione() throws  IOException{
+	public void resetCarteAzione() {
 		this.carteAzione.clear();
 		this.carteAzione.addAll(Risorse.getInstance().getCarteAzione());
 	}

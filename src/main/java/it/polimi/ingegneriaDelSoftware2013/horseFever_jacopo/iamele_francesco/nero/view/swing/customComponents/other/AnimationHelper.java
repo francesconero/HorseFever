@@ -19,8 +19,8 @@ public class AnimationHelper {
 			littleStep -= 2;
 			littleStep = (float) (d/2*(myPow(littleStep, 3) + 2));
 		}
-		float littleSizeStepX = step/(float)(frames/2);
-		float littleSizeStepY = step/(float)(frames/2);
+		float littleSizeStepX = step/(float)(frames/2f);
+		float littleSizeStepY = step/(float)(frames/2f);
 		if(littleSizeStepX < 1){
 			littleSizeStepX = (float) (sizeDX/2*(Math.pow(littleSizeStepX, 3)));							
 		} else {

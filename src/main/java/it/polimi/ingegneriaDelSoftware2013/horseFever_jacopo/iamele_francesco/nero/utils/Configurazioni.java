@@ -33,33 +33,20 @@ public final class Configurazioni {
 		try {
 			fis = new FileInputStream(file);			
 		} catch (FileNotFoundException e) {
-			if(e!=null){
-				e.printStackTrace();
-				System.exit(-1);
-			}
+			throw new RuntimeException(e);
 		}
 		
 		try {
 			properties.loadFromXML(fis);
 		} catch (IOException e) {
-			e.printStackTrace();
-			if(fis!=null){
-				try {
-					fis.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-					System.exit(-1);
-				}
-			}
-			System.exit(-1);
+			throw new RuntimeException(e);
 		}
 		
 		if(fis!=null){
 			try {
 				fis.close();
 			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(-1);
+				throw new RuntimeException(e);
 			}
 		}
 	}

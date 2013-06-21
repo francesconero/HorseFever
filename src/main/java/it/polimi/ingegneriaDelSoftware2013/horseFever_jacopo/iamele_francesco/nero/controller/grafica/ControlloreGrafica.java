@@ -2,6 +2,7 @@ package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.n
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.Utente;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.rete.ControlloreReteClient;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.GestoreEccezioniClient;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
@@ -11,28 +12,32 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.ControlloreFramePrincipale;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.FramePrincipaleObserver;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.ConnettendoFrame;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.InfoDialog;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.LauncherFrame;
 
 import java.net.InetAddress;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JOptionPane;
 
-public class ControlloreGrafica implements FramePrincipaleObserver {
+public class ControlloreGrafica {
 
 	private ControlloreFramePrincipale framePrincipale;
 	private Utente controlloreUtenteSingolo;
 	private StatoDelGiocoView ultimoStatoRicevuto;
+	private LauncherFrame listener;
+	private AtomicBoolean finita = new AtomicBoolean(false);
 
 	public ControlloreGrafica(){
-		Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioniGrafico.getInstance());
-		System.setProperty("sun.awt.exception.handler", GestoreEccezioniGrafico.class.getName());
+		Thread.setDefaultUncaughtExceptionHandler(GestoreEccezioniClient.getInstance());
+		System.setProperty("sun.awt.exception.handler", GestoreEccezioniClient.class.getName());
+		GestoreEccezioniClient.getInstance().setClient(this);
 	}
 
 	public void scommessa(Scommessa scommessa) {
-			framePrincipale.risultatoScommessa(controlloreUtenteSingolo.scommetti(scommessa));
+		framePrincipale.risultatoScommessa(controlloreUtenteSingolo.scommetti(scommessa));
 	}
 
 	public void giocaCartaAzione(CartaAzione carta, Scuderia scuderia) {
@@ -46,7 +51,7 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 	public static void main(String[] args){
 		new ControlloreGrafica();
 	}
-	
+
 	public void stessoAggiornamento() {
 		framePrincipale.aggiorna(ultimoStatoRicevuto);
 	}
@@ -62,11 +67,13 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 	}
 
 	public void finePartita() {
-		framePrincipale.chiudi();
-		controlloreUtenteSingolo.scollegaGioco();
-		System.exit(0);
+		if(finita.compareAndSet(false, true)){
+			framePrincipale.chiudi();
+			controlloreUtenteSingolo.scollegaGioco();
+			listener.avvertiChiusura();
+		}
 	}
-	
+
 	public void show(InetAddress localHost){
 		String nome = JOptionPane.showInputDialog("Inserisci il tuo nome:");
 		final ConnettendoFrame connettendo = new ConnettendoFrame(localHost.getHostAddress());
@@ -88,7 +95,7 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 		this.framePrincipale = new ControlloreFramePrincipale();
 		framePrincipale.settaObserver(this);
 		framePrincipale.show();
-		
+
 		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
 		framePrincipale.aggiorna(ultimoStatoRicevuto);
 	}
@@ -114,7 +121,7 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 		this.framePrincipale = new ControlloreFramePrincipale();
 		framePrincipale.settaObserver(this);
 		framePrincipale.show();
-		
+
 		ultimoStatoRicevuto = controlloreUtenteSingolo.riceviStatoDelGioco();
 		framePrincipale.aggiorna(ultimoStatoRicevuto);
 		if(ultimoStatoRicevuto.getTipoFaseGiocoFamily().equals(TipoFaseGiocoFamily.VITTORIA)){
@@ -126,5 +133,8 @@ public class ControlloreGrafica implements FramePrincipaleObserver {
 		String avvertimento = controlloreUtenteSingolo.riceviAvvertimento();
 		framePrincipale.avverti(avvertimento);
 	}
-	
+
+	public void addListener(LauncherFrame launcherFrame) {
+		this.listener  = launcherFrame;
+	}
 }

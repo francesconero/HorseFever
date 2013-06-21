@@ -567,7 +567,7 @@ public class ControlloreOperativo {
 	 * @return lo stato del gioco modificato
 	 * @throws CarteFiniteException
 	 */
-	public static StatoDelGioco partenza(StatoDelGioco statoDelGioco, Mazziere mazziere) throws CarteFiniteException{
+	public static StatoDelGioco partenza(StatoDelGioco statoDelGioco, Mazziere mazziere) {
 		mosseCorsa.clear();
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;
@@ -646,7 +646,7 @@ public class ControlloreOperativo {
 	 * @return lo stato del gioco modificato
 	 * @throws CarteFiniteException
 	 */
-	public static StatoDelGioco movimento(StatoDelGioco statoDelGioco, Mazziere mazziere, ControlloreUtenti controlloreUtenti) throws CarteFiniteException{
+	public static StatoDelGioco movimento(StatoDelGioco statoDelGioco, Mazziere mazziere, ControlloreUtenti controlloreUtenti) {
 		Map <Scuderia, Integer> mappaMovimento= new HashMap<Scuderia, Integer>();
 		CartaMovimento cartaMovimento=mazziere.popCartaMovimento();
 		int movimento=0;

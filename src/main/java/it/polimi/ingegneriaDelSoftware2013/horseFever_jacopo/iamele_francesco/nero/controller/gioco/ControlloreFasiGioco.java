@@ -1,8 +1,6 @@
 package it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.gioco;
 
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.controller.ControlloreUtenti;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.AttesaUtentiFallitaException;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.CarteFiniteException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.exception.NumErratoGiocatoriException;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
@@ -20,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Questa classe possiede la logica applicativa di HorseFever
  * Possiede metodi privati che rappresentano le fasi del gioco
@@ -35,6 +34,7 @@ public class ControlloreFasiGioco {
 	private Mazziere mazziere;
 	private ControlloreUtenti controlloreUtenti;
 	private final int numTurniTotali;
+	private AtomicBoolean chiuso = new AtomicBoolean(false);
 
 	public ControlloreUtenti getControlloreRete() {
 		return controlloreUtenti;
@@ -51,10 +51,8 @@ public class ControlloreFasiGioco {
 	 * @param numGiocatori
 	 * @param controlloreUtenti 
 	 * @throws NumErratoGiocatoriException viene lanciata se numGiocatori vale o 1 o piu' di 6
-	 * @throws CarteFiniteException
-	 * @throws IOException
 	 */
-	public ControlloreFasiGioco(int numGiocatori, Mazziere mazziere, ControlloreUtenti controlloreUtenti) throws NumErratoGiocatoriException, CarteFiniteException, IOException{
+	public ControlloreFasiGioco(int numGiocatori, Mazziere mazziere, ControlloreUtenti controlloreUtenti) {
 		this.mazziere = mazziere;
 		this.controlloreUtenti = controlloreUtenti;
 		int segnaliniScommesse;
@@ -99,7 +97,7 @@ public class ControlloreFasiGioco {
 		controlloreUtenti.aggiornaUtenti(statoDelGioco);
 	}
 
-	private void preparazione() throws CarteFiniteException{
+	private void preparazione() {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.PREPARAZIONE);
 		mazziere.mischiaCarteMovimento();
 		mazziere.mischiaCarteAzione();
@@ -111,7 +109,7 @@ public class ControlloreFasiGioco {
 	 * fino a quando non puo' farlo.
 	 * Se i suoi punti vittoria finiscono, viene eliminato.
 	 */
-	private void faseEliminazioneGiocatore(){
+	private void faseEliminazioneGiocatore() {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.ELIMINAZIONE_GIOCATORI);
 		List<Giocatore>giocatoriDaEliminare=new ArrayList<Giocatore>();
 		for(int i=0;i<statoDelGioco.getGiocatori().size();i++){
@@ -140,7 +138,7 @@ public class ControlloreFasiGioco {
 	}
 
 
-	private void faseDistribuzioneCarte() throws CarteFiniteException{
+	private void faseDistribuzioneCarte() {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.DISTRIBUZIONE_CARTE);
 		for (Giocatore g: statoDelGioco.getGiocatori()){
 			g.setCarteAzione(mazziere.popCartaAzione());
@@ -219,14 +217,14 @@ public class ControlloreFasiGioco {
 	 * I giocatori possono decidere di saltare questa fase ma se scommettono non possono scommettere sulla stessa scuderia
 	 * della scommessa precedente
 	 */
-	private void secondaFaseScommesse(){ 
+	private void secondaFaseScommesse() { 
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_S_ANTIORARIA);
 		for (int i=statoDelGioco.getGiocatori().size()-1;i>=0;i--){
 			statoDelGioco.setGiocatoreDiTurno(statoDelGioco.getGiocatori().get(i));
 			aggiornaTuttiIClient();
 			Scommessa scommessa=null;
 			scommessa=controlloreUtenti.riceviScommessa(statoDelGioco.getGiocatoreDiTurno());
-			
+
 			boolean passato = scommessa.getDanariScommessi()==0;
 			boolean valida=false;
 			String messaggioErrore = controllaScommessa(scommessa, statoDelGioco.getGiocatoreDiTurno(), false);
@@ -243,7 +241,7 @@ public class ControlloreFasiGioco {
 					valida=true;
 				}
 			}
-			
+
 			if(passato){
 				;
 			} else {
@@ -262,7 +260,7 @@ public class ControlloreFasiGioco {
 				return "Non puoi Scommettere 0 Danari!!!";
 			}
 		}
-		
+
 		if(scommessa.getDanariScommessi()<giocatore.getPuntiVittoria()*100){
 			return ("La tua scommessa non rispetta la scommessa minima:"+giocatore.getPuntiVittoria()*100);
 		}
@@ -272,12 +270,12 @@ public class ControlloreFasiGioco {
 		if(statoDelGioco.getScuderiaDalColore(scommessa.getScuderia()).getScommesseDisponibili()<1){
 			return "Spiacente, scommesse esaurite su quella scuderia!";
 		}
-		
+
 		if(!prima){
 			for(Scommessa sE : giocatore.getScommesseEffettuate()){
 				if(sE.getScuderia().equals(scommessa.getScuderia())){
 					if(sE.getTipoScommessa().equals(scommessa.getTipoScommessa())){
-						return ("Hai già scommesso "+scommessa.getTipoScommessa()+" su quella scuderia!");
+						return ("Hai giï¿½ scommesso "+scommessa.getTipoScommessa()+" su quella scuderia!");
 					}
 				}
 			}
@@ -289,9 +287,8 @@ public class ControlloreFasiGioco {
 	 * Questo metodo rappresenta la fase corsa;
 	 * Essendo molto complessa e articolata questo metodo chiama metodi di supporto 
 	 * definiti nella classe ControlloreOperativo
-	 * @throws CarteFiniteException
 	 */
-	private void faseCorsa() throws CarteFiniteException{		
+	private void faseCorsa() {		
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.F_C_SCOPRICARTAAZIONE); //il controllore lato client scoprira' tutte le carte
 		statoDelGioco=ControlloreOperativo.eliminaCarte(statoDelGioco);
 		statoDelGioco=ControlloreOperativo.applicaEffettiCARTE_AZIONEPreCorsa(statoDelGioco);
@@ -318,7 +315,7 @@ public class ControlloreFasiGioco {
 	 * vengono anche cancellate le liste scommesse e carte azioni in gioco
 	 * @throws IOException
 	 */
-	private void faseFineTurno() throws IOException {
+	private void faseFineTurno() {
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.FINETURNO);
 		mazziere.resetCarteAzione();
 		mazziere.resetCarteMovimento();
@@ -391,9 +388,9 @@ public class ControlloreFasiGioco {
 	private void sconfitta() {
 		statoDelGioco.setGiocatoreDiTurno(null);
 		statoDelGioco.setTipoFaseGiocoFamily(TipoFaseGiocoFamily.VITTORIA);	
-		
+
 	}
-	public void inizia() throws CarteFiniteException, AttesaUtentiFallitaException, IOException {
+	public void inizia() {
 		controlloreUtenti.accettaUtenti(statoDelGioco.getGiocatori());
 		preparazione();
 		aggiornaTuttiIClient();
@@ -404,7 +401,9 @@ public class ControlloreFasiGioco {
 			if(statoDelGioco.getGiocatori().size()==0){
 				break;
 			}
-			if(statoDelGioco.getGiocatori().size()==1)break;//se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
+			if(statoDelGioco.getGiocatori().size()==1){
+				break;//se e' rimasto un solo giocatore salta alla faseFineDelGioco dove gli verra'attribuita la vittoria
+			}
 			faseDistribuzioneCarte();
 			aggiornaTuttiIClient();
 			primaFaseScommesse();
@@ -436,7 +435,11 @@ public class ControlloreFasiGioco {
 	}
 
 	public void chiudi() {
-		controlloreUtenti.fine();
+			controlloreUtenti.fine();
+	}
+
+	public AtomicBoolean isChiuso() {
+		return chiuso;
 	}
 }
 

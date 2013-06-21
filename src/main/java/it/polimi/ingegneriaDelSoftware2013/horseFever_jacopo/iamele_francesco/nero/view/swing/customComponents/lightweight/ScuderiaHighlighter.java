@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-public class ScuderiaHighlighter extends JPanel {
+public final class ScuderiaHighlighter extends JPanel {
 
 	private Point2D.Float posizioneTabellone;
 	private Point2D.Float dimensione = new Point2D.Float(0.13600f, 0.14705f);
@@ -49,7 +49,6 @@ public class ScuderiaHighlighter extends JPanel {
 	public void seleziona(boolean selezionato) {
 		this.selezionato = selezionato;
 		if(selezionato){
-			Color c = Color.getHSBColor(0.8f, 1f, 0.8f);
 			setBorder(new LineBorder(Color.RED, 4));
 		} else {
 			setBorder(null);
