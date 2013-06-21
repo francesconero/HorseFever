@@ -45,6 +45,6 @@ public interface Utente {
 	
 	boolean risolviConflitto(List<Colore> conflittoRisolto);
 
-	void scollegaGioco();
+	void scollegaGioco(boolean forza);
 
 }

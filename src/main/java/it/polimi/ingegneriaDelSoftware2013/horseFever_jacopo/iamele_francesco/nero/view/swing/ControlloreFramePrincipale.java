@@ -29,6 +29,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -184,12 +185,19 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 		ed.getTextField().setEditable(false);
 		frmHorseFever.pack();
 	}
-	
+
 	/**
 	 * Aggiorna la view con un nuovo stato del gioco. Questo metodo blocca fintanto che la grafica ha fatto l'update. NON chiamare dall'EDT.
 	 * @param view il nuovo stato del gioco (view) con cui aggiornare la grafica.
 	 */
 	public void aggiorna(final StatoDelGiocoView view) {	
+		LinkedList<GiocatoreView> giocatoriEliminati = new LinkedList<GiocatoreView>();
+		LinkedList<GiocatoreView> giocatoriNuovi = new LinkedList<GiocatoreView>();
+		if(ultimoAggiornamento!=null){
+			giocatoriNuovi.addAll(view.getGiocatori());
+			giocatoriEliminati.addAll(ultimoAggiornamento.getGiocatori());
+			giocatoriEliminati.removeAll(giocatoriNuovi);
+		}
 		ultimoAggiornamento = view;
 		faseGioco = view.getTipoFaseGiocoFamily();
 		try {
@@ -213,6 +221,10 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 					JOptionPane.showMessageDialog(frmHorseFever, "Mi dispiace, sei stato eliminato!");
 					finePartita();
 				} else {
+					for(GiocatoreView g: giocatoriEliminati){
+						informazioniDiGioco.addInformazione("Eliminato "+g.getNomeUtente()+"!");
+						JOptionPane.showMessageDialog(frmHorseFever, "E' stato eliminato "+g.getNomeUtente()+"!");
+					}
 					prossimoAggiornamento();
 				}
 				break;
@@ -456,43 +468,43 @@ public class ControlloreFramePrincipale extends WindowAdapter implements FamilyV
 	public void windowClosing(WindowEvent e) {
 		MetodiDiSupporto.nuovoThread(new Runnable() {			
 			public void run() {
-				osservatore.finePartita();
+				osservatore.finePartitaForzata();
 			}
 		});
 	}
 
-		public void risultatoScommessa(final boolean accettata) {
-			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
-				public void run() {
-					if(accettata){
-						JOptionPane.showMessageDialog(frmHorseFever, "La tua scommessa e' stata accettata!");
-						MetodiDiSupporto.nuovoThread(new Runnable() {			
-							public void run() {
-								osservatore.prossimoAggiornamento();
-							}
-						});
-					} else {						
-						MetodiDiSupporto.nuovoThread(new Runnable() {			
-							public void run() {
-								osservatore.riceviAvvertimento();
-							}
-						});
-					}
-				}
-			});
-		}
-
-		public void avverti(final String avvertimento) {
-			MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
-				public void run() {
-					JOptionPane.showMessageDialog(frmHorseFever, avvertimento);
+	public void risultatoScommessa(final boolean accettata) {
+		MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
+			public void run() {
+				if(accettata){
+					JOptionPane.showMessageDialog(frmHorseFever, "La tua scommessa e' stata accettata!");
 					MetodiDiSupporto.nuovoThread(new Runnable() {			
 						public void run() {
-							osservatore.stessoAggiornamento();
+							osservatore.prossimoAggiornamento();
+						}
+					});
+				} else {						
+					MetodiDiSupporto.nuovoThread(new Runnable() {			
+						public void run() {
+							osservatore.riceviAvvertimento();
 						}
 					});
 				}
-			});
-			
-		}
+			}
+		});
 	}
+
+	public void avverti(final String avvertimento) {
+		MetodiDiSupporto.swingInvokeAndWait(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(frmHorseFever, avvertimento);
+				MetodiDiSupporto.nuovoThread(new Runnable() {			
+					public void run() {
+						osservatore.stessoAggiornamento();
+					}
+				});
+			}
+		});
+
+	}
+}

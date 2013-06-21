@@ -51,7 +51,7 @@ public class ControlloreReteClient implements Utente {
 	private Socket heartbeatSocket;
 	private InetAddress indirizzoServer;
 	private HeartbeatThread heartbeatThread = new HeartbeatThread();
-	
+
 	/**
 	 * Inizializza un controllore per la rete a lato client, con un proprio nome
 	 * che sarà visualizzato dagli altri giocatori, e l'indirizzo ip del server
@@ -67,7 +67,7 @@ public class ControlloreReteClient implements Utente {
 	 */
 	public ControlloreReteClient(String proprioNome, String nomeHost)
 			throws UnknownHostException {
-		
+
 		indirizzoServer = InetAddress.getByName(nomeHost);
 		portaServer = Integer.parseInt(Configurazioni.getInstance()
 				.getClientProperties().getProperty("portaServer"));
@@ -189,6 +189,7 @@ public class ControlloreReteClient implements Utente {
 
 	private class HeartbeatThread extends Thread {
 		private AtomicBoolean esegui = new AtomicBoolean(true);
+		private boolean forzato = false;
 
 		public void ferma() {
 			esegui.set(false);
@@ -198,7 +199,7 @@ public class ControlloreReteClient implements Utente {
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 		public void run() {
 			while (esegui.get()) {
 				try{
@@ -217,14 +218,24 @@ public class ControlloreReteClient implements Utente {
 					throw new DisconnessioneAnomalaException(e, serverSocket);
 				}
 			}
-			System.out.println("Chiusura heartbeat...");
-			Map.Entry<Long, String> daInviare = new AbstractMap.SimpleEntry<Long, String>(ID, "BYE!");
-			ControlloreRete.inviaOggettoConRisposta(daInviare, heartbeatSocket);
+			if(forzato){
+				System.out.println("Chiusura heartbeat forzata...");
+				Map.Entry<Long, String> daInviare = new AbstractMap.SimpleEntry<Long, String>(ID, "ADIOS!");
+				ControlloreRete.inviaOggettoConRisposta(daInviare, heartbeatSocket);
+			} else {
+				System.out.println("Chiusura heartbeat...");
+				Map.Entry<Long, String> daInviare = new AbstractMap.SimpleEntry<Long, String>(ID, "BYE!");
+				ControlloreRete.inviaOggettoConRisposta(daInviare, heartbeatSocket);
+			}
 			try {
 				heartbeatSocket.close();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
+		}
+
+		public void setForzoso(boolean forza) {
+			this.forzato  = forza;
 		}
 	}
 
@@ -233,24 +244,25 @@ public class ControlloreReteClient implements Utente {
 				serverSocket);
 	}
 
-	public void scollegaGioco() {
+	public void scollegaGioco(boolean forza) {
 		if(heartbeatThread.esegui.compareAndSet(true, false)){
 			try {
 				serverSocket.close();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}
-		if(!Thread.currentThread().equals(heartbeatThread)){
-			try {
-				System.out.println("Attendo che termini heartbeat");
-				heartbeatThread.join();
-				System.out.println("Heartbeat terminato");
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+			heartbeatThread.setForzoso(forza);
+			if(!Thread.currentThread().equals(heartbeatThread)){
+				try {
+					System.out.println("Attendo che termini heartbeat");
+					heartbeatThread.join();
+					System.out.println("Heartbeat terminato");
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			} else {
+				System.out.println("Heartbeat thread ha chiuso il client");
 			}
-		} else {
-			System.out.println("Heartbeat thread ha chiuso il client");
 		}
 	}
 

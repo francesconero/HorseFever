@@ -395,11 +395,20 @@ public class ControlloreReteServer implements ControlloreUtenti {
 								}
 							}
 						}
+						if(risposta.getValue().equals("ADIOS!")){
+							System.out.println(nomiClients.get(reverseIDClients.get(risposta.getKey()))+" si è scollegato forzatamente");
+							synchronized (clientsHeartbeat) {
+								System.out.println("Rimuovo heartbeat");
+								clientsHeartbeat.remove(reverseIDClients.get(risposta.getKey()));
+								esegui.set(false);
+							}
+						}
 					} catch (InterruptedException e) {
 						clientsExecutor.shutdownNow();
 						throw new RuntimeException(e);
 					} catch (ExecutionException e) {
 						clientsExecutor.shutdownNow();
+						System.out.println("Disconnessione anomala di un client...chiudo server");
 						throw new RuntimeException(e);
 					}
 				}
