@@ -10,6 +10,11 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 
 import java.util.List;
 
+/**
+ * Interfaccia che espone al controllore del gioco, i metodi necessari a interagire con i giocatori.
+ * @author Francesco
+ *
+ */
 public interface ControlloreUtenti {
 
 	/**

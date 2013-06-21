@@ -17,7 +17,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class ConsoleView implements View{
+public class ConsoleView {
 
 	private final AiutanteConsole aiutanteConsole;
 	private final InputStream in;
@@ -156,7 +156,7 @@ public class ConsoleView implements View{
 	}
 
 	public static void main(String[] args) {
-		View cV= new ConsoleView(System.in, new PrintStream(System.out));
+		ConsoleView cV= new ConsoleView(System.in, new PrintStream(System.out));
 		List<Colore> scuderieCasuali = new LinkedList<Colore>();
 		scuderieCasuali.add(Colore.BIANCO);
 		scuderieCasuali.add(Colore.NERO);

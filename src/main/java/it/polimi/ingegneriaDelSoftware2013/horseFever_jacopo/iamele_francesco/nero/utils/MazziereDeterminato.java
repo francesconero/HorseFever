@@ -7,14 +7,14 @@ public class MazziereDeterminato extends Mazziere {
 
 	@Override
 	public void mischiaCarteAzione() {
-		carteAzione.remove(Risorse.getInstance().getCartaAzione("Friz Finden"));
-		carteAzione.remove(Risorse.getInstance().getCartaAzione("Rochelle Recherche"));
-		carteAzione.remove(Risorse.getInstance().getCartaAzione("Magna Velocitas"));
+		carteAzione.remove(Risorse.getInstance().getCartaAzione("Serum Maleficum"));
 		carteAzione.remove(Risorse.getInstance().getCartaAzione("Globus Obscuros"));
-		carteAzione.add(0, Risorse.getInstance().getCartaAzione("Friz Finden"));
-		carteAzione.add(1, Risorse.getInstance().getCartaAzione("Rochelle Recherche"));
-		carteAzione.add(2, Risorse.getInstance().getCartaAzione("Magna Velocitas"));
-		carteAzione.add(3, Risorse.getInstance().getCartaAzione("Globus Obscuros"));
-		
+		carteAzione.remove(Risorse.getInstance().getCartaAzione("Felix Infernalis"));
+		carteAzione.remove(Risorse.getInstance().getCartaAzione("Vigor Ferreum"));
+		carteAzione.add(0, Risorse.getInstance().getCartaAzione("Serum Maleficum"));
+		carteAzione.add(1, Risorse.getInstance().getCartaAzione("Globus Obscuros"));		
+		carteAzione.add(2, Risorse.getInstance().getCartaAzione("Felix Infernalis"));		
+		carteAzione.add(3, Risorse.getInstance().getCartaAzione("Vigor Ferreum"));		
 	}
+	
 }

@@ -6,7 +6,6 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Colore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Giocatore;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.GiocatoreView;
-import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Mazziere;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.PosizionaCarta;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scommessa;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.Scuderia;
@@ -14,6 +13,7 @@ import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.ne
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.TipoFaseGiocoFamily;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.carte.CartaAzione;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.model.mosseCorsa.MossaCorsa;
+import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MazziereDeterminato;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.utils.MetodiDiSupporto;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.console.ConsoleView;
 import it.polimi.ingegneriaDelSoftware2013.horseFever_jacopo.iamele_francesco.nero.view.swing.customComponents.dialogs.LauncherFrame;
@@ -44,7 +44,7 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 		gC.show();
 		view = new ConsoleView(gC.getInputStream(), gC);
 		int numeroGiocatori = view.chiediNumeroGiocatori();
-		gioco = new ControlloreFasiGioco(numeroGiocatori, new Mazziere(), this);
+		gioco = new ControlloreFasiGioco(numeroGiocatori, new MazziereDeterminato(), this);
 	}
 
 	public void inizia(){
@@ -150,22 +150,22 @@ public class GiocoOffline implements ControlloreUtenti, WindowListener{
 		}
 	}
 
-	private String stampaQuotazioni(StatoDelGioco ultimoAggiornamento2) {
-		Map<Integer,Scuderia> mapOut = new LinkedHashMap<Integer, Scuderia>();
-		for(Scuderia s: ultimoAggiornamento2.getCorsie()){
-			mapOut.put(s.getQuotazione(), s);
-		}
+	private String stampaQuotazioni(StatoDelGioco daCuiAggiornare) {
 		String out = "";
-		for(Integer i : mapOut.keySet()){
-			out += "Quotazione 1:"+i+" = scuderia "+mapOut.get(i).getColore();
-			out += System.lineSeparator();
+		for(int i = 2; i<=7; i++){
+			for(Scuderia s: daCuiAggiornare.getCorsie()){
+				if(s.getQuotazione()==i){
+					out += "Quotazione 1:"+i+" = scuderia "+s.getColore();
+					out += System.lineSeparator();					
+				}
+			}
 		}
 		return out;
 	}
 
 	public void aggiornaUtenti(StatoDelGioco statoDelGioco,
 			List<MossaCorsa> mosseCorsa) {
-		ControlloreConsoleCorsa cCC = new ControlloreConsoleCorsa(statoDelGioco, view, nomi);
+		ControlloreConsoleCorsa cCC = new ControlloreConsoleCorsa(view);
 
 		for(MossaCorsa mC: mosseCorsa){
 			mC.accept(cCC);

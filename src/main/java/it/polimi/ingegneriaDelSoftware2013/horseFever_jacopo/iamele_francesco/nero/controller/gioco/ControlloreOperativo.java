@@ -654,7 +654,6 @@ public class ControlloreOperativo {
 				movimento=cartaMovimento.getMovimento(statoDelGioco.getCorsie().get(i).getQuotazione());
 				Scuderia scuderiaTemp=statoDelGioco.getCorsie().get(i);
 				movimento=applicaEffettiPRIMO_ULTIMO(statoDelGioco, scuderiaTemp, movimento);
-				System.out.println("movimento cavallo in "+i+" posizione e' "+movimento);
 				posizioniDaApplicare.add(movimento);
 			}
 		}

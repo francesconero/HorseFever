@@ -5,6 +5,11 @@ import java.util.List;
 
 import javax.swing.AbstractSpinnerModel;
 
+/**
+ * Classe necessaria all'inserimento di stringhe nello spinner della GUI
+ * 
+ */
+
 public class InformazioniDiGiocoModel extends AbstractSpinnerModel {
 	
 	private List<InformazioneGioco> informazioni = new LinkedList<InformazioneGioco>();

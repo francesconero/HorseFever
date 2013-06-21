@@ -48,8 +48,8 @@ public class ScuderiePanel extends JPanel {
 	private JButton btnPassa;
 	private JScrollPane scrollPane;
 	private JPanel cartePanel;
-	private final Action action = new SwingAction();
-	private final Action action_1 = new SwingAction_1();
+	private final Action azioneTrucca = new AzioneTrucca();
+	private final Action azioneScommessa = new AzioneScommessa();
 	
 	/**
 	 * Create the panel.
@@ -119,7 +119,7 @@ public class ScuderiePanel extends JPanel {
 		panel_2.add(lblInserisciQuantitDi, gbc_lblInserisciQuantitDi);
 
 		textField = new JFormattedTextField(NumberFormat.getIntegerInstance(Locale.getDefault()));
-		textField.setAction(action_1);
+		textField.setAction(azioneScommessa);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setEnabled(false);
 		textField.setColumns(10);
@@ -152,7 +152,7 @@ public class ScuderiePanel extends JPanel {
 		panel_2.add(comboBox, gbc_comboBox);
 
 		btnScommetti = new JButton("SCOMMETTI");
-		btnScommetti.setAction(action_1);
+		btnScommetti.setAction(azioneScommessa);
 		btnScommetti.setPreferredSize(new Dimension(0, 23));
 		btnScommetti.setMinimumSize(new Dimension(20, 23));
 		btnScommetti.setEnabled(false);
@@ -195,7 +195,7 @@ public class ScuderiePanel extends JPanel {
 		panel.setLayout(gbl_panel);
 
 		btnTruccaQuestaScuderia = new JButton("TRUCCA");
-		btnTruccaQuestaScuderia.setAction(action);
+		btnTruccaQuestaScuderia.setAction(azioneTrucca);
 		btnTruccaQuestaScuderia.setEnabled(false);
 		GridBagConstraints gbc_btnTruccaQuestaScuderia = new GridBagConstraints();
 		gbc_btnTruccaQuestaScuderia.fill = GridBagConstraints.BOTH;
@@ -243,8 +243,8 @@ public class ScuderiePanel extends JPanel {
 		btnTruccaQuestaScuderia.setEnabled(enabled);
 	}
 
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
+	private class AzioneTrucca extends AbstractAction {
+		public AzioneTrucca() {
 			putValue(NAME, "TRUCCA");
 			putValue(SHORT_DESCRIPTION, "Aggiungi una carta azione alla scuderia selezionata");
 		}
@@ -253,8 +253,8 @@ public class ScuderiePanel extends JPanel {
 			ScuderiePanel.this.firePropertyChange("TRUCCAMENTO", null, scuderia.getColore());
 		}
 	}
-	private class SwingAction_1 extends AbstractAction {
-		public SwingAction_1() {
+	private class AzioneScommessa extends AbstractAction {
+		public AzioneScommessa() {
 			putValue(NAME, "SCOMMETTI");
 			putValue(SHORT_DESCRIPTION, "Scommetti sulla scuderia selezionata");
 		}
